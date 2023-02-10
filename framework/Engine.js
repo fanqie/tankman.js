@@ -1,6 +1,6 @@
-const Web = require("./web")
-const InstallEnv = require("./config/environment")
-const Facades = require("./facades")
+const Web = require("./Web")
+const InstallEnv = require("./Config/Env")
+const Facades = require("./Facades")
 
 module.exports = class Engine {
 

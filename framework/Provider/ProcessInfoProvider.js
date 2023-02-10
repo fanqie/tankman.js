@@ -1,6 +1,6 @@
-const ServiceProvider = require("./serviceProvider");
-const Facades = require("../facades");
-const  ProcessInfo = require("../utils/ProcessInfo")
+const ServiceProvider = require("./ServiceProvider");
+const Facades = require("../Facades");
+const  ProcessInfo = require("../Utils/ProcessInfo")
 module.exports=class ProcessInfoProvider extends ServiceProvider {
     register() {
         //

@@ -11,4 +11,5 @@ module.exports = {
     Schedule: null,
     ProcessInfo: null,
     Engine: null,
+    UpLo: null,
 }

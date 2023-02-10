@@ -1,14 +1,17 @@
 const path = require("path")
-const providers = require("../provider/index")
-const ProcessInfoProvider = require("../provider/processInfoProvider");
+const ProcessInfoProvider = require("../Provider/ProcessInfoProvider");
+const ConfigProvider = require("../Provider/ConfigProvider");
+const {Facades} = require("../Index");
 
-module.exports=class Application {
+module.exports = class Application {
     constructor() {
         this.registerBaseServiceProviders()
         this.bootBaseServiceProviders()
+        Facades.Config.LoadConfig()
     }
 
     boot() {
+
         this.registerConfiguredServiceProviders()
         this.bootConfiguredServiceProviders()
 
@@ -31,12 +34,27 @@ module.exports=class Application {
     }
 
     bootConfiguredServiceProviders() {
-        this.registerServiceProviders(this.getConfiguredServiceProviders())
+        this.bootServiceProviders(this.getConfiguredServiceProviders())
     }
 
 
     getConfiguredServiceProviders() {
-        return []
+        console.log(Facades.Config.Config("app"))
+        return Facades.Config.Config("app").providers.map((Class => {
+            return new Class()
+        }))
+    }
+    registerServiceProviders(serviceProviders) {
+        console.log("serviceProviders",serviceProviders)
+        serviceProviders.forEach(serviceProvider => {
+            serviceProvider.register()
+        })
+    }
+
+    bootServiceProviders(serviceProviders) {
+        serviceProviders.forEach(serviceProvider => {
+            serviceProvider.boot()
+        })
     }
 
     setRootPath() {
@@ -46,20 +64,9 @@ module.exports=class Application {
     bootTank() {
 
     }
-    registerServiceProviders(serviceProviders) {
 
-        for (const serviceProvider of serviceProviders) {
-
-            serviceProvider.register()
-        }
-    }
-    bootServiceProviders(serviceProviders) {
-        for (const serviceProvider of serviceProviders) {
-            serviceProvider.boot()
-        }
-    }
 
     getBaseServiceProviders() {
-        return [new providers.ProcessInfoProvider(),new providers.ConfigProvider()]
+        return [new ProcessInfoProvider(), new ConfigProvider()]
     }
 }

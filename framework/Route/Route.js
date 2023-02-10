@@ -1,12 +1,13 @@
-const RouterHandle = require("./routerHandle")
-const {REQUEST_METHOD} = require("./enums")
-const Group = require("./group")
+const RouterHandle = require("./RouterHandle")
+const {REQUEST_METHOD} = require("./Enums")
+const Group = require("./Group")
 module.exports = class Route {
     routes = new Map()
 
-    constructor(app) {
-        this.app = app
+    constructor(options) {
+        this.options = {...options}
     }
+
 
     _routers = new Map()
 
@@ -23,9 +24,6 @@ module.exports = class Route {
         middleware: ""
     }
 
-    constructor(options) {
-        this.options = {...options}
-    }
 
     static Group(func) {
         // console.log(func.apply(this))
