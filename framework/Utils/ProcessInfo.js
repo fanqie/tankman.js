@@ -1,19 +1,74 @@
 const path = require("path");
 
-module.exports = class ProcessInfo {
+/**
+ * ProcessInfo class
+ */
+class ProcessInfo {
+    /**
+     *
+     * @type {[]}
+     */
     Args = []
+    /**
+     *
+     * @type {{}}
+     */
     Versions = {}
+    /**
+     *
+     * @type {{}}
+     */
     OsEnv = {}
+    /**
+     *
+     * @type {Map}
+     */
     Flags = new Map()
+
+    /**
+     *
+     * @type {{}}
+     */
     Features = {}
+    /**
+     *
+     * @type {string}
+     */
     Arch = "x64"
+    /**
+     *
+     * @type {string}
+     */
     NodeVersion = ""
+    /**
+     *
+     * @type {number}
+     */
     Pid = 0
+    /**
+     *
+     * @type {number}
+     */
     Ppid = 0
+    /**
+     *
+     * @type {string}
+     */
     ExecPath = ''
+    /**
+     *
+     * @type {number}
+     */
     DebugPort = 0
+    /**
+     *
+     * @type {string}
+     */
     Argv0 = ''
 
+    /**
+     *
+     */
     constructor() {
         this.parse(process.argv)
         this.Versions = {...process.versions}
@@ -29,6 +84,10 @@ module.exports = class ProcessInfo {
         this.Argv0 = process.argv0
     }
 
+    /**
+     *
+     * @param args
+     */
     parse(args) {
         args.forEach(arg => {
             if (arg.indexOf("=") > 0) {
@@ -43,3 +102,5 @@ module.exports = class ProcessInfo {
         })
     }
 }
+
+module.exports = ProcessInfo

@@ -1,11 +1,18 @@
 const ServiceProvider = require("./ServiceProvider")
 const Route = require("../Route/Route")
-module.exports = class RouteProvider extends ServiceProvider {
-
+const {FC} = require("../Index");
+class RouteProvider extends ServiceProvider {
+    /**
+     *
+     */
     register() {
-        return new Route(this.app)
+        FC.Route = new Route(this.app)
     }
 
+    /**
+     *
+     */
     boot() {
     }
 }
+module.exports = RouteProvider

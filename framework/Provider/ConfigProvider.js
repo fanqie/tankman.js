@@ -1,13 +1,20 @@
 const Facades = require("../Facades")
 const ServiceProvider = require("./ServiceProvider");
-const Env = require("../Config/Env")
-module.exports = class ConfigProvider extends ServiceProvider {
+const Config = require("../Config/Config")
+ class ConfigProvider extends ServiceProvider {
+     /**
+      *
+      */
     register() {
-        Facades.Config = new Env()
+        Facades.Config = new Config()
     }
 
+     /**
+      *
+      */
     boot() {
-        Facades.Config.LoadEnv()
-        Facades.Config.LoadConfig()
+        Facades.Config.Load()
     }
 }
+
+module.exports = ConfigProvider

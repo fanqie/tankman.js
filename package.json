@@ -1,0 +1,34 @@
+{
+  "name": "tankman",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "better-sqlite3": "^8.1.0",
+    "knex": "^2.4.2",
+    "koa": "^2.14.1",
+    "lodash": "^4.17.21",
+    "mocha": "^10.2.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.1.2",
+    "sqlite3": "^5.1.4",
+    "tedious": "^15.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/curry-trooper/tankman.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/curry-trooper/tankman.js/issues"
+  },
+  "homepage": "https://github.com/curry-trooper/tankman.js#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-jsdoc3": "^3.0.0"
+  }
+}

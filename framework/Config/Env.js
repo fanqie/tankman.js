@@ -1,61 +1,67 @@
 const Facades = require("../Facades");
-const LoadConfiguration = require("./LoadConfigration");
 const LoadEnvironmentVariables = require("./LoadEnvironmentVariables")
-module.exports = class Environment {
-    _Envs = {}
-    _Config = {}
 
+/**
+ *
+ * @type {Env}
+ */
+class Env {
+    /**
+     *
+     * @type {{}}
+     * @private
+     */
+    _Envs = {}
+
+    /**
+     *
+     */
     constructor() {
     }
 
-    AllConfig() {
-        return this._Config
-    }
-
-    AllEnv(name) {
+    /**
+     *
+     * @return {{}}
+     * @constructor
+     */
+    All() {
         return this._Envs
     }
 
-    Config(name, v) {
-        if (v) {
-            this._SetConfig(name, v)
-        }
-        return this._GetConfig(name)
+
+    /**
+     *
+     * @param name
+     * @param defaultVal
+     * @return {*|null}
+     * @constructor
+     */
+    Get(name,defaultVal=null) {
+        return this._Envs[name] ||defaultVal
     }
 
-    _GetConfig(name) {
-        return this._Config[name] || null
-    }
-
-    _SetConfig(name, v) {
-        this._Config[name] = v
-    }
-
-    AllEnv(name, v) {
-        return this._Envs
-    }
-
-    _GetEnv(name) {
-        return this._Envs[name] || null
-    }
-
-    _SetEnv(name, v) {
+    /**
+     *
+     * @param name
+     * @param v
+     * @private
+     */
+    Set(name, v) {
         this._Envs[name] = v
     }
 
-    LoadEnv() {
+    /**
+     *
+     * @constructor
+     */
+    Load() {
         //Load Environment Variables
-        const envs = LoadEnvironmentVariables.Load(Facades.ProcessInfo.Flags.get("--ENV"))
+        const envs = LoadEnvironmentVariables.Load(Facades.ProcessInfo.Flags.get("--ENV")||"")
         this._Envs = {...this._Envs, ...envs}
 
     }
 
-    LoadConfig() {
-        const Config = LoadConfiguration.Load(Facades.ProcessInfo.Flags.get("--ConfigDir"))
-        this._Config = {...this._Config, ...Config}
-    }
-
-
 }
 
 
+module.exports = Env

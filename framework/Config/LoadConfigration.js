@@ -1,8 +1,13 @@
 const path = require("path");
 const fs = require("fs");
 
-module.exports = class LoadConfiguration {
-
+class LoadConfiguration {
+    /**
+     *
+     * @param filePath
+     * @return {{}}
+     * @constructor
+     */
     static Load(filePath) {
         const Configs = {}
         if (!path.isAbsolute(filePath || "")) {
@@ -23,3 +28,4 @@ module.exports = class LoadConfiguration {
     }
 }
 
+module.exports = LoadConfiguration

@@ -1,8 +1,17 @@
 const path = require("path");
 const fs = require("fs");
 
-module.exports = class LoadEnvironmentVariables {
-    static Load(filePath) {
+/**
+ *
+ */
+class LoadEnvironmentVariables {
+    /**
+     *
+     * @param filePath
+     * @return {{}}
+     * @constructor
+     */
+    static Load(filePath="") {
         const envs = {}
         if (!path.isAbsolute(filePath)) {
             filePath = filePath || ".env"
@@ -23,3 +32,4 @@ module.exports = class LoadEnvironmentVariables {
 }
 
 
+module.exports = LoadEnvironmentVariables

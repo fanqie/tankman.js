@@ -1,8 +1,22 @@
-module.exports = class ServiceProvider {
+class ServiceProvider {
+    static app
 
-    register() {
+    constructor(app) {
+        this.app = app
     }
 
+    /**
+     *
+     */
+    register() {
+
+    }
+
+    /**
+     *
+     */
     boot() {
     }
 }
+
+module.exports = ServiceProvider

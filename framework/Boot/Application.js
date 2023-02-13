@@ -1,72 +1,119 @@
 const path = require("path")
 const ProcessInfoProvider = require("../Provider/ProcessInfoProvider");
 const ConfigProvider = require("../Provider/ConfigProvider");
-const {Facades} = require("../Index");
+const EnvProvider = require("../Provider/EnvProvider");
+const {FC} = require("../Index");
 
-module.exports = class Application {
+
+/**
+ *
+ */
+class Application {
+
+
+    /**
+     *
+     */
     constructor() {
         this.registerBaseServiceProviders()
         this.bootBaseServiceProviders()
-        Facades.Config.LoadConfig()
     }
 
+    /**
+     *
+     */
     boot() {
 
         this.registerConfiguredServiceProviders()
         this.bootConfiguredServiceProviders()
 
+
         this.bootTank()
         this.setRootPath()
     }
 
+    /**
+     *
+     */
     registerBaseServiceProviders() {
         //init env config
         this.registerServiceProviders(this.getBaseServiceProviders())
     }
 
+    /**
+     *
+     */
     bootBaseServiceProviders() {
         this.bootServiceProviders(this.getBaseServiceProviders())
     }
 
+    /**
+     *
+     */
     registerConfiguredServiceProviders() {
         //get all provider and register
         this.registerServiceProviders(this.getConfiguredServiceProviders())
     }
 
+    /**
+     *
+     */
     bootConfiguredServiceProviders() {
         this.bootServiceProviders(this.getConfiguredServiceProviders())
     }
 
-
+    /**
+     *
+     * @return {ServiceProvider[]}
+     */
     getConfiguredServiceProviders() {
-        console.log(Facades.Config.Config("app"))
-        return Facades.Config.Config("app").providers.map((Class => {
-            return new Class()
+        return FC.Config.Get("app").providers.map((Class => {
+            return new Class(this)
         }))
     }
+
+    /**
+     *
+     * @param {ServiceProvider[]}
+     */
     registerServiceProviders(serviceProviders) {
-        console.log("serviceProviders",serviceProviders)
         serviceProviders.forEach(serviceProvider => {
             serviceProvider.register()
         })
     }
 
+    /**
+     *
+     * @param {ServiceProvider[]}
+     */
     bootServiceProviders(serviceProviders) {
         serviceProviders.forEach(serviceProvider => {
             serviceProvider.boot()
         })
+
     }
 
+    /**
+     *
+     */
     setRootPath() {
         //:todo
     }
 
+    /**
+     *
+     */
     bootTank() {
 
     }
 
-
+    /**
+     *
+     * @return {ServiceProvider[]}
+     */
     getBaseServiceProviders() {
-        return [new ProcessInfoProvider(), new ConfigProvider()]
+        return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)]
     }
 }
+
+module.exports = Application

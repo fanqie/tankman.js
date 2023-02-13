@@ -1,6 +1,6 @@
 module.exports = {
     Application: require("./Boot/Application"),
-    Facades: require("./Facades"),
+    FC: require("./Facades"),
     Engine: require("./Engine")
 }
 

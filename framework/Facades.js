@@ -1,8 +1,9 @@
 module.exports = {
     Config: null,
+    Env: null,
     Route: null,
     Cache: null,
-    Db: null,
+    DB: null,
     Auth: null,
     Log: null,
     FileSystem: null,
