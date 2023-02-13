@@ -1,4 +1,4 @@
-const koa2= require("koa2")
-module.exports = class Web extends koa2 {
+const Koa= require("koa")
+module.exports = class Web extends Koa {
 
 }

@@ -27,7 +27,7 @@ class DB {
      * @return {Knex<TRecord, TResult>}
      * @private
      */
-    static  Connection(config, client = "mysql") {
+    static Connection(config, client = "mysql") {
 
         if (config === null) {
             throw new Error("Missing database configuration")
