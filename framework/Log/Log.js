@@ -21,7 +21,7 @@ class Log {
      * @constructor
      */
     SetConfig(options) {
-        this.log4js.configure({...FC.Config.Get("log"), ...options});
+         this.log4js.configure({...FC.Config.Get("log"), ...options});
     }
 
     /**
@@ -31,7 +31,7 @@ class Log {
      * @constructor
      */
     GetLogger(category) {
-        return this.log4js.getLogger(category)
+        return this.log4js.getLogger(category||"default")
     }
 
     /**
@@ -48,7 +48,7 @@ class Log {
      * @param type {string}
      * @param fn {(a: any) => (logEvent: LoggingEvent) => any): void;}
      */
-    addLayout(type, fn) {
+    AddLayout(type, fn) {
         return this.log4js.addLayout(type, fn)
     }
 
@@ -59,7 +59,7 @@ class Log {
      * @constructor
      */
     Trace(message, category) {
-        this.log4js.getLogger(category || "").trace(message || "");
+        this.GetLogger(category ).trace(message || "");
     }
 
     /**
@@ -69,7 +69,7 @@ class Log {
      * @constructor
      */
     Debug(message, category) {
-        this.log4js.getLogger(category || "").debug(message || "");
+        this.GetLogger(category).debug(message || "");
     }
 
     /**
@@ -79,7 +79,7 @@ class Log {
      * @constructor
      */
     Info(message, category) {
-        this.log4js.getLogger(category || "").info(message || "");
+        this.GetLogger(category).info(message || "");
     }
 
     /**
@@ -89,7 +89,7 @@ class Log {
      * @constructor
      */
     Warn(message, category) {
-        this.log4js.getLogger(category || "").warn(message || "");
+        this.GetLogger(category ).warn(message || "");
     }
 
     /**
@@ -99,7 +99,8 @@ class Log {
      * @constructor
      */
     Error(message, category) {
-        this.log4js.getLogger(category || "").error(message || "");
+        console.log(":::",message)
+        this.GetLogger(category || "").error(message || "");
     }
 
     /**
@@ -109,7 +110,7 @@ class Log {
      * @constructor
      */
     Fatal(message, category) {
-        this.log4js.getLogger(category || "").fatal(message || "");
+        this.GetLogger(category || "").fatal(message || "");
     }
 }
 

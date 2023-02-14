@@ -9,7 +9,6 @@
     "koa": "^2.14.1",
     "lodash": "^4.17.21",
     "log4js": "^6.7.1",
-    "mocha": "^10.2.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.1.2",
     "sqlite3": "^5.1.4",
@@ -30,6 +29,7 @@
   "homepage": "https://github.com/curry-trooper/tankman.js#readme",
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-jsdoc3": "^3.0.0"
+    "gulp-jsdoc3": "^3.0.0",
+    "mocha": "^10.2.0"
   }
 }
