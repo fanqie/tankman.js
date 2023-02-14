@@ -6,6 +6,20 @@ const Group = require("./Group")
  *
  */
 class Route {
+    /**
+     * @type  string
+     * @private
+     */
+    _prefix = ""
+    _group_middlewares = []
+    /**
+     *
+     * @type {{prefix: string, middleware: [string]}}
+     */
+    options = {
+        prefix: "",
+        middleware: []
+    }
 
     /**
      *
@@ -17,51 +31,42 @@ class Route {
 
     /**
      *
-     * @type {*}
+     * @type {[Router]}
      * @private
      */
-    _routers = new Map()
+    _routers = []
+
+    All() {
+        return this._routers
+    }
 
     /**
      *
      * @param prefix
-     * @return {Group}
+     * @return {Route}
      * @constructor
      */
-    static Prefix(prefix) {
-        return new Group({prefix: prefix})
+    Prefix(prefix) {
+        this._prefix = prefix
+        return this
     }
+
 
     /**
      *
-     * @param middleware
-     * @return {Group}
+     * @param prefix {string}
+     * @param func {Function}
+     * @param groupMiddlewares {[string]}
+     * @return {Route}
      * @constructor
      */
-    static Middleware(middleware) {
-        return new Group({middleware: middleware})
+    Group(prefix, func, groupMiddlewares) {
+        this._prefix = prefix
+        this._group_middlewares = groupMiddlewares || []
+        return this
     }
 
     /**
-     *
-     * @type {{prefix: string, middleware: string}}
-     */
-    options = {
-        prefix: "",
-        middleware: ""
-    }
-
-    /**
-     *
-     * @param func
-     * @constructor
-     */
-    static Group(func) {
-        // console.log(func.apply(this))
-    }
-
-    /**
-     *
      * @param path
      * @return {string}
      * @constructor
@@ -70,28 +75,8 @@ class Route {
         return this.options.prefix ? this.options.prefix + "/" : "" + path
     }
 
-    /**
-     *
-     * @param prefix
-     * @return {Group}
-     * @constructor
-     */
-    Prefix(prefix) {
-        return new Group({prefix: prefix})
-    }
 
     /**
-     *
-     * @param middleware
-     * @return {Group}
-     * @constructor
-     */
-    Middleware(middleware) {
-        return new Group({middleware: middleware})
-    }
-
-    /**
-     *
      * @param method
      * @param path
      * @param action
@@ -99,98 +84,143 @@ class Route {
      * @private
      */
     _CreateRouterHandle(method, path, action) {
-        const handle = new RouterHandle(REQUEST_METHOD.PATCH, path, action)
-        this._routers.get(REQUEST_METHOD.PATCH).set(path, handle)
+        const handle = new RouterHandle({
+            prefix: this._prefix,
+            middlewares: [...this._group_middlewares]
+        }, method, path, action)
+
+        this._routers.push(handle)
         return handle;
     }
 
     /**
-     *
      * @param path
      * @param action
-     * @constructor
+     * @return {Router}
      */
-    static Post(path, action) {
+    Post(path, action) {
+
+        return this._CreateRouterHandle(REQUEST_METHOD.POST, path, action)
     }
 
     /**
-     *
      * @param path
      * @param action
-     * @constructor
+     * @return {Router}
      */
-    static Get(path, action) {
+    Get(path, action) {
+        console.log(">>>>",path)
+        return this._CreateRouterHandle(REQUEST_METHOD.GET, path, action)
     }
 
     /**
-     *
      * @private
      */
-    static _setRouterHandle() {
+    _setRouterHandle() {
 
     }
 
     /**
-     *
      * @param path
      * @param action
-     * @constructor
+     * @return {Router}
      */
-    static Patch(path, action) {
-
+    Patch(path, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.PATCH, path, action)
     }
 
     /**
-     *
      * @param path
      * @param action
-     * @constructor
+     * @return {Router}
      */
-    static Put(path, action) {
-
+    Put(path, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.PUT, path, action)
     }
 
     /**
-     *
      * @param path
      * @param action
-     * @constructor
+     * @return {Router}
      */
-    static Any(path, action) {
-
+    Any(path, action) {
+        return this._CreateRouterHandle(Object.values(REQUEST_METHOD), path, action)
     }
 
     /**
-     *
      * @param path
      * @param action
-     * @constructor
+     * @return {Router}
      */
-    static Delete(path, action) {
-
+    Delete(path, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.DELETE, path, action)
     }
 
     /**
-     *
-     * @param methodArray
+     * @param methodsArray {[string]}
      * @param path
      * @param action
-     * @constructor
+     * @return {Router|RouterHandle}
      */
-    static Match(methodArray, path, action) {
-
+    Match(methodsArray, path, action) {
+        if (!Array.isArray(methodsArray)) {
+            throw new Error("methodsArray must array")
+        }
+        const methods = methodsArray.filter(method => Object.values(REQUEST_METHOD).includes(method))
+        if (methods.length > 0) {
+            return this._CreateRouterHandle(methods, path, action)
+        }
+        throw new Error("methodsArray must values [post|put|get|delete|put]")
     }
 
     /**
-     *
      * @param path
      * @param redirectUrl
      * @param status
      */
-    static redirect(path, redirectUrl, status) {
+    redirect(path, redirectUrl, status) {
 
     }
 
+    /**
+     *
+     * @type {Map<string,Router|RouterHandle>}
+     * @private
+     */
+    _routesMap = new Map()
+
+    LoadSet() {
+        this._routesMap.clear()
+        this._routers.forEach(route => {
+            this._routesMap.set(route.name, route)
+        })
+    }
+
+    /**
+     * Get route by route name
+     * @param name {string}
+     * @return {Router | RouterHandle}
+     * @constructor
+     */
+    Get(name) {
+        return this._routesMap.get(name)
+    }
+
+    /**
+     * Get route by route pathname
+     * @param pathname {string}
+     * @param method {string} post|put|get|delete|put
+     * @return {Router|RouterHandle|boolean}
+     * @constructor
+     */
+    GetByPathname(pathname, method) {
+        method = method = method.toLowerCase()
+        const route = this._routers.find(route => {
+            return route.Is(pathname, method)
+        })
+        //todo:cache
+        return route;
+    }
 }
 
 module.exports = Route
