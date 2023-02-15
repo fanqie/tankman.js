@@ -108,6 +108,16 @@ class Application {
     }
 
     /**
+     * use case
+     * @param fun {Function}
+     * @return {Application}
+     * @constructor
+     */
+    Use(fun){
+        fun.apply(this)
+        return this
+    }
+    /**
      *
      * @return {ServiceProvider[]}
      */

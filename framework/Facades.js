@@ -2,6 +2,7 @@
 /** @typedef {typeof import('./Config/Config')} Config */
 /** @typedef {typeof import('./Config/Env')} Env */
 /** @typedef {typeof import('./Log/Log')} Log */
+/** @typedef {typeof import('./Route/Route')} Route */
 module.exports = {
     /**
      * @type Config
@@ -11,6 +12,9 @@ module.exports = {
      * @type Env
      */
     Env: null,
+    /**
+     * @type Route
+     */
     Route: null,
     Cache: null,
     /**

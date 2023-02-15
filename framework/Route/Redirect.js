@@ -1,21 +1,22 @@
-const pathToRegexp = require("path-to-regexp")
 const Router = require("./Router");
-class Redirect extends Router{
+const {REQUEST_METHOD} = require("./Enums")
+
+class Redirect extends Router {
     /**
      *
-     * @param methods [{string}]
-     * @param path
      * @param options {{middlewares: *[], prefix: string}}
+     * @param path {string}
      * @param action
      */
-    constructor(options = {}, methods, vPath, action) {
+    constructor(options = {}, vPath, redirectUrl) {
         super();
-        super.methods = methods
+        super.methods = ["get"]
         super.vPath = vPath
+        super.redirectUrl = redirectUrl
         super.path = super.MakePath()
-        super.action = action
         super.match = super.MakeMath()
     }
+
     /**
      * get url values
      * @param path
@@ -24,8 +25,8 @@ class Redirect extends Router{
     is(path, method) {
         path = path.toLowerCase()
         method = method.toLowerCase()
-        if (this.methods.includes(method)) {
-            return super.parse(path)
+        if (method === REQUEST_METHOD.GET) {
+            return super.Parse(path)
         }
     }
 

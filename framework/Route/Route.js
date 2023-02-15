@@ -1,6 +1,7 @@
 const RouterHandle = require("./RouterHandle")
 const {REQUEST_METHOD} = require("./Enums")
 const Group = require("./Group")
+const Redirect = require("./Redirect");
 
 /**
  *
@@ -110,7 +111,6 @@ class Route {
      * @return {Router}
      */
     Get(path, action) {
-        console.log(">>>>",path)
         return this._CreateRouterHandle(REQUEST_METHOD.GET, path, action)
     }
 
@@ -179,8 +179,13 @@ class Route {
      * @param redirectUrl
      * @param status
      */
-    redirect(path, redirectUrl, status) {
-
+    Redirect(path, redirectUrl) {
+        const handle = new Redirect({
+            prefix: this._prefix,
+            middlewares: [...this._group_middlewares]
+        }, path, redirectUrl)
+        this._routers.push(handle)
+        return handle
     }
 
     /**
@@ -193,7 +198,10 @@ class Route {
     LoadSet() {
         this._routesMap.clear()
         this._routers.forEach(route => {
-            this._routesMap.set(route.name, route)
+            if (route.name) {
+                console.log(route.name)
+                this._routesMap.set(route.name, route)
+            }
         })
     }
 
@@ -211,7 +219,7 @@ class Route {
      * Get route by route pathname
      * @param pathname {string}
      * @param method {string} post|put|get|delete|put
-     * @return {Router|RouterHandle|boolean}
+     * @return {Router|RouterHandle|Redirect|boolean}
      * @constructor
      */
     GetByPathname(pathname, method) {

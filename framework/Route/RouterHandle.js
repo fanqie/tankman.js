@@ -1,6 +1,7 @@
 const path = require("path")
 const pathToRegexp = require("path-to-regexp")
 const Router = require("./Router")
+const {FC} = require("../Index");
 
 class RouterHandle extends Router {
     /**
@@ -17,6 +18,7 @@ class RouterHandle extends Router {
         super.path = super.MakePath()
         super.action = action
         super.match = super.MakeMath()
+
     }
 
     /**

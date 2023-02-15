@@ -1,5 +1,6 @@
 const path = require("path")
 const pathToRegexp = require("path-to-regexp")
+const {FC} = require("../Index");
 
 class Router {
     /**
@@ -22,15 +23,21 @@ class Router {
      */
     vPath = ""
     /**
+     * input redirect next page url value
+     * @type {string}
+     */
+    redirectUrl = ""
+    /**
      * _MakePath
      * @type {string}
      */
     path = ""
     /**
      *
-     * @type {null}
+     * @type {Function}
      */
-    action = null
+    action = (ctx) => {
+    }
     /**
      * RegExp
      * @type {MatchFunction<object>|Function}
@@ -56,6 +63,7 @@ class Router {
     MakePath() {
         return path.join(this.options.prefix, this.vPath).replace(/\\/g, "/")
     }
+
     /**
      *
      * @return {MatchFunction<object>|Function}
@@ -104,13 +112,14 @@ class Router {
     /**
      * setName
      * @param name {string}
-     * @return string|undefined
+     * @return Router|undefined
      * @constructor
      */
     Name(name) {
         if (name) {
             this.name = name
         }
+        FC.Route.LoadSet()
         return this
 
     }

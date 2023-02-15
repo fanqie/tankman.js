@@ -112,6 +112,62 @@ class Log {
     Fatal(message, category) {
         this.GetLogger(category || "").fatal(message || "");
     }
+
+    /**
+     *
+     * @param message {any}
+     * @constructor
+     */
+    TraceHttp(message) {
+        this.GetLogger("http" ).trace(message || "");
+    }
+
+    /**
+     *
+     * @param message {any}
+     * @param category {category?:string}
+     * @constructor
+     */
+    DebugHttp(message) {
+        this.GetLogger("http").debug(message || "");
+    }
+
+    /**
+     *
+     * @param message {any}
+     * @param category {category?:string}
+     * @constructor
+     */
+    InfoHttp(message, category) {
+        this.GetLogger("http").info(message || "");
+    }
+
+    /**
+     *
+     * @param message {any}
+     * @constructor
+     */
+    WarnHttp(message) {
+        this.GetLogger( "http" ).warn(message || "");
+    }
+
+    /**
+     *
+     * @param message {any}
+     * @constructor
+     */
+    ErrorHttp(message) {
+        this.GetLogger( "http").error(message || "");
+    }
+
+    /**
+     *
+     * @param message {any}
+     * @constructor
+     */
+    FatalHttp(message) {
+        this.GetLogger( "http").fatal(message || "");
+    }
 }
 
 module.exports = Log
