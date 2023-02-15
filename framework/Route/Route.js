@@ -63,6 +63,7 @@ class Route {
     Group(prefix, func, groupMiddlewares) {
         this._prefix = prefix
         this._group_middlewares = groupMiddlewares || []
+        func.apply(this)
         return this
     }
 
@@ -202,7 +203,7 @@ class Route {
      * @return {Router | RouterHandle}
      * @constructor
      */
-    Get(name) {
+    GetRoute(name) {
         return this._routesMap.get(name)
     }
 

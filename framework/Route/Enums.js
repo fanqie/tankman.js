@@ -5,6 +5,5 @@ module.exports={
         PATCH:"patch",
         PUT:"put",
         DELETE:"delete",
-        ANY:"any",
     }
 }

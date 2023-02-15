@@ -56,7 +56,6 @@ class Router {
     MakePath() {
         return path.join(this.options.prefix, this.vPath).replace(/\\/g, "/")
     }
-
     /**
      *
      * @return {MatchFunction<object>|Function}
@@ -98,6 +97,7 @@ class Router {
         if (this.methods.includes(method)) {
             return this.Parse(path)
         }
+
     }
 
 
@@ -111,6 +111,7 @@ class Router {
         if (name) {
             this.name = name
         }
+        return this
 
     }
 
