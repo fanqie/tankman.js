@@ -3,6 +3,7 @@
 /** @typedef {typeof import('./Config/Env')} Env */
 /** @typedef {typeof import('./Log/Log')} Log */
 /** @typedef {typeof import('./Route/Route')} Route */
+/** @typedef {typeof import('./Utils/ProcessInfo')} ProcessInfo */
 module.exports = {
     /**
      * @type Config
@@ -30,6 +31,9 @@ module.exports = {
     Grpc: null,
     Queue: null,
     Schedule: null,
+    /**
+     * @type ProcessInfo
+     */
     ProcessInfo: null,
     Engine: null,
     UpLo: null,

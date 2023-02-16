@@ -105,7 +105,6 @@ class Router {
         if (this.methods.includes(method)) {
             return this.Parse(path)
         }
-
     }
 
 

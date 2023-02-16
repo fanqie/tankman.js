@@ -41,7 +41,7 @@ class Config {
      * @constructor
      */
     Load() {
-        const Config = LoadConfiguration.Load(Facades.ProcessInfo.Flags.get("--ConfigDir"))
+        const Config = LoadConfiguration.Load(Facades.Config.Get("APP_CONFIG_PATH","Config"))
         this._Config = {...this._Config, ...Config}
     }
 

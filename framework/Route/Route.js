@@ -199,7 +199,6 @@ class Route {
         this._routesMap.clear()
         this._routers.forEach(route => {
             if (route.name) {
-                console.log(route.name)
                 this._routesMap.set(route.name, route)
             }
         })
