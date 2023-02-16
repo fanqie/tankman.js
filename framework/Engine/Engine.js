@@ -1,22 +1,20 @@
 const Web = require("./Web")
+const AccessPipeline = require("./AccessPipeline")
 const FC = require("../Facades")
 const createError = require("http-errors")
 const microtime = require('microtime')
-const cluster = require('cluster');
-const os = require('os');
 
-
-const http = require('http');
 module.exports = class Engine {
 
     HttpServer = null;
     app = null
     port = 8002
-
+    accessPipeline
 
     constructor(app) {
         this.app = app
         this.port = FC.Env.Get("APP_PORT") || 8002
+        this.accessPipeline=new AccessPipeline()
     }
 
     Run() {
@@ -47,7 +45,8 @@ module.exports = class Engine {
             } else {
                 try {
                     const start = microtime.now();
-                    await route.action(ctx)
+                    // await route.action(ctx)
+                    this.accessPipeline.HandleNext(ctx,route)
                     const ms = microtime.now() - start;
                     ctx.set('X-Response-Time', `${ms}ms`);
                     FC.Log.InfoHttp(`【PID:${process.pid}】${ctx.request.method} ${ctx.request.url} time:${ms}ns`)

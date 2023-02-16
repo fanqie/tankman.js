@@ -108,23 +108,17 @@ class Route {
     /**
      * @param path
      * @param action
-     * @return {Router}
+     * @return {Router|RouterHandle}
      */
     Get(path, action) {
         return this._CreateRouterHandle(REQUEST_METHOD.GET, path, action)
     }
 
-    /**
-     * @private
-     */
-    _setRouterHandle() {
-
-    }
 
     /**
      * @param path
      * @param action
-     * @return {Router}
+     * @return {Router|RouterHandle}
      */
     Patch(path, action) {
         return this._CreateRouterHandle(REQUEST_METHOD.PATCH, path, action)
@@ -133,7 +127,7 @@ class Route {
     /**
      * @param path
      * @param action
-     * @return {Router}
+     * @return {Router|RouterHandle}
      */
     Put(path, action) {
         return this._CreateRouterHandle(REQUEST_METHOD.PUT, path, action)
@@ -142,7 +136,7 @@ class Route {
     /**
      * @param path
      * @param action
-     * @return {Router}
+     * @return {Router|RouterHandle}
      */
     Any(path, action) {
         return this._CreateRouterHandle(Object.values(REQUEST_METHOD), path, action)
@@ -151,7 +145,7 @@ class Route {
     /**
      * @param path
      * @param action
-     * @return {Router}
+     * @return {Router|RouterHandle}
      */
     Delete(path, action) {
         return this._CreateRouterHandle(REQUEST_METHOD.DELETE, path, action)
@@ -178,6 +172,7 @@ class Route {
      * @param path
      * @param redirectUrl
      * @param status
+     * @return {Router|RouterHandle}
      */
     Redirect(path, redirectUrl) {
         const handle = new Redirect({
