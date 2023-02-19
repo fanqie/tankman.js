@@ -1,5 +1,5 @@
 const describe =require ('mocha').describe;
-const Db = require("../framework/Orm/Db")
+const Db = require("../framework/orm/Db")
 const {FC} = require("../framework");
 describe('test_db', () => {
     it("test_Connection", () => {

@@ -27,7 +27,6 @@ module.exports = class Engine {
         });
     }
 
-
     /**
      *
      * @param ctx
@@ -46,10 +45,12 @@ module.exports = class Engine {
                 try {
                     const start = microtime.now();
                     // await route.action(ctx)
-                    this.accessPipeline.HandleNext(ctx,route)
+                  await this.accessPipeline.HandleNext(ctx,route)
+
                     const ms = microtime.now() - start;
                     ctx.set('X-Response-Time', `${ms}ms`);
                     FC.Log.InfoHttp(`【PID:${process.pid}】${ctx.request.method} ${ctx.request.url} time:${ms}ns`)
+
                 } catch (err) {
                     FC.Log.ErrorHttp(err.message)
                     console.error(err)

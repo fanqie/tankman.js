@@ -34,10 +34,19 @@ class Router {
     path = ""
     /**
      *
+     * @type {Class}
+     */
+    controllerClass = null;
+    /**
+     *
      * @type {Function}
      */
-    action = (ctx) => {
-    }
+    actionFunc = null;
+    /**
+     *
+     * @type {string}
+     */
+    action = "Index";
     /**
      * RegExp
      * @type {MatchFunction<object>|Function}
@@ -118,7 +127,6 @@ class Router {
         if (name) {
             this.name = name
         }
-        FC.Route.LoadSet()
         return this
 
     }

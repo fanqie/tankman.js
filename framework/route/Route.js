@@ -1,6 +1,5 @@
-const RouterHandle = require("./RouterHandle")
-const {REQUEST_METHOD} = require("./Enums")
-const Group = require("./Group")
+const RouterHandle = require("./RouterHandle");
+const {REQUEST_METHOD} = require("./Enums");
 const Redirect = require("./Redirect");
 
 /**
@@ -11,8 +10,8 @@ class Route {
      * @type  string
      * @private
      */
-    _prefix = ""
-    _group_middlewares = []
+    _prefix = "";
+    _group_middlewares = [];
     /**
      *
      * @type {{prefix: string, middleware: [string]}}
@@ -20,7 +19,7 @@ class Route {
     options = {
         prefix: "",
         middleware: []
-    }
+    };
 
     /**
      *
@@ -35,23 +34,11 @@ class Route {
      * @type {[Router]}
      * @private
      */
-    _routers = []
+    _routers = [];
 
     All() {
         return this._routers
     }
-
-    /**
-     *
-     * @param prefix
-     * @return {Route}
-     * @constructor
-     */
-    Prefix(prefix) {
-        this._prefix = prefix
-        return this
-    }
-
 
     /**
      *
@@ -62,10 +49,10 @@ class Route {
      * @constructor
      */
     Group(prefix, func, groupMiddlewares) {
-        this._prefix = prefix
-        this._group_middlewares = groupMiddlewares || []
-        func.apply(this)
-        return this
+        this._prefix = prefix;
+        this._group_middlewares = groupMiddlewares || [];
+        func.apply(this);
+        return this;
     }
 
     /**
@@ -79,91 +66,99 @@ class Route {
 
 
     /**
-     * @param method
-     * @param path
-     * @param action
+     * @param method {string[]|string}
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
      * @return {Router}
      * @private
      */
-    _CreateRouterHandle(method, path, action) {
+    _CreateRouterHandle(method, path,controllerClassOrActionFunc, action) {
         const handle = new RouterHandle({
             prefix: this._prefix,
             middlewares: [...this._group_middlewares]
-        }, method, path, action)
+        }, method, path,controllerClassOrActionFunc, action);
 
-        this._routers.push(handle)
+        this._routers.push(handle);
         return handle;
     }
 
     /**
-     * @param path
-     * @param action
-     * @return {Router}
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
+     * @return {Router|RouterHandle}
      */
-    Post(path, action) {
+    Post(path, controllerClassOrActionFunc, action) {
 
-        return this._CreateRouterHandle(REQUEST_METHOD.POST, path, action)
+        return this._CreateRouterHandle(REQUEST_METHOD.POST, path,controllerClassOrActionFunc, action)
     }
 
     /**
-     * @param path
-     * @param action
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
      * @return {Router|RouterHandle}
      */
-    Get(path, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.GET, path, action)
+    Get(path, controllerClassOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.GET, path,controllerClassOrActionFunc, action)
     }
 
 
     /**
-     * @param path
-     * @param action
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
      * @return {Router|RouterHandle}
      */
-    Patch(path, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.PATCH, path, action)
+    Patch(path, controllerClassOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.PATCH, path,controllerClassOrActionFunc, action)
     }
 
     /**
-     * @param path
-     * @param action
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
      * @return {Router|RouterHandle}
      */
-    Put(path, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.PUT, path, action)
+    Put(path, controllerClassOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.PUT, path,controllerClassOrActionFunc, action)
     }
 
     /**
-     * @param path
-     * @param action
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
      * @return {Router|RouterHandle}
      */
-    Any(path, action) {
-        return this._CreateRouterHandle(Object.values(REQUEST_METHOD), path, action)
+    Any(path, controllerClassOrActionFunc, action) {
+        return this._CreateRouterHandle(Object.values(REQUEST_METHOD), path,controllerClassOrActionFunc, action)
     }
 
     /**
-     * @param path
-     * @param action
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
      * @return {Router|RouterHandle}
      */
-    Delete(path, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.DELETE, path, action)
+    Delete(path, controllerClassOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.DELETE, path,controllerClassOrActionFunc, action)
     }
 
     /**
-     * @param methodsArray {[string]}
-     * @param path
-     * @param action
+     * @param methodsArray {string[]}
+     * @param path {string}
+     * @param controllerClassOrActionFunc {Class|Function}
+     * @param action {string}
      * @return {Router|RouterHandle}
      */
-    Match(methodsArray, path, action) {
+    Match(methodsArray, path, controllerClassOrActionFunc, action) {
         if (!Array.isArray(methodsArray)) {
             throw new Error("methodsArray must array")
         }
         const methods = methodsArray.filter(method => Object.values(REQUEST_METHOD).includes(method))
         if (methods.length > 0) {
-            return this._CreateRouterHandle(methods, path, action)
+            return this._CreateRouterHandle(methods, path,controllerClassOrActionFunc, action)
         }
         throw new Error("methodsArray must values [post|put|get|delete|put]")
     }
@@ -171,14 +166,13 @@ class Route {
     /**
      * @param path
      * @param redirectUrl
-     * @param status
      * @return {Router|RouterHandle}
      */
     Redirect(path, redirectUrl) {
         const handle = new Redirect({
             prefix: this._prefix,
             middlewares: [...this._group_middlewares]
-        }, path, redirectUrl)
+        }, path, redirectUrl);
         this._routers.push(handle)
         return handle
     }
@@ -188,10 +182,10 @@ class Route {
      * @type {Map<string,Router|RouterHandle>}
      * @private
      */
-    _routesMap = new Map()
+    _routesMap = new Map();
 
     LoadSet() {
-        this._routesMap.clear()
+        this._routesMap.clear();
         this._routers.forEach(route => {
             if (route.name) {
                 this._routesMap.set(route.name, route)
@@ -217,13 +211,13 @@ class Route {
      * @constructor
      */
     GetByPathname(pathname, method) {
-        method = method = method.toLowerCase()
+        method = method = method.toLowerCase();
         const route = this._routers.find(route => {
             return route.Is(pathname, method)
-        })
+        });
         //todo:cache
         return route;
     }
 }
 
-module.exports = Route
+module.exports = Route;

@@ -1,5 +1,6 @@
 const ServiceProvider = require("./ServiceProvider")
-const Route = require("../Route/Route")
+const Route = require("../route/Route")
+const LoadRouters = require("../route/LoadRouters")
 const {FC} = require("../Index");
 
 class RouteProvider extends ServiceProvider {
@@ -18,6 +19,7 @@ class RouteProvider extends ServiceProvider {
      *
      */
     boot() {
+        LoadRouters.Load(FC.Config.Get("APP_ROUTES_DIR","routes"))
         FC.Route.LoadSet()
     }
 }

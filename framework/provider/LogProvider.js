@@ -1,6 +1,6 @@
 const Facades = require("../Facades")
 const ServiceProvider = require("./ServiceProvider");
-const Log = require("../Log/Log");
+const Log = require("../log/Log");
 const {FC} = require("../Index");
 
 class LogProvider extends ServiceProvider {

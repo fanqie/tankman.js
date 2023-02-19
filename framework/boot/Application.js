@@ -1,6 +1,6 @@
-const ProcessInfoProvider = require("../Provider/ProcessInfoProvider");
-const ConfigProvider = require("../Provider/ConfigProvider");
-const EnvProvider = require("../Provider/EnvProvider");
+const ProcessInfoProvider = require("../provider/ProcessInfoProvider");
+const ConfigProvider = require("../provider/ConfigProvider");
+const EnvProvider = require("../provider/EnvProvider");
 const {FC} = require("../Index");
 
 
@@ -21,14 +21,12 @@ class Application {
     /**
      *
      */
-    boot() {
+    bootTank() {
 
-        this.registerConfiguredServiceProviders()
-        this.bootConfiguredServiceProviders()
+        this.registerConfiguredServiceProviders();
+        this.bootConfiguredServiceProviders();
 
-
-        this.bootTank()
-        this.setRootPath()
+        this.setRootPath();
     }
 
     /**
@@ -98,14 +96,6 @@ class Application {
     setRootPath() {
         //:todo
     }
-
-    /**
-     *
-     */
-    bootTank() {
-
-    }
-
     /**
      * use case
      * @param fun {Function}

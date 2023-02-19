@@ -74,7 +74,7 @@ class Log {
 
     /**
      *
-     * @param message {any}
+     * @param message {string}
      * @param category {category?:string}
      * @constructor
      */

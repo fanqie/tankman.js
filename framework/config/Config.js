@@ -2,7 +2,7 @@ const Facades = require("../Facades");
 const LoadConfiguration = require("./LoadConfigration");
 
 /**
- * Config class
+ * config class
  * @type {Config}
  */
 class Config {
@@ -41,7 +41,7 @@ class Config {
      * @constructor
      */
     Load() {
-        const Config = LoadConfiguration.Load(Facades.Config.Get("APP_CONFIG_PATH","Config"))
+        const Config = LoadConfiguration.Load(Facades.Config.Get("APP_CONFIG_DIR","config"));
         this._Config = {...this._Config, ...Config}
     }
 

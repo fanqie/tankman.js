@@ -1,6 +1,6 @@
 const Facades = require("../Facades")
 const ServiceProvider = require("./ServiceProvider");
-const Config = require("../Config/Config")
+const Config = require("../config/Config")
  class ConfigProvider extends ServiceProvider {
      /**
       *

@@ -11,7 +11,7 @@ class LoadConfiguration {
     static Load(filePath) {
         const Configs = {}
         if (!path.isAbsolute(filePath || "")) {
-            filePath = filePath || "Config"
+            filePath = filePath || "config"
         }
         const dirPath = path.join(process.cwd(), filePath)
         if (!fs.existsSync(dirPath)) {
@@ -23,9 +23,9 @@ class LoadConfiguration {
             Object.keys(all).forEach((key) => {
                 Configs[key] = all[key]
             })
-        })
+        });
         return Configs;
     }
 }
 
-module.exports = LoadConfiguration
+module.exports = LoadConfiguration;

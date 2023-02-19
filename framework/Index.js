@@ -1,6 +1,18 @@
+/** @typedef {typeof import('./boot/Application')} Application */
+/** @typedef {typeof import('./Facades')} Facades */
+/** @typedef {typeof import('./http/Engine')} Engine */
 module.exports = {
-    Application: require("./Boot/Application"),
+    /**
+     * @type {Application}
+     */
+    Application: require("./boot/Application"),
+    /**
+     * @type {Facades}
+     */
     FC: require("./Facades"),
-    Engine: require("./Engine/Engine")
+    /**
+     * @type {Engine}
+     */
+    Engine: require("./http/Engine")
 }
 

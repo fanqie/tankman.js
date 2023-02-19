@@ -1,14 +1,14 @@
 const describe = require('mocha').describe;
-const RouterHandle = require("../framework/Route/RouterHandle")
-const {FC} = require("../framework");
+const RouterHandle = require("../framework/route/RouterHandle")
+
 const assert = require("assert");
-const {json} = require("mocha/lib/reporters");
-const Route = require("../framework/Route/Route");
+
+const Route = require("../framework/route/Route");
 describe('route', () => {
 
     it("routeParse", () => {
         const routerHandle = new RouterHandle({prefix: "test", middlewares: []}, ["post"], "/foo/:id?", () => {
-        })
+        },"")
         const res1 = routerHandle.Parse("/foo/55")
         const res2 = routerHandle.Parse("test/foo/55")
         const res3 = routerHandle.Parse("x/test/foo/55")

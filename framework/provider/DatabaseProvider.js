@@ -1,5 +1,5 @@
 const ServiceProvider = require("./ServiceProvider");
-const DB = require("../Orm/Db.js");
+const DB = require("../orm/Db.js");
 const {FC} = require("../Index");
 
 class DatabaseProvider extends ServiceProvider {

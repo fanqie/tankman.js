@@ -1,6 +1,6 @@
 const ServiceProvider = require("./ServiceProvider");
 const Facades = require("../Facades");
-const ProcessInfo = require("../Utils/ProcessInfo")
+const ProcessInfo = require("../utils/ProcessInfo")
 
 /**
  *

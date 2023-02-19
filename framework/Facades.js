@@ -1,9 +1,9 @@
-/** @typedef {typeof import('./Orm/Db')} DB */
-/** @typedef {typeof import('./Config/Config')} Config */
-/** @typedef {typeof import('./Config/Env')} Env */
-/** @typedef {typeof import('./Log/Log')} Log */
-/** @typedef {typeof import('./Route/Route')} Route */
-/** @typedef {typeof import('./Utils/ProcessInfo')} ProcessInfo */
+/** @typedef {typeof import('./orm/Db')} DB */
+/** @typedef {typeof import('./config/config')} Config */
+/** @typedef {typeof import('./config/Env')} Env */
+/** @typedef {typeof import('./log/log')} Log */
+/** @typedef {typeof import('./route/route')} Route */
+/** @typedef {typeof import('./utils/ProcessInfo')} ProcessInfo */
 module.exports = {
     /**
      * @type Config

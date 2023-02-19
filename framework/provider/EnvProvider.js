@@ -1,6 +1,6 @@
 const Facades = require("../Facades")
 const ServiceProvider = require("./ServiceProvider");
-const Env = require("../Config/Env")
+const Env = require("../config/Env")
 class EnvProvider extends ServiceProvider {
     register() {
         /**
