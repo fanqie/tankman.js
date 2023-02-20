@@ -1,5 +1,5 @@
 const Web = require("./Web")
-const AccessPipeline = require("./AccessPipeline")
+const AccessPipeline = require("./pipeline/AccessPipeline")
 const FC = require("../Facades")
 const createError = require("http-errors")
 const microtime = require('microtime')
