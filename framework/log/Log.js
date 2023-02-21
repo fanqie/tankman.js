@@ -18,7 +18,7 @@ class Log {
     /**
      *
      * @param options {Object}
-     * @constructor
+     * @public
      */
     SetConfig(options) {
          this.log4js.configure({...FC.Config.Get("log"), ...options});
@@ -28,7 +28,7 @@ class Log {
      *
      * @param category {category?: string}
      * @return {Logger}
-     * @constructor
+     * @public
      */
     GetLogger(category) {
         return this.log4js.getLogger(category||"default")
@@ -37,7 +37,7 @@ class Log {
     /**
      *
      * @param callback {cb?: (error?: Error) => void}
-     * @constructor
+     * @public
      */
     Shudown(callback) {
         return this.log4js.shutdown(callback)
@@ -56,7 +56,7 @@ class Log {
      *
      * @param message {any}
      * @param category {string}
-     * @constructor
+     * @public
      */
     Trace(message, category) {
         this.GetLogger(category ).trace(message || "");
@@ -66,7 +66,7 @@ class Log {
      *
      * @param message {any}
      * @param category {category?:string}
-     * @constructor
+     * @public
      */
     Debug(message, category) {
         this.GetLogger(category).debug(message || "");
@@ -76,7 +76,7 @@ class Log {
      *
      * @param message {string}
      * @param category {category?:string}
-     * @constructor
+     * @public
      */
     Info(message, category) {
         this.GetLogger(category).info(message || "");
@@ -86,7 +86,7 @@ class Log {
      *
      * @param message {any}
      * @param category {category?:string}
-     * @constructor
+     * @public
      */
     Warn(message, category) {
         this.GetLogger(category ).warn(message || "");
@@ -96,7 +96,7 @@ class Log {
      *
      * @param message {any}
      * @param category {category?:string}
-     * @constructor
+     * @public
      */
     Error(message, category) {
         console.log(":::",message)
@@ -107,7 +107,7 @@ class Log {
      *
      * @param message {any}
      * @param category {category?:string}
-     * @constructor
+     * @public
      */
     Fatal(message, category) {
         this.GetLogger(category || "").fatal(message || "");
@@ -116,7 +116,7 @@ class Log {
     /**
      *
      * @param message {any}
-     * @constructor
+     * @public
      */
     TraceHttp(message) {
         this.GetLogger("http" ).trace(message || "");
@@ -126,7 +126,7 @@ class Log {
      *
      * @param message {any}
      * @param category {category?:string}
-     * @constructor
+     * @public
      */
     DebugHttp(message) {
         this.GetLogger("http").debug(message || "");
@@ -136,7 +136,7 @@ class Log {
      *
      * @param message {any}
      * @param category {category?:string}
-     * @constructor
+     * @public
      */
     InfoHttp(message, category) {
         this.GetLogger("http").info(message || "");
@@ -145,7 +145,7 @@ class Log {
     /**
      *
      * @param message {any}
-     * @constructor
+     * @public
      */
     WarnHttp(message) {
         this.GetLogger( "http" ).warn(message || "");
@@ -154,7 +154,7 @@ class Log {
     /**
      *
      * @param message {any}
-     * @constructor
+     * @public
      */
     ErrorHttp(message) {
         this.GetLogger( "http").error(message || "");
@@ -163,7 +163,7 @@ class Log {
     /**
      *
      * @param message {any}
-     * @constructor
+     * @public
      */
     FatalHttp(message) {
         this.GetLogger( "http").fatal(message || "");

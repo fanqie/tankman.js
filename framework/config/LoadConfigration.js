@@ -6,7 +6,7 @@ class LoadConfiguration {
      *
      * @param filePath
      * @return {{}}
-     * @constructor
+     * @public
      */
     static Load(filePath) {
         const Configs = {}

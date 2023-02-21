@@ -8,7 +8,7 @@ class DB {
     /**
      *
      * @return {Knex<TRecord, TResult>}
-     * @constructor
+     * @public
      */
     static ConnectionDefaultDb() {
         const configs = FC.Config.Get("database", null)
@@ -55,7 +55,7 @@ class DB {
      *
      * @param client
      * @return {Knex<TRecord, TResult>}
-     * @constructor
+     * @public
      */
     static ConnectTo(client) {
 

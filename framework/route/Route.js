@@ -46,7 +46,7 @@ class Route {
      * @param func {Function}
      * @param groupMiddlewares {[string]}
      * @return {Route}
-     * @constructor
+     * @public
      */
     Group(prefix, func, groupMiddlewares) {
         this._prefix = prefix;
@@ -58,7 +58,7 @@ class Route {
     /**
      * @param path
      * @return {string}
-     * @constructor
+     * @public
      */
     GetPath(path) {
         return this.options.prefix ? this.options.prefix + "/" : "" + path
@@ -197,7 +197,7 @@ class Route {
      * Get route by route name
      * @param name {string}
      * @return {Router | RouterHandle}
-     * @constructor
+     * @public
      */
     GetRoute(name) {
         return this._routesMap.get(name)
@@ -208,7 +208,7 @@ class Route {
      * @param pathname {string}
      * @param method {string} post|put|get|delete|put
      * @return {Router|RouterHandle|Redirect|boolean}
-     * @constructor
+     * @public
      */
     GetByPathname(pathname, method) {
         method = method = method.toLowerCase();

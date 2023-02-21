@@ -16,7 +16,7 @@ module.exports = class AccessPipeline {
      * Handle Next
      * @param ctx
      * @param route
-     * @constructor
+     * @public
      */
    async HandleNext(ctx, route) {
         const ctxPipeline= new CtxPipeline(ctx);

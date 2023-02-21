@@ -121,7 +121,7 @@ class Router {
      * setName
      * @param name {string}
      * @return Router|undefined
-     * @constructor
+     * @public
      */
     Name(name) {
         if (name) {

@@ -22,7 +22,7 @@ class Env {
     /**
      *
      * @return {{}}
-     * @constructor
+     * @public
      */
     All() {
         return this._Envs
@@ -34,7 +34,7 @@ class Env {
      * @param name
      * @param defaultVal
      * @return {*|null}
-     * @constructor
+     * @public
      */
     Get(name,defaultVal=null) {
         return this._Envs[name] ||defaultVal
@@ -52,7 +52,7 @@ class Env {
 
     /**
      *
-     * @constructor
+     * @public
      */
     Load() {
         //Load Environment Variables

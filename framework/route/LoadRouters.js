@@ -6,7 +6,7 @@ class LoadRouters {
      *
      * @param filePath
      * @return {{}}
-     * @constructor
+     * @public
      */
     static Load(filePath) {
         if (!path.isAbsolute(filePath || "")) {

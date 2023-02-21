@@ -49,7 +49,7 @@ class RouterHandle extends Router {
     /**
      * middleware
      * @param middlewares {[string]|string}
-     * @constructor
+     * @public
      */
     Middleware(middlewares) {
         if (typeof middlewares == "string") {
@@ -62,7 +62,7 @@ class RouterHandle extends Router {
     /**
      * Get Any route action
      * @returns {Function}
-     * @constructor
+     * @public
      */
     GetInstanceAction() {
         return this.controllerClass ? new this.controllerClass().__proto__[this.action] : this.actionFunc

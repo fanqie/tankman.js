@@ -3,7 +3,7 @@ module.exports=class Middleware{
      *  auto handle
      * @param ctx
      * @param next
-     * @constructor
+     * @public
      */
    static Handle(ctx,itNext){
         // before handle

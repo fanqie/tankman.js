@@ -100,7 +100,7 @@ class Application {
      * use case
      * @param fun {Function}
      * @return {Application}
-     * @constructor
+     * @public
      */
     Use(fun){
         fun.apply(this)
