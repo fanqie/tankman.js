@@ -5,26 +5,27 @@ class Redirect extends Router {
     /**
      *
      * @param options {{middlewares: *[], prefix: string}}
-     * @param path {string}
-     * @param action
+     * @param vPath
+     * @param redirectUrl
      */
     constructor(options = {}, vPath, redirectUrl) {
-        super();
+        super(options,vPath,redirectUrl);
         super.methods = ["get"]
         super.vPath = vPath
-        super.redirectUrl = redirectUrl
-        super.path = super.MakePath()
+        super.redirectUrl = redirectUrl;
+        super.path = super.MakePath();
         super.match = super.MakeMath()
     }
 
     /**
      * get url values
      * @param path
+     * @param method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     is(path, method) {
-        path = path.toLowerCase()
-        method = method.toLowerCase()
+        path = path.toLowerCase();
+        method = method.toLowerCase();
         if (method === REQUEST_METHOD.GET) {
             return super.Parse(path)
         }
@@ -32,4 +33,4 @@ class Redirect extends Router {
 
 }
 
-module.exports = Redirect
+module.exports = Redirect;

@@ -1,8 +1,12 @@
 module.exports=class CtxPipeline {
     handles=[];
-    ctx=null
-    constructor(ctx){
-        this.ctx=ctx
+    _httpCtx=null;
+
+    /**
+     * @param httpCtx {HttpContext}
+     */
+    constructor(httpCtx){
+        this._httpCtx=httpCtx
     }
     Pip(Func) {
         this.handles.push(Func);
@@ -11,7 +15,7 @@ module.exports=class CtxPipeline {
     async Next() {
         const next=this.handles.shift();
         if(next){
-          await  next(this.ctx,()=>{this.Next.apply(this)});
+          await  next(this._httpCtx,()=>{this.Next.apply(this)});
             return false
         }
         return this

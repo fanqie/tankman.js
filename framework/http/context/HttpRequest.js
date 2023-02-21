@@ -18,13 +18,13 @@ module.exports = class HttpRequest {
     _originalUrl
 
     /**
-     *
-     * @param args {name?:string}
-     * @return {value:any}
+     * @param name? {string}
+     * @param name
+     * @returns {*}
      * @constructor
      */
     GetHeader(name) {
-        return name ? this._request.headers[name] : null
+        return name ? this._request.get(name) : null
     }
 
     /**
@@ -36,8 +36,8 @@ module.exports = class HttpRequest {
     }
 
     /**
-     * @param name  {name:string}
-     * @param value  {value:any}
+     * @param name  {string}
+     * @param value  {*}
      * @constructor
      */
     SetHeader(name, value) {

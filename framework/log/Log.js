@@ -8,10 +8,10 @@ class Log {
      *
      * @type {Log4jS}
      */
-    log4js = null
+    log4js = null;
 
-    constructor(config) {
-        this.log4js = log4js
+    constructor() {
+        this.log4js = log4js;
         this.log4js.level = "debug";
     }
 
@@ -31,7 +31,13 @@ class Log {
      * @constructor
      */
     GetLogger(category) {
-        return this.log4js.getLogger(category||"default")
+        try {
+            return this.log4js.getLogger(category||"default")
+        }catch (e) {
+            console.log(e);
+            return this.log4js.getLogger("default")
+        }
+
     }
 
     /**
@@ -45,8 +51,10 @@ class Log {
 
     /**
      *
-     * @param type {string}
-     * @param fn {(a: any) => (logEvent: LoggingEvent) => any): void;}
+     * @param type
+     * @param fn (a: any) => (logEvent: LoggingEvent) => any): void;
+     * @returns {*}
+     * @constructor
      */
     AddLayout(type, fn) {
         return this.log4js.addLayout(type, fn)
@@ -64,8 +72,8 @@ class Log {
 
     /**
      *
-     * @param message {any}
-     * @param category {category?:string}
+     * @param message {string}
+     * @param category? {string}
      * @constructor
      */
     Debug(message, category) {
@@ -75,7 +83,7 @@ class Log {
     /**
      *
      * @param message {string}
-     * @param category {category?:string}
+     * @param category? {string}
      * @constructor
      */
     Info(message, category) {
@@ -84,8 +92,8 @@ class Log {
 
     /**
      *
-     * @param message {any}
-     * @param category {category?:string}
+     * @param message {string}
+     * @param category? {string}
      * @constructor
      */
     Warn(message, category) {
@@ -94,8 +102,8 @@ class Log {
 
     /**
      *
-     * @param message {any}
-     * @param category {category?:string}
+     * @param message {string}
+     * @param category? {string}
      * @constructor
      */
     Error(message, category) {
@@ -105,8 +113,8 @@ class Log {
 
     /**
      *
-     * @param message {any}
-     * @param category {category?:string}
+     * @param message {string}
+     * @param category? {string}
      * @constructor
      */
     Fatal(message, category) {
@@ -115,7 +123,7 @@ class Log {
 
     /**
      *
-     * @param message {any}
+     * @param message {string}
      * @constructor
      */
     TraceHttp(message) {
@@ -124,8 +132,7 @@ class Log {
 
     /**
      *
-     * @param message {any}
-     * @param category {category?:string}
+     * @param message {string}
      * @constructor
      */
     DebugHttp(message) {
@@ -134,17 +141,16 @@ class Log {
 
     /**
      *
-     * @param message {any}
-     * @param category {category?:string}
+     * @param message {string}
      * @constructor
      */
-    InfoHttp(message, category) {
+    InfoHttp(message) {
         this.GetLogger("http").info(message || "");
     }
 
     /**
      *
-     * @param message {any}
+     * @param message {string}
      * @constructor
      */
     WarnHttp(message) {
@@ -153,7 +159,7 @@ class Log {
 
     /**
      *
-     * @param message {any}
+     * @param message {string}
      * @constructor
      */
     ErrorHttp(message) {
@@ -162,7 +168,7 @@ class Log {
 
     /**
      *
-     * @param message {any}
+     * @param message {string}
      * @constructor
      */
     FatalHttp(message) {
@@ -170,4 +176,4 @@ class Log {
     }
 }
 
-module.exports = Log
+module.exports = Log;

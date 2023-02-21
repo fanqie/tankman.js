@@ -5,36 +5,36 @@ const {FC} = require("../Index");
 class Router {
     /**
      *
-     * @type {{prefix: string, middlewares: [string]}}
+     * @type {{prefix: string, middleware: [string]}}
      */
     options = {
         prefix: "",
-        middlewares: []
+        middleware: []
     }
 
     /**
      *
      * @type {[string]}
      */
-    methods = []
+    methods = [];
     /**
      * input path value
      * @type {string}
      */
-    vPath = ""
+    vPath = "";
     /**
      * input redirect next page url value
      * @type {string}
      */
-    redirectUrl = ""
+    redirectUrl = "";
     /**
      * _MakePath
      * @type {string}
      */
-    path = ""
+    path = "";
     /**
      *
-     * @type {Class}
+     * @type {Class|Function}
      */
     controllerClass = null;
     /**
@@ -51,9 +51,9 @@ class Router {
      * RegExp
      * @type {MatchFunction<object>|Function}
      */
-    match = null
+    match = null;
 
-    name = ""
+    name = "";
 
     /**
      *
@@ -70,6 +70,7 @@ class Router {
      * @protected
      */
     MakePath() {
+
         return path.join(this.options.prefix, this.vPath).replace(/\\/g, "/")
     }
 
@@ -85,7 +86,7 @@ class Router {
     }
 
     /**
-     * options {{middlewares: *[], prefix: string}}
+     * options {{middleware: *[], prefix: string}}
      * @param options
      * @private
      */
@@ -99,18 +100,18 @@ class Router {
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     Parse(path) {
-        // this.path
         return this.match(path)
     }
 
     /**
      * get url values
      * @param path
+     * @param method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     Is(path, method) {
-        path = path.toLowerCase()
-        method = method.toLowerCase()
+        path = path.toLowerCase();
+        method = method.toLowerCase();
         if (this.methods.includes(method)) {
             return this.Parse(path)
         }
@@ -134,4 +135,4 @@ class Router {
 
 }
 
-module.exports = Router
+module.exports = Router;

@@ -7,14 +7,15 @@ module.exports = class HttpResponse {
      *
      * @type {HttpResponseWrite}
      */
-    output
+    output;
     /**
      * @type KoaResponse
      * @private
      */
-    _response
+    _response;
 
     constructor(ctx) {
+        this._response=ctx.response;
         this.output = new ResponseWrite(ctx)
     }
 

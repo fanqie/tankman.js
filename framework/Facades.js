@@ -37,4 +37,4 @@ module.exports = {
     ProcessInfo: null,
     Engine: null,
     UpLo: null,
-}
+};

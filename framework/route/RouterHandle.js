@@ -1,11 +1,8 @@
-const path = require("path")
-const pathToRegexp = require("path-to-regexp")
 const Router = require("./Router")
-const {FC} = require("../Index");
 
 class RouterHandle extends Router {
     /**
-     * @param options {{middlewares: *[], prefix: string}}
+     * @param options {{middleware: *[], prefix: string}}
      * @param methods {string|[string]}
      * @param vPath {string}
      * @param controllerClassOrActionFunc {Class|Function}
@@ -17,6 +14,7 @@ class RouterHandle extends Router {
         super.methods = Array.isArray(methods) ? methods : [methods];
         super.vPath = vPath;
         super.path = super.MakePath();
+
         if (this._IsClass(controllerClassOrActionFunc)) {
             super.controllerClass = controllerClassOrActionFunc;
             super.action = action;
@@ -36,6 +34,7 @@ class RouterHandle extends Router {
     /**
      * get url values
      * @param path
+     * @param method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     is(path, method) {
@@ -48,14 +47,15 @@ class RouterHandle extends Router {
 
     /**
      * middleware
-     * @param middlewares {[string]|string}
+     * @param middleware
+     * @returns {Router|RouterHandle}
      * @constructor
      */
-    Middleware(middlewares) {
-        if (typeof middlewares == "string") {
-            middlewares = [middlewares]
+    Middleware(middleware) {
+        if (typeof middleware == "string") {
+            middleware = [middleware]
         }
-        this.options.middlewares = [...this.options.middlewares, ...middlewares]
+        this.options.middleware = [...this.options.middleware, ...middleware];
         return this
     }
 
@@ -71,4 +71,4 @@ class RouterHandle extends Router {
 
 }
 
-module.exports = RouterHandle
+module.exports = RouterHandle;

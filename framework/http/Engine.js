@@ -1,8 +1,9 @@
-const Web = require("./Web")
-const AccessPipeline = require("./pipeline/AccessPipeline")
-const FC = require("../Facades")
-const createError = require("http-errors")
-const microtime = require('microtime')
+const Web = require("./Web");
+const AccessPipeline = require("./pipeline/AccessPipeline");
+const FC = require("../Facades");
+const HttpContext = require("../http/context/HttpContext");
+const createError = require("http-errors");
+const microtime = require('microtime');
 
 module.exports = class Engine {
 
@@ -18,41 +19,41 @@ module.exports = class Engine {
     }
 
     Run() {
-        this.HttpServer = new Web()
+        this.HttpServer = new Web();
         this.HttpServer.Run(this.port, (pid) => {
            FC.Log.Info(`run process：${pid}`)
-        })
+        });
         this.HttpServer.use(async (ctx, next) => {
-            await this._RouteHandle(ctx, next)
+            await this._RouteHandle(new HttpContext(this.app,ctx), next)
         });
     }
 
     /**
      *
-     * @param ctx
+     * @param httpCtx {HttpContext}
      * @param next
      * @return {Promise<void>}
      * @private
      */
-    async _RouteHandle(ctx, next) {
-        const route = FC.Route.GetByPathname(ctx.request.path, ctx.request.method)
+    async _RouteHandle(httpCtx, next) {
+        const route = FC.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
         // console.log(route,ctx.request.path,ctx.request.method)
         if (route) {
             if (route.redirectUrl) {
 
-                ctx.redirect(route.redirectUrl)
+                httpCtx.response.Redirect(route.redirectUrl)
             } else {
                 try {
                     const start = microtime.now();
                     // await route.action(ctx)
-                  await this.accessPipeline.HandleNext(ctx,route)
+                  await this.accessPipeline.HandleNext(httpCtx,route);
 
                     const ms = microtime.now() - start;
-                    ctx.set('X-Response-Time', `${ms}ms`);
-                    FC.Log.InfoHttp(`【PID:${process.pid}】${ctx.request.method} ${ctx.request.url} time:${ms}ns`)
+                    httpCtx.request.SetHeader('X-Response-Time', `${ms}ms`);
+                    FC.Log.InfoHttp(`【PID:${process.pid}】${httpCtx.request.GetMethod()} ${httpCtx.request.GetUrl()} time:${ms}ns`)
 
                 } catch (err) {
-                    FC.Log.ErrorHttp(err.message)
+                    FC.Log.ErrorHttp(err.message);
                     console.error(err)
                 }
 
@@ -60,7 +61,7 @@ module.exports = class Engine {
 
         } else {
             const route = FC.Route.GetRoute("404")
-            route ? ctx.redirect(route.path) : next(createError.NotFound());
+            route ? httpCtx.Redirect(route.path) : next(createError.NotFound());
         }
     }
 }

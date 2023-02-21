@@ -61,6 +61,14 @@ class Env {
 
     }
 
+    /**
+     * check app run env is debugger mode
+     * @returns {boolean}
+     * @constructor
+     */
+    IsDebugger(){
+        return this.Get("APP_DEBUG",'true')==='true'
+    }
 }
 
 

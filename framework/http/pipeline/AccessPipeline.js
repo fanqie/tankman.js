@@ -14,19 +14,19 @@ module.exports = class AccessPipeline {
 
     /**
      * Handle Next
-     * @param ctx
+     * @param httpCtx {HttpContext}
      * @param route
      * @constructor
      */
-   async HandleNext(ctx, route) {
-        const ctxPipeline= new CtxPipeline(ctx);
+   async HandleNext(httpCtx, route) {
+        const ctxPipeline= new CtxPipeline(httpCtx);
 
         /**
          *
          * @type {[]../Middleware/Middleware}
          */
-        const middlewareQueue = route.options.middlewares
-        if (route.options.middlewares.length > 0) {
+        const middlewareQueue = route.options.middleware;
+        if (route.options.middleware.length > 0) {
 
             for (let i = 0; i < middlewareQueue.length; i++) {
                 if (this.middlewareMaps.hasOwnProperty(middlewareQueue[i])) {
