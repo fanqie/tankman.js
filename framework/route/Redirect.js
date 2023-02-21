@@ -5,10 +5,13 @@ class Redirect extends Router {
     /**
      *
      * @param options {{middlewares: *[], prefix: string}}
-     * @param path {string}
-     * @param action
+     * @param vPath {string}
+     * @param redirectUrl {string}
      */
-    constructor(options = {}, vPath, redirectUrl) {
+    constructor(options = {
+        middlewares: [],
+        prefix: ""
+    }, vPath, redirectUrl) {
         super();
         super.methods = ["get"]
         super.vPath = vPath

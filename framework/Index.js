@@ -1,18 +1,10 @@
-/** @typedef {typeof import('./boot/Application')} Application */
-/** @typedef {typeof import('./Facades')} Facades */
-/** @typedef {typeof import('./http/Engine')} Engine */
+const Facades = require('./Facades');
+const Application = require('./boot/Application');
+const Engine = require('./http/Engine');
+
 module.exports = {
-    /**
-     * @type {Application}
-     */
-    Application: require("./boot/Application"),
-    /**
-     * @type {Facades}
-     */
-    FC: require("./Facades"),
-    /**
-     * @type {Engine}
-     */
-    Engine: require("./http/Engine")
+    Application,
+    Facades,
+    Engine
 }
 

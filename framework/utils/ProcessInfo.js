@@ -6,7 +6,7 @@ const path = require("path");
 class ProcessInfo {
     /**
      *
-     * @type {[]}
+     * @type {string[]}
      */
     Args = []
     /**
@@ -86,7 +86,7 @@ class ProcessInfo {
 
     /**
      *
-     * @param args
+     * @param args {string[]}
      */
     parse(args) {
         args.forEach(arg => {

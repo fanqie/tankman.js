@@ -1,18 +1,18 @@
+
 /** @typedef {typeof import('log4js')} Log4jS */
 const log4js = require("log4js");
-const {FC} = require("../Index");
+const {Facades} = require("../Index");
 
 class Log {
 
     /**
      *
-     * @type {Log4jS}
+     * @type  {Log4jS}
      */
-    log4js = null
+    log4js
 
     constructor(config) {
         this.log4js = log4js
-        this.log4js.level = "debug";
     }
 
     /**
@@ -21,13 +21,13 @@ class Log {
      * @public
      */
     SetConfig(options) {
-         this.log4js.configure({...FC.Config.Get("log"), ...options});
+         this.log4js.configure({...Facades.Config.Get("log"), ...options});
     }
 
     /**
      *
-     * @param category {category?: string}
-     * @return {Logger}
+     * @param category? { string}
+     * @return {import('log4js').Logger}
      * @public
      */
     GetLogger(category) {
@@ -36,8 +36,8 @@ class Log {
 
     /**
      *
-     * @param callback {cb?: (error?: Error) => void}
-     * @public
+     * @param callback
+     * @constructor
      */
     Shudown(callback) {
         return this.log4js.shutdown(callback)
@@ -45,8 +45,9 @@ class Log {
 
     /**
      *
-     * @param type {string}
-     * @param fn {(a: any) => (logEvent: LoggingEvent) => any): void;}
+     * @param type
+     * @param fn
+     * @constructor
      */
     AddLayout(type, fn) {
         return this.log4js.addLayout(type, fn)
@@ -65,7 +66,7 @@ class Log {
     /**
      *
      * @param message {any}
-     * @param category {category?:string}
+     * @param category? {string}
      * @public
      */
     Debug(message, category) {
@@ -75,7 +76,7 @@ class Log {
     /**
      *
      * @param message {string}
-     * @param category {category?:string}
+     * @param category {string?}
      * @public
      */
     Info(message, category) {
@@ -85,7 +86,7 @@ class Log {
     /**
      *
      * @param message {any}
-     * @param category {category?:string}
+     * @param category {string?}
      * @public
      */
     Warn(message, category) {
@@ -95,18 +96,17 @@ class Log {
     /**
      *
      * @param message {any}
-     * @param category {category?:string}
+     * @param category {string?}
      * @public
      */
     Error(message, category) {
-        console.log(":::",message)
         this.GetLogger(category || "").error(message || "");
     }
 
     /**
      *
      * @param message {any}
-     * @param category {category?:string}
+     * @param category {string?}
      * @public
      */
     Fatal(message, category) {
@@ -125,7 +125,6 @@ class Log {
     /**
      *
      * @param message {any}
-     * @param category {category?:string}
      * @public
      */
     DebugHttp(message) {
@@ -135,10 +134,9 @@ class Log {
     /**
      *
      * @param message {any}
-     * @param category {category?:string}
      * @public
      */
-    InfoHttp(message, category) {
+    InfoHttp(message = "") {
         this.GetLogger("http").info(message || "");
     }
 

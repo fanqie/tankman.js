@@ -1,9 +1,9 @@
 module.exports=class Middleware{
     /**
-     *  auto handle
+     *
      * @param ctx
-     * @param next
-     * @public
+     * @param itNext
+     * @constructor
      */
    static Handle(ctx,itNext){
         // before handle

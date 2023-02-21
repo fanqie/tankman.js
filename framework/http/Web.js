@@ -1,8 +1,7 @@
+// @ts-nocheck
 const Koa = require("koa")
 const os = require("os");
-/** @typedef {typeof  import('cluster') Cluster}*/
 
-/** @type Cluster|{ClusterSettings: ClusterSettings; Address: Address; Cluster: Cluster; Worker: Worker; readonly default: Cluster} | {ClusterSettings: ClusterSettings; Address: Address; Cluster: Cluster; Worker: Worker; readonly default: Cluster}*/
 const cluster = require("cluster");
 const FC = require("../Facades");
 module.exports = class Web extends Koa {

@@ -3,9 +3,9 @@ const fs = require("fs");
 
 class LoadRouters {
     /**
-     *
+     * install project defined routers
      * @param filePath
-     * @return {{}}
+     * @static
      * @public
      */
     static Load(filePath) {

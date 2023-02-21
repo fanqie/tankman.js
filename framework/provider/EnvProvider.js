@@ -4,7 +4,6 @@ const Env = require("../config/Env")
 class EnvProvider extends ServiceProvider {
     register() {
         /**
-         *
          * @type {Env}
          */
         Facades.Env = new Env()

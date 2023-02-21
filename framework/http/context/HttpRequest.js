@@ -1,13 +1,13 @@
-/** @typedef {typeof import('koa/lib/request')} KoaRequest */
-/** @typedef {typeof import('koa/lib/context')} KoaContext */
+const KoaRequest = require("koa/lib/request");
+const KoaContext = require("koa/lib/context");
 module.exports = class HttpRequest {
     /**
-     * @type KoaRequest
+     * @type KoaRequest()
      * @private
      */
     _request
     /**
-     * @type KoaContext
+     * @type KoaContext()
      * @private
      */
     _ctx
@@ -19,16 +19,17 @@ module.exports = class HttpRequest {
 
     /**
      *
-     * @param args {name?:string}
-     * @return {value:any}
-     * @public
+     * @param name? {string}
+     * @return {*|null}
+     * @constructor
      */
     GetHeader(name) {
         return name ? this._request.headers[name] : null
     }
 
     /**
-     * @return {exports.req.headers}
+     *
+     * @return {*}
      * @public
      */
     GetHeaderAll() {
@@ -36,8 +37,8 @@ module.exports = class HttpRequest {
     }
 
     /**
-     * @param name  {name:string}
-     * @param value  {value:any}
+     * @param name  {string}
+     * @param value  {any}
      * @public
      */
     SetHeader(name, value) {
@@ -224,7 +225,7 @@ module.exports = class HttpRequest {
 
     /**
      * Return the request socket.
-     * @return {Connection}
+     * @return Connection
      * @public
      */
     GetSocket() {
@@ -247,9 +248,8 @@ module.exports = class HttpRequest {
      * this.get('Content-Type'); // => “text/plain”
      * this.get('content-type'); // => “text/plain”
      * this.get('Something'); // => ''
-     * @param key
      * @return {String}
-     * @public
+     *
      */
     Get(field) {
         return this._request.get(field)
@@ -344,7 +344,7 @@ module.exports = class HttpRequest {
      * parts of the host. This can be changed by setting `app.subdomainOffset`.
      *
      * For example, if the domain is "tobi.ferrets.example.com":
-     * If `app.subdomainOffset` is not set, this.subdomains is
+     * If `app.subdomainOffset` is not set, this. Subdomains is
      * `["ferrets", "tobi"]`.
      * If `app.subdomainOffset` is 3, this.subdomains is `["tobi"]`.
      * @return {Array}

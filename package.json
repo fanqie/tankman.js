@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@types/node": "^18.14.0",
     "http-errors": "^2.0.0",
     "knex": "^2.4.2",
     "koa": "^2.14.1",
@@ -13,10 +14,12 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.1.2",
     "path-to-regexp": "^6.2.1",
-    "tedious": "^15.1.2"
+    "tedious": "^15.1.2",
+    "tern": "^0.24.3"
   },
   "scripts": {
-    "test": "mocha test/**/*.js"
+    "test": "mocha test/**/*.js",
+    "build:types": "tsc"
   },
   "repository": {
     "type": "git",

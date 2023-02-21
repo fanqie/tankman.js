@@ -1,6 +1,7 @@
 const RouterHandle = require("./RouterHandle");
 const {REQUEST_METHOD} = require("./Enums");
 const Redirect = require("./Redirect");
+const Router = require("./Router");
 
 /**
  *
@@ -14,7 +15,7 @@ class Route {
     _group_middlewares = [];
     /**
      *
-     * @type {{prefix: string, middleware: [string]}}
+     * @type {{prefix: string, middleware: string[]}}
      */
     options = {
         prefix: "",
@@ -31,7 +32,7 @@ class Route {
 
     /**
      *
-     * @type {[Router]}
+     * @type {Router[]}
      * @private
      */
     _routers = [];
@@ -68,7 +69,7 @@ class Route {
     /**
      * @param method {string[]|string}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router}
      * @private
@@ -85,7 +86,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -96,7 +97,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -107,7 +108,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -117,7 +118,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -127,7 +128,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -137,7 +138,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -148,7 +149,7 @@ class Route {
     /**
      * @param methodsArray {string[]}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */

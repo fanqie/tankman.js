@@ -36,15 +36,13 @@ module.exports = class Engine {
      */
     async _RouteHandle(ctx, next) {
         const route = FC.Route.GetByPathname(ctx.request.path, ctx.request.method)
-        // console.log(route,ctx.request.path,ctx.request.method)
         if (route) {
-            if (route.redirectUrl) {
+            if (typeof route!=="boolean"&&route.redirectUrl) {
 
                 ctx.redirect(route.redirectUrl)
             } else {
                 try {
                     const start = microtime.now();
-                    // await route.action(ctx)
                   await this.accessPipeline.HandleNext(ctx,route)
 
                     const ms = microtime.now() - start;

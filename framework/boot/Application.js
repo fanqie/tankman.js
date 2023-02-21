@@ -1,7 +1,9 @@
 const ProcessInfoProvider = require("../provider/ProcessInfoProvider");
 const ConfigProvider = require("../provider/ConfigProvider");
 const EnvProvider = require("../provider/EnvProvider");
-const {FC} = require("../Index");
+const Facades = require("../Facades");
+const DatabaseProvider = require("../provider/DatabaseProvider");
+const ServiceProvider = require("../provider/ServiceProvider");
 
 
 /**
@@ -61,17 +63,17 @@ class Application {
 
     /**
      *
-     * @return {ServiceProvider[]}
+     * @return {*[]}
      */
     getConfiguredServiceProviders() {
-        return FC.Config.Get("app").providers.map((Class => {
+        return Facades.Config.Get("app").providers.map((Class => {
             return new Class(this)
         }))
     }
 
     /**
      *
-     * @param {ServiceProvider[]}
+     * @param serviceProviders
      */
     registerServiceProviders(serviceProviders) {
         serviceProviders.forEach(serviceProvider => {
@@ -81,7 +83,7 @@ class Application {
 
     /**
      *
-     * @param {ServiceProvider[]}
+     * @param serviceProviders {ServiceProvider[]}
      */
     bootServiceProviders(serviceProviders) {
         serviceProviders.forEach(serviceProvider => {
@@ -96,16 +98,18 @@ class Application {
     setRootPath() {
         //:todo
     }
+
     /**
      * use case
      * @param fun {Function}
      * @return {Application}
      * @public
      */
-    Use(fun){
+    Use(fun) {
         fun.apply(this)
         return this
     }
+
     /**
      *
      * @return {ServiceProvider[]}

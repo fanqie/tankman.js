@@ -1,17 +1,26 @@
+// @ts-nocheck
 const Orm = require("./Orm")
-const {FC} = require("../Index");
+const {Facades} = require("../Index");
 const Knex = require("knex");
 
 class DB {
+    /**
+     * @type {Knex}
+     */
+    con
 
+    constructor() {
+        this.con = this.ConnectionDefaultDb()
+
+    }
 
     /**
      *
-     * @return {Knex<TRecord, TResult>}
+     * @return {Knex}
      * @public
      */
-    static ConnectionDefaultDb() {
-        const configs = FC.Config.Get("database", null)
+    ConnectionDefaultDb() {
+        const configs = Facades.Config.Get("database", null)
         if (configs.default && configs.hasOwnProperty(configs.default)) {
             return this.Connection(configs[configs.default], configs.default)
         } else {
@@ -24,10 +33,10 @@ class DB {
      *
      * @param config
      * @param client
-     * @return {Knex<TRecord, TResult>}
-     * @private
+     * @return {Knex}
+     * @constructor
      */
-    static Connection(config, client = "mysql") {
+    Connection(config, client = "mysql") {
 
         if (config === null) {
             throw new Error("Missing database configuration")
@@ -54,18 +63,19 @@ class DB {
     /**
      *
      * @param client
-     * @return {Knex<TRecord, TResult>}
+     * @return {Knex}
      * @public
      */
-    static ConnectTo(client) {
+    ConnectTo(client) {
 
-        const configs = FC.Config.Get("database", null)
+        const configs = Facades.Config.Get("database", null)
 
         if (configs.hasOwnProperty(client)) {
 
             return Knex(configs[client])
         } else {
-            console.warn(`Configuration default ${client} not found`)
+            throw new Error(`Configuration default ${client} not found`)
+
         }
     }
 }

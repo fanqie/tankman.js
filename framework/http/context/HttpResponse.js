@@ -1,21 +1,23 @@
-/** @typedef {typeof import('./HttpResponseWrite')} HttpResponseWrite */
-/** @typedef {typeof import('koa/lib/response')} KoaResponse */
-/** @typedef {typeof import('koa/lib/context')} KoaContext */
-const ResponseWrite = require("./HttpResponseWrite");
+const HttpResponseWrite = require("./HttpResponseWrite");
+const KoaResponse = require("koa/lib/response");
 module.exports = class HttpResponse {
+    constructor(ctx) {
+        this._response = ctx.response
+    }
+
     /**
      *
      * @type {HttpResponseWrite}
      */
     output
     /**
-     * @type KoaResponse
+     * @type KoaResponse()
      * @private
      */
     _response
 
     public(ctx) {
-        this.output = new ResponseWrite(ctx)
+        this.output = new HttpResponseWrite(ctx)
     }
 
     WriteBytes(bytes) {
@@ -67,8 +69,9 @@ module.exports = class HttpResponse {
     }
 
     /**
-     * @return {exports.header}
-     * @public
+     *
+     * @return {*}
+     * @constructor
      */
     GetHeaderAll() {
         return this._response.headers;
@@ -125,6 +128,7 @@ module.exports = class HttpResponse {
 
     /**
      * Get response status code.
+     * @description
      * 100 "continue"
      * 101 "switching protocols"
      * 102 "processing"
@@ -228,7 +232,7 @@ module.exports = class HttpResponse {
 
     /**
      * Set response body.
-     * @param {String|Buffer|Object|Stream} val
+     * @param {String|Buffer|Object} val
      * string written
      * Buffer written
      * Stream piped
@@ -242,7 +246,7 @@ module.exports = class HttpResponse {
 
     /**
      * Get response body.
-     * @return {Mixed|null|*}
+     * @return {null|*}
      * @public
      */
     GetBody() {
@@ -308,7 +312,7 @@ module.exports = class HttpResponse {
      *     this.SetETag('"md5hashsum"');
      *     this.SetETag('W/"123456789"');
      *
-     * @param {String} etag
+     * @param {String} val
      */
     SetETag(val) {
         this._response.etag = val
