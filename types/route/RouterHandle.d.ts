@@ -1,7 +1,7 @@
 export = RouterHandle;
 declare class RouterHandle extends Router {
     /**
-     * @param options {{middlewares: *[], prefix: string}}
+     * @param options {{middleware: *[], prefix: string}}
      * @param methods {string|string[]}
      * @param vPath {string}
      * @param controllerClassOrActionFunc {ClassDecorator|Function}
@@ -9,7 +9,7 @@ declare class RouterHandle extends Router {
      * @param action
      */
     constructor(options: {
-        middlewares: any[];
+        middleware: any[];
         prefix: string;
     }, methods: string | string[], vPath: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string);
     _IsClass(val: any): boolean;
@@ -27,14 +27,15 @@ declare class RouterHandle extends Router {
      * middleware
      * @param middleware {string[]|string}
      * @public
+     * @returns {Router|RouterHandle}
      */
-    public Middleware(middleware: string[] | string): RouterHandle;
+    public Middleware(middleware: string[] | string): Router | RouterHandle;
     /**
      * Get Any route action
-     * @return {*|Function}
+     * @return {Promise<CtxPipeline|boolean>}
      * @constructor
      */
-    GetInstanceAction(): any | Function;
+    GetInstanceAction(): Promise<CtxPipeline | boolean>;
 }
 import Router = require("./Router");
-import path = require("path");
+import CtxPipeline = require("../http/pipeline/CtxPipeline");

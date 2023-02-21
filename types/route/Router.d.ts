@@ -78,7 +78,7 @@ declare class Router {
      */
     public MakeMath(): import("path-to-regexp").MatchFunction<object>;
     /**
-     * options {{middlewares: *[], prefix: string}}
+     * options {{middleware: *[], prefix: string}}
      * @param options
      * @private
      */
@@ -96,6 +96,7 @@ declare class Router {
     /**
      * get url values
      * @param path
+     * @param method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     Is(path: any, method: any): {

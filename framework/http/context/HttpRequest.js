@@ -1,3 +1,4 @@
+// @ts-nocheck
 const KoaRequest = require("koa/lib/request");
 const KoaContext = require("koa/lib/context");
 module.exports = class HttpRequest {

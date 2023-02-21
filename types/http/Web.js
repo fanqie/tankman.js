@@ -22,8 +22,8 @@ module.exports = class Web extends Koa {
             for (let i = 0; i < max; i++) {
                 cluster.fork();
             }
-            cluster.on('exit', (worker, code, signal) => {
-                console.log(`worker ${worker.process.pid} died`);
+            cluster.on('exit', (worker) => {
+                FC.Log.WarnHttp(`worker ${worker.process.pid} died`);
             });
             FC.Log.InfoHttp(`server run in port=${port}`);
             FC.Log.InfoHttp(`web url=http://127.0.0.1:${port}`);

@@ -85,7 +85,7 @@ class Log {
      * @param category {string?}
      * @public
      */
-    Info(message, category) {
+    Info(message, category="") {
         this.GetLogger(category).info(message || "");
     }
 

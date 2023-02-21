@@ -52,7 +52,7 @@ declare class Log {
      * @param category {string?}
      * @public
      */
-    public Info(message: string, category: string | null): void;
+    public Info(message: string, category?: string | null): void;
     /**
      *
      * @param message {any}
@@ -88,10 +88,10 @@ declare class Log {
     public DebugHttp(message: any): void;
     /**
      *
-     * @param message {any}
+     * @param message {string}
      * @public
      */
-    public InfoHttp(message?: any): void;
+    public InfoHttp(message?: string): void;
     /**
      *
      * @param message {any}

@@ -8,7 +8,7 @@ class Redirect extends Router {
      * @param vPath {string}
      * @param redirectUrl {string}
      */
-    constructor(options = {}, vPath, redirectUrl) {
+    constructor(options, vPath, redirectUrl) {
         super(options,vPath,redirectUrl);
         super.methods = ["get"]
         super.vPath = vPath

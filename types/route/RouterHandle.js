@@ -1,10 +1,8 @@
-const path = require("path");
-const pathToRegexp = require("path-to-regexp");
+const CtxPipeline = require("../http/pipeline/CtxPipeline");
 const Router = require("./Router");
-const { Facades } = require("../Index");
 class RouterHandle extends Router {
     /**
-     * @param options {{middlewares: *[], prefix: string}}
+     * @param options {{middleware: *[], prefix: string}}
      * @param methods {string|string[]}
      * @param vPath {string}
      * @param controllerClassOrActionFunc {ClassDecorator|Function}
@@ -12,7 +10,7 @@ class RouterHandle extends Router {
      * @param action
      */
     constructor(options = {
-        middlewares: [],
+        middleware: [],
         prefix: ""
     }, methods, vPath, controllerClassOrActionFunc, action) {
         super(options, methods, vPath, controllerClassOrActionFunc, action);
@@ -48,6 +46,7 @@ class RouterHandle extends Router {
      * middleware
      * @param middleware {string[]|string}
      * @public
+     * @returns {Router|RouterHandle}
      */
     Middleware(middleware) {
         if (typeof middleware == "string") {
@@ -58,7 +57,7 @@ class RouterHandle extends Router {
     }
     /**
      * Get Any route action
-     * @return {*|Function}
+     * @return {Promise<CtxPipeline|boolean>}
      * @constructor
      */
     GetInstanceAction() {

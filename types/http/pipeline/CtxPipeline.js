@@ -7,21 +7,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+const HttpContext = require("../context/HttpContext");
 module.exports = class CtxPipeline {
-    constructor(ctx) {
+    /**
+     * @param httpCtx {HttpContext}
+     */
+    constructor(httpCtx) {
         this.handles = [];
-        this.ctx = null;
-        this.ctx = ctx;
+        this._httpCtx = null;
+        this._httpCtx = httpCtx;
     }
-    Pip(Func) {
-        this.handles.push(Func);
+    /**
+     *
+     * @param handle {Promise<CtxPipeline>}
+     * @returns {CtxPipeline}
+     * @constructor
+     */
+    Pip(handle) {
+        this.handles.push(handle);
         return this;
     }
+    /**
+     *
+     * @returns {Promise<CtxPipeline|boolean>}
+     * @constructor
+     */
     Next() {
         return __awaiter(this, void 0, void 0, function* () {
             const next = this.handles.shift();
             if (next) {
-                yield next(this.ctx, () => { this.Next.apply(this); });
+                yield next(this._httpCtx, () => { this.Next.apply(this); });
                 return false;
             }
             return this;

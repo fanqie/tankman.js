@@ -1,6 +1,8 @@
+const HttpContext = require("./context/HttpContext");
+
 const Web = require("./Web")
 const AccessPipeline = require("./pipeline/AccessPipeline")
-const FC = require("../Facades")
+const Facades = require("../Facades")
 const createError = require("http-errors")
 const microtime = require('microtime')
 
@@ -13,14 +15,14 @@ module.exports = class Engine {
 
     constructor(app) {
         this.app = app
-        this.port = FC.Env.Get("APP_PORT") || 8002
+        this.port = Facades.Env.Get("APP_PORT") || 8002
         this.accessPipeline=new AccessPipeline()
     }
 
     Run() {
         this.HttpServer = new Web();
         this.HttpServer.Run(this.port, (pid) => {
-           FC.Log.Info(`run process：${pid}`)
+            Facades.Log.Info(`run process：${pid}`)
         });
         this.HttpServer.use(async (ctx, next) => {
             await this._RouteHandle(new HttpContext(this.app,ctx), next)
@@ -29,18 +31,18 @@ module.exports = class Engine {
 
     /**
      *
-     * @param ctx
+     * @param httpCtx {HttpContext}
      * @param next
      * @return {Promise<void>}
      * @private
      */
     async _RouteHandle(httpCtx, next) {
-        const route = FC.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
+        const route = Facades.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
         // console.log(route,ctx.request.path,ctx.request.method)
         if (route) {
             if (typeof route!=="boolean"&&route.redirectUrl) {
 
-                ctx.redirect(route.redirectUrl)
+                httpCtx.Redirect(route.redirectUrl)
             } else {
                 try {
                     const start = microtime.now();
@@ -49,17 +51,17 @@ module.exports = class Engine {
 
                     const ms = microtime.now() - start;
                     httpCtx.request.SetHeader('X-Response-Time', `${ms}ms`);
-                    FC.Log.InfoHttp(`【PID:${process.pid}】${httpCtx.request.GetMethod()} ${httpCtx.request.GetUrl()} time:${ms}ns`)
+                    Facades.Log.InfoHttp(`【PID:${process.pid}】${httpCtx.request.GetMethod()} ${httpCtx.request.GetUrl()} time:${ms}ns`)
 
                 } catch (err) {
-                    FC.Log.ErrorHttp(err.message);
+                    Facades.Log.ErrorHttp(err.message);
                     console.error(err)
                 }
 
             }
 
         } else {
-            const route = FC.Route.GetRoute("404")
+            const route = Facades.Route.GetRoute("404")
             route ? httpCtx.Redirect(route.path) : next(createError.NotFound());
         }
     }

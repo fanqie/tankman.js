@@ -1,3 +1,4 @@
+// @ts-nocheck
 const KoaRequest = require("koa/lib/request");
 const KoaContext = require("koa/lib/context");
 module.exports = class HttpRequest {
@@ -8,7 +9,7 @@ module.exports = class HttpRequest {
      * @constructor
      */
     GetHeader(name) {
-        return name ? this._request.headers[name] : null;
+        return name ? this._request.get(name) : null;
     }
     /**
      *

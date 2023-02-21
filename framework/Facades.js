@@ -4,7 +4,6 @@ const Log = require('./log/Log');
 const Route = require('./route/Route');
 const ProcessInfo = require('./utils/ProcessInfo');
 
-/** @typedef {typeof import('./orm/Db')} DB */
 module.exports = {
     /**
      * @type import('log4js').Config
@@ -19,7 +18,7 @@ module.exports = {
      */
     Route: null,
     Cache: null,
-    Db,
+    Db:null,
     Auth: null,
     /**
      * @type Log

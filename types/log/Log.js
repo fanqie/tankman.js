@@ -20,7 +20,13 @@ class Log {
      * @public
      */
     GetLogger(category) {
-        return this.log4js.getLogger(category || "default");
+        try {
+            return this.log4js.getLogger(category || "default");
+        }
+        catch (e) {
+            console.log(e);
+            return this.log4js.getLogger("default");
+        }
     }
     /**
      *
@@ -63,7 +69,7 @@ class Log {
      * @param category {string?}
      * @public
      */
-    Info(message, category) {
+    Info(message, category = "") {
         this.GetLogger(category).info(message || "");
     }
     /**
@@ -111,7 +117,7 @@ class Log {
     }
     /**
      *
-     * @param message {any}
+     * @param message {string}
      * @public
      */
     InfoHttp(message = "") {

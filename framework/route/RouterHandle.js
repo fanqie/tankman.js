@@ -1,3 +1,5 @@
+const CtxPipeline = require("../http/pipeline/CtxPipeline");
+
 const Router = require("./Router")
 
 class RouterHandle extends Router {
@@ -63,7 +65,7 @@ class RouterHandle extends Router {
 
     /**
      * Get Any route action
-     * @return {*|Function}
+     * @return {Promise<CtxPipeline|boolean>}
      * @constructor
      */
     GetInstanceAction() {

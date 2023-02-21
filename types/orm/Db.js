@@ -7,6 +7,26 @@ class DB {
         this.con = this.ConnectionDefaultDb();
     }
     /**
+     * The connection options are passed directly to the appropriate database client to create the connection, and may be either an object, a connection string, or a function returning an object:
+     * create free kNex connection
+     * const kDb = FC.DB.NewConnection({
+     *      client: 'mysql',
+     *      connection: {
+     *          host : '127.0.0.1',
+     *          port : 3306,
+     *          user : 'your_database_user',
+     *          password : 'your_database_password',
+     *          database : 'myapp_test'
+     *      }
+     *  });
+     * @param options
+     * @return {Knex<TRecord, TResult>}
+     * @inheritDoc https://knexjs.org/guide/#configuration-options
+     */
+    static NewConnection(options = {}) {
+        return Knex(options);
+    }
+    /**
      *
      * @return {Knex}
      * @public
@@ -33,16 +53,16 @@ class DB {
         }
         config.log = {
             warn(message) {
-                console.warn(message);
+                Facades.Log.Warn(message, "database");
             },
             error(message) {
-                console.warn(message);
+                Facades.Log.Error(message, "database");
             },
             deprecate(message) {
-                console.info(message);
+                Facades.Log.Info(message, "database");
             },
             debug(message) {
-                console.debug(message.sql);
+                Facades.Log.Debug(message.sql, "database");
             },
         };
         return Knex(config);

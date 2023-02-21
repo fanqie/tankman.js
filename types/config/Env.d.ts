@@ -36,4 +36,10 @@ declare class Env {
      * @public
      */
     public Load(): void;
+    /**
+     * check app run env is debugger mode
+     * @returns {boolean}
+     * @constructor
+     */
+    IsDebugger(): boolean;
 }

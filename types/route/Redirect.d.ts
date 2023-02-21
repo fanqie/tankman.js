@@ -2,12 +2,12 @@ export = Redirect;
 declare class Redirect extends Router {
     /**
      *
-     * @param options {{middlewares: *[], prefix: string}}
+     * @param options {{middleware: *[], prefix: string}}
      * @param vPath {string}
      * @param redirectUrl {string}
      */
     constructor(options: {
-        middlewares: any[];
+        middleware: any[];
         prefix: string;
     }, vPath: string, redirectUrl: string);
     /**

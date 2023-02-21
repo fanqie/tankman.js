@@ -3,15 +3,12 @@ const { REQUEST_METHOD } = require("./Enums");
 class Redirect extends Router {
     /**
      *
-     * @param options {{middlewares: *[], prefix: string}}
+     * @param options {{middleware: *[], prefix: string}}
      * @param vPath {string}
      * @param redirectUrl {string}
      */
-    constructor(options = {
-        middlewares: [],
-        prefix: ""
-    }, vPath, redirectUrl) {
-        super();
+    constructor(options, vPath, redirectUrl) {
+        super(options, vPath, redirectUrl);
         super.methods = ["get"];
         super.vPath = vPath;
         super.redirectUrl = redirectUrl;

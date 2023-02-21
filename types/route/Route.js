@@ -16,7 +16,7 @@ class Route {
          * @private
          */
         this._prefix = "";
-        this._group_middlewares = [];
+        this._group_middleware = [];
         /**
          *
          * @type {{prefix: string, middleware: string[]}}
@@ -44,16 +44,16 @@ class Route {
     }
     /**
      *
-     * @param prefix {string}
-     * @param func {Function}
-     * @param groupMiddlewares {[string]}
-     * @return {Route}
-     * @public
+     * @param prefix
+     * @param func:route {Function:route{Router|RouterHandel} }
+     * @param groupMiddlewareItems
+     * @returns {Route}
+     * @constructor
      */
-    Group(prefix, func, groupMiddlewares) {
+    Group(prefix, func = (route) => { console.log(route); }, groupMiddlewareItems) {
         this._prefix = prefix;
-        this._group_middlewares = groupMiddlewares || [];
-        func.apply(this);
+        this._group_middleware = groupMiddlewareItems || [];
+        func(this);
         return this;
     }
     /**
@@ -75,7 +75,7 @@ class Route {
     _CreateRouterHandle(method, path, controllerClassOrActionFunc, action) {
         const handle = new RouterHandle({
             prefix: this._prefix,
-            middlewares: [...this._group_middlewares]
+            middleware: [...this._group_middleware]
         }, method, path, controllerClassOrActionFunc, action);
         this._routers.push(handle);
         return handle;
@@ -159,7 +159,7 @@ class Route {
     Redirect(path, redirectUrl) {
         const handle = new Redirect({
             prefix: this._prefix,
-            middlewares: [...this._group_middlewares]
+            middleware: [...this._group_middleware]
         }, path, redirectUrl);
         this._routers.push(handle);
         return handle;
@@ -185,7 +185,7 @@ class Route {
      * Get route by route pathname
      * @param pathname {string}
      * @param method {string} post|put|get|delete|put
-     * @return {Router|RouterHandle|Redirect|boolean}
+     * @return {Router|RouterHandle|Redirect}
      * @public
      */
     GetByPathname(pathname, method) {

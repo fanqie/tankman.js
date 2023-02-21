@@ -52,5 +52,13 @@ class Env {
         const envs = LoadEnvironmentVariables.Load(Facades.ProcessInfo.Flags.get("--ENV") || "");
         this._Envs = Object.assign(Object.assign({}, this._Envs), envs);
     }
+    /**
+     * check app run env is debugger mode
+     * @returns {boolean}
+     * @constructor
+     */
+    IsDebugger() {
+        return this.Get("APP_DEBUG", 'true') === 'true';
+    }
 }
 module.exports = Env;

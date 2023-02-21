@@ -2,16 +2,15 @@ export = HttpResponse;
 declare class HttpResponse {
     constructor(ctx: any);
     /**
-     * @type KoaResponse()
-     * @private
-     */
-    private _response;
-    /**
      *
      * @type {HttpResponseWrite}
      */
     output: HttpResponseWrite;
-    public(ctx: any): void;
+    /**
+     * @type KoaResponse()
+     * @private
+     */
+    private _response;
     WriteBytes(bytes: any): void;
     WriteText(text: any): void;
     /**

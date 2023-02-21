@@ -82,7 +82,7 @@ class Router {
         });
     }
     /**
-     * options {{middlewares: *[], prefix: string}}
+     * options {{middleware: *[], prefix: string}}
      * @param options
      * @private
      */
@@ -95,12 +95,12 @@ class Router {
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     Parse(path) {
-        // this.path
         return this.match(path);
     }
     /**
      * get url values
      * @param path
+     * @param method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     Is(path, method) {

@@ -8,7 +8,7 @@ declare class Engine {
     Run(): void;
     /**
      *
-     * @param ctx
+     * @param httpCtx {HttpContext}
      * @param next
      * @return {Promise<void>}
      * @private

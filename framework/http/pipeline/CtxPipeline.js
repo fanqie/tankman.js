@@ -1,3 +1,6 @@
+const HttpContext = require("../context/HttpContext");
+
+
 module.exports=class CtxPipeline {
     handles=[];
     _httpCtx=null;
@@ -8,10 +11,23 @@ module.exports=class CtxPipeline {
     constructor(httpCtx){
         this._httpCtx=httpCtx
     }
-    Pip(Func) {
-        this.handles.push(Func);
+
+    /**
+     *
+     * @param handle {Promise<CtxPipeline>}
+     * @returns {CtxPipeline}
+     * @constructor
+     */
+    Pip(handle) {
+        this.handles.push(handle);
         return this
     }
+
+    /**
+     *
+     * @returns {Promise<CtxPipeline|boolean>}
+     * @constructor
+     */
     async Next() {
         const next=this.handles.shift();
         if(next){
@@ -20,4 +36,4 @@ module.exports=class CtxPipeline {
         }
         return this
     }
-}
+};

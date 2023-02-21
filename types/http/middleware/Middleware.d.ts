@@ -2,9 +2,11 @@ export = Middleware;
 declare class Middleware {
     /**
      *
-     * @param ctx
-     * @param itNext
-     * @constructor
+     * @param httpCtx {HttpContext}
+     * @param next
+     * @returns {Promise<void>}
+     * @public
      */
-    static Handle(ctx: any, itNext: any): void;
+    public Handle(httpCtx: HttpContext, next: any): Promise<void>;
 }
+import HttpContext = require("../context/HttpContext");

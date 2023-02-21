@@ -1,10 +1,15 @@
+// @ts-nocheck
+const Application = require("../../boot/Application");
+
+const  { Http2ServerRequest } = require("http2");
+const KoaContext =require("koa/lib/context");
 const HttpRequest = require("./HttpRequest");
 const Request = require("./HttpRequest");
 const HttpResponse = require("./HttpResponse");
 const Response = require("./HttpResponse");
 module.exports = class HttpContext {
     /**
-     * @type  {KoaContext}
+     * @type  KoaContext()
      */
     _ctx;
 
@@ -113,7 +118,7 @@ module.exports = class HttpContext {
      * @param alt?
      * @public
      */
-    Redirect(url, alt) {
+    Redirect(url, alt="") {
         this.response.Redirect(url,alt)
     }
 };

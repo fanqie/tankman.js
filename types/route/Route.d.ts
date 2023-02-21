@@ -13,7 +13,7 @@ declare class Route {
      * @private
      */
     private _prefix;
-    _group_middlewares: any[];
+    _group_middleware: any[];
     /**
      *
      * @type {{prefix: string, middleware: string[]}}
@@ -31,13 +31,13 @@ declare class Route {
     All(): Router[];
     /**
      *
-     * @param prefix {string}
-     * @param func {Function}
-     * @param groupMiddlewares {[string]}
-     * @return {Route}
-     * @public
+     * @param prefix
+     * @param func:route {Function:route{Router|RouterHandel} }
+     * @param groupMiddlewareItems
+     * @returns {Route}
+     * @constructor
      */
-    public Group(prefix: string, func: Function, groupMiddlewares: [string]): Route;
+    Group(prefix: any, func: (route: any) => void, groupMiddlewareItems: any): Route;
     /**
      * @param path
      * @return {string}
@@ -127,10 +127,10 @@ declare class Route {
      * Get route by route pathname
      * @param pathname {string}
      * @param method {string} post|put|get|delete|put
-     * @return {Router|RouterHandle|Redirect|boolean}
+     * @return {Router|RouterHandle|Redirect}
      * @public
      */
-    public GetByPathname(pathname: string, method: string): Router | RouterHandle | Redirect | boolean;
+    public GetByPathname(pathname: string, method: string): Router | RouterHandle | Redirect;
 }
 import Router = require("./Router");
 import RouterHandle = require("./RouterHandle");

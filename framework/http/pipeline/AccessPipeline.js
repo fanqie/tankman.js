@@ -1,9 +1,18 @@
-const FC = require("../../Facades")
-const CtxPipeline = require("./CtxPipeline")
+const Router = require("../../route/Router");
+const RouterHandle = require("../../route/RouterHandle");
+const HttpContext = require("../context/HttpContext");
 
+const Middleware = require("../middleware/Middleware");
+
+const FC = require("../../Facades");
+const CtxPipeline = require("./CtxPipeline");
 
 module.exports = class AccessPipeline {
-    middlewareMaps = {}
+    /**
+     *
+     * @type Object:string:Middleware
+     */
+    middlewareMaps = {};
 
     constructor() {
         const configMaps = FC.Config.Get('app', {})['middleware']
@@ -14,28 +23,33 @@ module.exports = class AccessPipeline {
 
     /**
      * Handle Next
-     * @param ctx
-     * @param route
+     * @param httpCtx {HttpContext}
+     * @param route {Router|RouterHandle}
      * @public
      */
    async HandleNext(httpCtx, route) {
         const ctxPipeline= new CtxPipeline(httpCtx);
 
-        /**
-         *
-         * @type {[]../Middleware/Middleware}
-         */
+
         const middlewareQueue = route.options.middleware;
         if (route.options.middleware.length > 0) {
 
             for (let i = 0; i < middlewareQueue.length; i++) {
                 if (this.middlewareMaps.hasOwnProperty(middlewareQueue[i])) {
-                    ctxPipeline.Pip(this.middlewareMaps[middlewareQueue[i]].Handle)
+                    /**
+                     * @type Middleware
+                     */
+                    const middleware=this.middlewareMaps[middlewareQueue[i]];
+                    const handle=middleware.Handle;
+                    // @ts-ignore
+                    ctxPipeline.Pip(handle)
                 }
             }
         }
+        // @ts-ignore
         ctxPipeline.Pip(route.GetInstanceAction());
-        await ctxPipeline.Next()
+        // @ts-ignore
+        await new ctxPipeline.Next()
     }
 
 }

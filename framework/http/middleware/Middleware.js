@@ -1,13 +1,17 @@
+const HttpContext = require("../context/HttpContext");
+
 module.exports=class Middleware{
     /**
      *
-     * @param ctx
-     * @param itNext
-     * @constructor
+     * @param httpCtx {HttpContext}
+     * @param next
+     * @returns {Promise<void>}
+     * @public
      */
-   static Handle(ctx,itNext){
-        // before handle
-        itNext.next()
-        // after handle
+    async Handle(httpCtx, next) {
+        //before something
+        await next();
+        //after something
+
     }
-}
+};

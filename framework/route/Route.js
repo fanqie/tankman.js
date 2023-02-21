@@ -43,13 +43,13 @@ class Route {
 
     /**
      *
-     * @param prefix {string}
-     * @param func {Function:route:{RouterHandle|Router}
-     * @param  {[string]?} groupMiddlewareItems
-     * @return {Route}
-     * @public
+     * @param prefix
+     * @param func:route {Function:route{Router|RouterHandel} }
+     * @param groupMiddlewareItems
+     * @returns {Route}
+     * @constructor
      */
-    Group(prefix, func, groupMiddlewareItems) {
+    Group(prefix, func=(route)=>{console.log(route)}, groupMiddlewareItems) {
         this._prefix = prefix;
         this._group_middleware = groupMiddlewareItems || [];
         func(this);
@@ -209,7 +209,7 @@ class Route {
      * Get route by route pathname
      * @param pathname {string}
      * @param method {string} post|put|get|delete|put
-     * @return {Router|RouterHandle|Redirect|boolean}
+     * @return {Router|RouterHandle|Redirect}
      * @public
      */
     GetByPathname(pathname, method) {

@@ -1,10 +1,9 @@
+// @ts-nocheck
 const HttpResponseWrite = require("./HttpResponseWrite");
 const KoaResponse = require("koa/lib/response");
 module.exports = class HttpResponse {
     constructor(ctx) {
         this._response = ctx.response;
-    }
-    public(ctx) {
         this.output = new HttpResponseWrite(ctx);
     }
     WriteBytes(bytes) {
