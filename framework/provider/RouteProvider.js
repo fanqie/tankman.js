@@ -1,7 +1,7 @@
 const ServiceProvider = require("./ServiceProvider")
 const Route = require("../route/Route")
 const LoadRouters = require("../route/LoadRouters")
-const Facades = require("../Facades");
+const Facades = require("../facades/Facades")
 
 class RouteProvider extends ServiceProvider {
     /**

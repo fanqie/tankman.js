@@ -1,7 +1,7 @@
 
 /** @typedef {typeof import('log4js')} Log4jS */
 const log4js = require("log4js");
-const {Facades} = require("../Index");
+const Facades = require("../facades/Facades")
 
 class Log {
 
@@ -34,7 +34,7 @@ class Log {
         try {
             return this.log4js.getLogger(category||"default")
         }catch (e) {
-            console.log(e);
+
             return this.log4js.getLogger("default")
         }
 

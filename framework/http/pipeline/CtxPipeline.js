@@ -1,6 +1,4 @@
-const HttpContext = require("../context/HttpContext");
-
-
+//@ts-nocheck
 module.exports=class CtxPipeline {
     handles=[];
     _httpCtx=null;

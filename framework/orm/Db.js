@@ -1,13 +1,13 @@
 // @ts-nocheck
 const Orm = require("./Orm")
-const {Facades} = require("../Index");
+const Facades = require("../facades/Facades")
 const Knex = require("knex");
 
 class DB {
     /**
      * @type {Knex}
      */
-    con
+    con;
 
     constructor() {
         this.con = this.ConnectionDefaultDb()

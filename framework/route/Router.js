@@ -1,6 +1,6 @@
 const path = require("path")
 const pathToRegexp = require("path-to-regexp")
-const {Facades} = require("../Index");
+const Facades = require("../facades/Facades");
 
 class Router {
     /**

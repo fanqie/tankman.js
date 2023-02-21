@@ -1,6 +1,5 @@
-const CtxPipeline = require("../http/pipeline/CtxPipeline");
-
-const Router = require("./Router")
+//@ts-nocheck
+const Router = require("./Router");
 
 class RouterHandle extends Router {
     /**

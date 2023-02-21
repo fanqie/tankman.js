@@ -1,8 +1,8 @@
+const Facades = require("../facades/Facades");
 const ProcessInfoProvider = require("../provider/ProcessInfoProvider");
 const ConfigProvider = require("../provider/ConfigProvider");
 const EnvProvider = require("../provider/EnvProvider");
-const Facades = require("../Facades");
-const DatabaseProvider = require("../provider/DatabaseProvider");
+
 const ServiceProvider = require("../provider/ServiceProvider");
 
 
@@ -16,7 +16,7 @@ class Application {
      *
      */
     constructor() {
-        this.registerBaseServiceProviders()
+        this.registerBaseServiceProviders();
         this.bootBaseServiceProviders()
     }
 
@@ -106,7 +106,7 @@ class Application {
      * @public
      */
     Use(fun) {
-        fun.apply(this)
+        fun.apply(this);
         return this
     }
 
@@ -115,8 +115,9 @@ class Application {
      * @return {ServiceProvider[]}
      */
     getBaseServiceProviders() {
+
         return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)]
     }
 }
 
-module.exports = Application
+module.exports = Application;

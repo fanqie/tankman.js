@@ -19,11 +19,15 @@ class LoadConfiguration {
         }
 
         fs.readdirSync(dirPath).filter((filename) => filename.indexOf(".js") > 0).forEach((filename) => {
+
             const all = require(path.join(dirPath, filename))
+
             Object.keys(all).forEach((key) => {
                 Configs[key] = all[key]
+
             })
         });
+
         return Configs;
     }
 }

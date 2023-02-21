@@ -1,6 +1,6 @@
 const ServiceProvider = require("./ServiceProvider");
 const DB = require("../orm/Db.js");
-const Facades = require("../Facades")
+const Facades = require("../facades/Facades")
 
 class DatabaseProvider extends ServiceProvider {
     constructor(app) {
@@ -9,7 +9,7 @@ class DatabaseProvider extends ServiceProvider {
     }
 
     register() {
-        Facades.DB = new DB()
+        Facades.Db = new DB()
 
     }
 

@@ -3,14 +3,14 @@ const Koa = require("koa")
 const os = require("os");
 
 const cluster = require("cluster");
-const FC = require("../Facades");
+const Facades = require("../facades/Facades");
 module.exports = class Web extends Koa {
     constructor(options) {
         super(options);
     }
 
     Run(port, func) {
-        const clusterConfig = FC.Config.Get("cluster", {
+        const clusterConfig = Facades.Config.Get("cluster", {
             enabled: true,
             process_max_count: 128
         })
@@ -25,18 +25,18 @@ module.exports = class Web extends Koa {
                 cluster.fork();
             }
             cluster.on('exit', (worker) => {
-                FC.Log.WarnHttp(`worker ${worker.process.pid} died`);
+                Facades.Log.WarnHttp(`worker ${worker.process.pid} died`);
             });
-            FC.Log.InfoHttp(`server run in port=${port}`);
-            FC.Log.InfoHttp(`web url=http://127.0.0.1:${port}`);
-            FC.Log.InfoHttp(`start worker count${max}`)
+            Facades.Log.InfoHttp(`server run in port=${port}`);
+            Facades.Log.InfoHttp(`web url=http://127.0.0.1:${port}`);
+            Facades.Log.InfoHttp(`start worker count${max}`)
 
         } else {
 
             this.listen(port);
 
             this.on('error', err => {
-                FC.Log.ErrorHttp(`server error: ${err.message}`);
+                Facades.Log.ErrorHttp(`server error: ${err.message}`);
                 console.error(err)
             });
             func(process.pid)

@@ -1,12 +1,7 @@
 // @ts-nocheck
-const Application = require("../../boot/Application");
-
-const  { Http2ServerRequest } = require("http2");
 const KoaContext =require("koa/lib/context");
 const HttpRequest = require("./HttpRequest");
-const Request = require("./HttpRequest");
 const HttpResponse = require("./HttpResponse");
-const Response = require("./HttpResponse");
 module.exports = class HttpContext {
     /**
      * @type  KoaContext()
@@ -34,8 +29,8 @@ module.exports = class HttpContext {
     constructor(app, ctx) {
         this._ctx = ctx;
         this._app = app;
-        this.request = new Request(ctx);
-        this.response = new Response(ctx);
+        this.request = new HttpRequest(ctx);
+        this.response = new HttpResponse(ctx);
     }
 
     App() {

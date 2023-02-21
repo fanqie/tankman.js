@@ -1,10 +1,7 @@
-const Router = require("../../route/Router");
-const RouterHandle = require("../../route/RouterHandle");
-const HttpContext = require("../context/HttpContext");
-
+//@ts-nocheck
 const Middleware = require("../middleware/Middleware");
 
-const FC = require("../../Facades");
+const FC = require("../../facades/Facades");
 const CtxPipeline = require("./CtxPipeline");
 
 module.exports = class AccessPipeline {
@@ -15,7 +12,7 @@ module.exports = class AccessPipeline {
     middlewareMaps = {};
 
     constructor() {
-        const configMaps = FC.Config.Get('app', {})['middleware']
+        const configMaps = FC.Config.Get('app', {})['middleware'];
         Object.keys(configMaps).forEach(key => {
             this.middlewareMaps[key] = new configMaps[key]()
         })
@@ -49,7 +46,7 @@ module.exports = class AccessPipeline {
         // @ts-ignore
         ctxPipeline.Pip(route.GetInstanceAction());
         // @ts-ignore
-        await new ctxPipeline.Next()
+        await  ctxPipeline.Next()
     }
 
 }

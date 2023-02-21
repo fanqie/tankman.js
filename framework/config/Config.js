@@ -1,4 +1,4 @@
-const Facades = require("../Facades");
+const Facades = require("../facades/Facades");
 const LoadConfiguration = require("./LoadConfigration");
 
 /**
@@ -42,11 +42,11 @@ class Config {
      */
     Load() {
         const Config = LoadConfiguration.Load(Facades.Config.Get("APP_CONFIG_DIR","config"));
-        this._Config = {...this._Config, ...Config}
+        this._Config = {...this._Config, ...Config};
     }
 
 
 }
 
 
-module.exports = Config
+module.exports = Config;

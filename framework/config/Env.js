@@ -1,17 +1,13 @@
-const Facades = require("../Facades");
-const LoadEnvironmentVariables = require("./LoadEnvironmentVariables")
+const Facades = require("../facades/Facades");
+const LoadEnvironmentVariables = require("./LoadEnvironmentVariables");
 
-/**
- *
- * @type {Env}
- */
-class Env {
+module.exports = class Env {
     /**
      *
      * @type {{}}
      * @private
      */
-    _Envs = {}
+    _Envs = {};
 
     /**
      *
@@ -72,4 +68,4 @@ class Env {
 }
 
 
-module.exports = Env
+ 

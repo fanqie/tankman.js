@@ -1,4 +1,4 @@
-const Facades = require("../Facades")
+const Facades = require("../facades/Facades")
 const ServiceProvider = require("./ServiceProvider");
 const Log = require("../log/Log");
 
@@ -22,4 +22,4 @@ class LogProvider extends ServiceProvider {
     }
 }
 
-module.exports = LogProvider
+module.exports = LogProvider;
