@@ -1,6 +1,6 @@
 const ServiceProvider = require("./ServiceProvider");
 const DB = require("../orm/Db.js");
-const {FC} = require("../Index");
+const Facades = require("../Facades")
 
 class DatabaseProvider extends ServiceProvider {
     constructor(app) {
@@ -9,16 +9,11 @@ class DatabaseProvider extends ServiceProvider {
     }
 
     register() {
-        /**
-         * DB
-         * @type {DB}
-         */
-        FC.DB = DB.ConnectionDefaultDb()
+        Facades.DB = new DB()
 
     }
 
     boot() {
-        FC.DB.ConnectTo = DB.ConnectTo
     }
 }
 

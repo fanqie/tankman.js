@@ -1,9 +1,8 @@
-const Web = require("./Web");
-const AccessPipeline = require("./pipeline/AccessPipeline");
-const FC = require("../Facades");
-const HttpContext = require("../http/context/HttpContext");
-const createError = require("http-errors");
-const microtime = require('microtime');
+const Web = require("./Web")
+const AccessPipeline = require("./pipeline/AccessPipeline")
+const FC = require("../Facades")
+const createError = require("http-errors")
+const microtime = require('microtime')
 
 module.exports = class Engine {
 
@@ -30,7 +29,7 @@ module.exports = class Engine {
 
     /**
      *
-     * @param httpCtx {HttpContext}
+     * @param ctx
      * @param next
      * @return {Promise<void>}
      * @private
@@ -39,9 +38,9 @@ module.exports = class Engine {
         const route = FC.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
         // console.log(route,ctx.request.path,ctx.request.method)
         if (route) {
-            if (route.redirectUrl) {
+            if (typeof route!=="boolean"&&route.redirectUrl) {
 
-                httpCtx.response.Redirect(route.redirectUrl)
+                ctx.redirect(route.redirectUrl)
             } else {
                 try {
                     const start = microtime.now();

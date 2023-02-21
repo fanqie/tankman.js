@@ -3,18 +3,20 @@ const Router = require("./Router")
 class RouterHandle extends Router {
     /**
      * @param options {{middleware: *[], prefix: string}}
-     * @param methods {string|[string]}
+     * @param methods {string|string[]}
      * @param vPath {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string}
      * @param action
      */
-    constructor(options = {}, methods, vPath, controllerClassOrActionFunc, action) {
+    constructor(options = {
+        middleware: [],
+        prefix: ""
+    }, methods, vPath, controllerClassOrActionFunc, action) {
         super(options, methods, vPath, controllerClassOrActionFunc, action);
         super.methods = Array.isArray(methods) ? methods : [methods];
         super.vPath = vPath;
         super.path = super.MakePath();
-
         if (this._IsClass(controllerClassOrActionFunc)) {
             super.controllerClass = controllerClassOrActionFunc;
             super.action = action;
@@ -22,6 +24,7 @@ class RouterHandle extends Router {
             super.actionFunc = controllerClassOrActionFunc
         }
 
+        // @ts-ignore
         super.match = super.MakeMath()
 
     }
@@ -34,7 +37,6 @@ class RouterHandle extends Router {
     /**
      * get url values
      * @param path
-     * @param method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     is(path, method) {
@@ -47,9 +49,9 @@ class RouterHandle extends Router {
 
     /**
      * middleware
-     * @param middleware
+     * @param middleware {string[]|string}
+     * @public
      * @returns {Router|RouterHandle}
-     * @constructor
      */
     Middleware(middleware) {
         if (typeof middleware == "string") {
@@ -61,10 +63,11 @@ class RouterHandle extends Router {
 
     /**
      * Get Any route action
-     * @returns {Function}
+     * @return {*|Function}
      * @constructor
      */
     GetInstanceAction() {
+        // @ts-ignore
         return this.controllerClass ? new this.controllerClass().__proto__[this.action] : this.actionFunc
     }
 

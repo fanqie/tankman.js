@@ -1,12 +1,7 @@
-/** @typedef {typeof import('./HttpRequest')} HttpRequest */
-/** @typedef {typeof import('./HttpResponse')} HttpResponse */
-/** @typedef {typeof import('koa/lib/context')} KoaContext */
+const HttpRequest = require("./HttpRequest");
 const Request = require("./HttpRequest");
+const HttpResponse = require("./HttpResponse");
 const Response = require("./HttpResponse");
-/**
- *
- * @type {HttpContext}
- */
 module.exports = class HttpContext {
     /**
      * @type  {KoaContext}

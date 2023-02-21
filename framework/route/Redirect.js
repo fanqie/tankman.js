@@ -4,9 +4,9 @@ const {REQUEST_METHOD} = require("./Enums")
 class Redirect extends Router {
     /**
      *
-     * @param options {{middlewares: *[], prefix: string}}
-     * @param vPath
-     * @param redirectUrl
+     * @param options {{middleware: *[], prefix: string}}
+     * @param vPath {string}
+     * @param redirectUrl {string}
      */
     constructor(options = {}, vPath, redirectUrl) {
         super(options,vPath,redirectUrl);
@@ -20,7 +20,6 @@ class Redirect extends Router {
     /**
      * get url values
      * @param path
-     * @param method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
     is(path, method) {

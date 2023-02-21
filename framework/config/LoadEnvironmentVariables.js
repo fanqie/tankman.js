@@ -9,7 +9,7 @@ class LoadEnvironmentVariables {
      *
      * @param filePath
      * @return {{}}
-     * @constructor
+     * @public
      */
     static Load(filePath="") {
         const envs = {}

@@ -1,7 +1,6 @@
 const Facades = require("../Facades")
 const ServiceProvider = require("./ServiceProvider");
 const Log = require("../log/Log");
-const {FC} = require("../Index");
 
 class LogProvider extends ServiceProvider {
     /**
@@ -19,7 +18,7 @@ class LogProvider extends ServiceProvider {
      *
      */
     boot() {
-        Facades.Log.SetConfig(FC.Config.Get("log", {}))
+        Facades.Log.SetConfig(Facades.Config.Get("log", {}))
     }
 }
 

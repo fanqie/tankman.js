@@ -1,13 +1,13 @@
-/** @typedef {typeof import('koa/lib/request')} KoaRequest */
-/** @typedef {typeof import('koa/lib/context')} KoaContext */
+const KoaRequest = require("koa/lib/request");
+const KoaContext = require("koa/lib/context");
 module.exports = class HttpRequest {
     /**
-     * @type KoaRequest
+     * @type KoaRequest()
      * @private
      */
     _request
     /**
-     * @type KoaContext
+     * @type KoaContext()
      * @private
      */
     _ctx
@@ -18,9 +18,9 @@ module.exports = class HttpRequest {
     _originalUrl
 
     /**
+     *
      * @param name? {string}
-     * @param name
-     * @returns {*}
+     * @return {*|null}
      * @constructor
      */
     GetHeader(name) {
@@ -28,8 +28,9 @@ module.exports = class HttpRequest {
     }
 
     /**
-     * @return {exports.req.headers}
-     * @constructor
+     *
+     * @return {*}
+     * @public
      */
     GetHeaderAll() {
         return this._request.headers;
@@ -37,8 +38,8 @@ module.exports = class HttpRequest {
 
     /**
      * @param name  {string}
-     * @param value  {*}
-     * @constructor
+     * @param value  {any}
+     * @public
      */
     SetHeader(name, value) {
         this._request.headers[name] = value;
@@ -46,7 +47,7 @@ module.exports = class HttpRequest {
 
     /**
      * @param method
-     * @constructor
+     * @public
      */
     SetMethod(method) {
         if (method) {
@@ -56,7 +57,7 @@ module.exports = class HttpRequest {
 
     /**
      * @return {String}
-     * @constructor
+     * @public
      */
     GetMethod() {
         return this._request.method;
@@ -65,7 +66,7 @@ module.exports = class HttpRequest {
     /**
      * Return parsed Content-Length when present.
      * @return {Number}
-     * @constructor
+     * @public
      */
     GetContentLength() {
         return this._request.length;
@@ -73,7 +74,7 @@ module.exports = class HttpRequest {
 
     /**
      * @param url {string}
-     * @constructor
+     * @public
      */
     SetUrl(url) {
         if (url) {
@@ -83,7 +84,7 @@ module.exports = class HttpRequest {
 
     /**
      * @return  url {String}
-     * @constructor
+     * @public
      */
     GetUrl() {
         return this._request.url;
@@ -92,7 +93,7 @@ module.exports = class HttpRequest {
     /**
      * Get full request URL.
      * @return {String|string|*}
-     * @constructor
+     * @public
      */
     GetOriginalUrl() {
         return this._originalUrl;
@@ -101,7 +102,7 @@ module.exports = class HttpRequest {
     /**
      * Get origin of URL.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetOrigin() {
         return this._request.origin;
@@ -110,7 +111,7 @@ module.exports = class HttpRequest {
     /**
      * Get full request URL.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetHref() {
         return this._request.href;
@@ -119,7 +120,7 @@ module.exports = class HttpRequest {
     /**
      * Set pathname, retaining the query string when present.
      * @param path {String}
-     * @constructor
+     * @public
      */
     SetPath(path) {
         if (path) {
@@ -130,7 +131,7 @@ module.exports = class HttpRequest {
     /**
      * Get request pathname.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetPath() {
         return this._request.path
@@ -139,7 +140,7 @@ module.exports = class HttpRequest {
     /**
      * Set query string.
      * @param querystring {String}
-     * @constructor
+     * @public
      */
     SetQuerystring(querystring) {
         if (querystring) {
@@ -150,7 +151,7 @@ module.exports = class HttpRequest {
     /**
      * Get parsed query string.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetQuerystring() {
         return this._request.querystring
@@ -159,7 +160,7 @@ module.exports = class HttpRequest {
     /**
      * Set the search string. Same as request.querystring= but included for ubiquity.
      * @param search {String}
-     * @constructor
+     * @public
      */
     SetSearch(search) {
         if (search) {
@@ -170,7 +171,7 @@ module.exports = class HttpRequest {
     /**
      * Get the search string. Same as the query string except it includes the leading ?.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetSearch() {
         return this._request.search
@@ -179,7 +180,7 @@ module.exports = class HttpRequest {
     /**
      * Parse the “Host” header field host and support X-Forwarded-Host when a proxy is enabled.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetHost() {
         return this._request.host
@@ -188,7 +189,7 @@ module.exports = class HttpRequest {
     /**
      * Parse the “Host” header field hostname and support X-Forwarded-Host when a proxy is enabled.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetHostname() {
         return this._request.hostname
@@ -196,7 +197,7 @@ module.exports = class HttpRequest {
 
     /**
      * Get WHATWG parsed URL. Lazily memoized.
-     * @constructor
+     * @public
      */
     GetWHATWG_URL() {
         this._request.URL
@@ -207,7 +208,7 @@ module.exports = class HttpRequest {
      * Last-Modified and/or the ETag
      * still match.
      * @return {Boolean}
-     * @constructor
+     * @public
      */
     IsFresh() {
         return this._request.fresh
@@ -216,7 +217,7 @@ module.exports = class HttpRequest {
     /**
      * Check if the request is idempotent.
      * @return {Boolean}
-     * @constructor
+     * @public
      */
     IsIdempotent() {
         return this._request.idempotent
@@ -224,8 +225,8 @@ module.exports = class HttpRequest {
 
     /**
      * Return the request socket.
-     * @return {Connection}
-     * @constructor
+     * @return Connection
+     * @public
      */
     GetSocket() {
         return this._request.socket
@@ -234,7 +235,7 @@ module.exports = class HttpRequest {
     /**
      *
      * @return {String}
-     * @constructor
+     * @public
      */
     GetCharset() {
         return this._request.charset
@@ -247,9 +248,8 @@ module.exports = class HttpRequest {
      * this.get('Content-Type'); // => “text/plain”
      * this.get('content-type'); // => “text/plain”
      * this.get('Something'); // => ''
-     * @param key
      * @return {String}
-     * @constructor
+     *
      */
     Get(field) {
         return this._request.get(field)
@@ -261,7 +261,7 @@ module.exports = class HttpRequest {
      * ['utf-8', 'utf-7', 'iso-8859-1']
      * @param charsets
      * @return {String|Array}
-     * @constructor
+     * @public
      */
     AcceptsCharsets(charsets) {
         return this._request.acceptsCharsets(charsets)
@@ -273,7 +273,7 @@ module.exports = class HttpRequest {
      * ['es', 'pt', 'en']
      * @param languages
      * @return {Array|String}
-     * @constructor
+     * @public
      */
     AcceptsLanguages(languages) {
         return this._request.acceptsLanguages(languages)
@@ -285,7 +285,7 @@ module.exports = class HttpRequest {
      * ['gzip', 'deflate']
      * @param encodings
      * @return {String|Array}
-     * @constructor
+     * @public
      */
     AcceptsEncodings(encodings) {
         return this._request.acceptsEncodings(encodings)
@@ -301,7 +301,7 @@ module.exports = class HttpRequest {
      * // Accept: text/*;q=.5, application/json this.accepts(['html', 'json']); this.accepts('html', 'json'); // => “json”
      * @param args
      * @return {String|Array|false}
-     * @constructor
+     * @public
      */
     Accepts(...args) {
         return this._request.accepts(...args)
@@ -330,7 +330,7 @@ module.exports = class HttpRequest {
      * @param type
      * @param types
      * @return {String|false|null}
-     * @constructor
+     * @public
      */
     Is(type, ...types) {
         return this._request.is(type, ...types)
@@ -344,11 +344,11 @@ module.exports = class HttpRequest {
      * parts of the host. This can be changed by setting `app.subdomainOffset`.
      *
      * For example, if the domain is "tobi.ferrets.example.com":
-     * If `app.subdomainOffset` is not set, this.subdomains is
+     * If `app.subdomainOffset` is not set, this. Subdomains is
      * `["ferrets", "tobi"]`.
      * If `app.subdomainOffset` is 3, this.subdomains is `["tobi"]`.
      * @return {Array}
-     * @constructor
+     * @public
      */
     GetSubdomains() {
         return this._request.subdomains
@@ -357,7 +357,7 @@ module.exports = class HttpRequest {
     /**
      * When app.proxy is true, parse the “X-Forwarded-For” ip address list. For example if the value was “client, proxy1, proxy2” you would receive the array ["client", "proxy1", "proxy2"] where “proxy2” is the furthest down-stream.
      * @return {Array}
-     * @constructor
+     * @public
      */
     GetIps() {
         return this._request.ips
@@ -366,7 +366,7 @@ module.exports = class HttpRequest {
     /**
      * Return request's remote address When app.proxy is true, parse the “X-Forwarded-For” ip address list and return the first one
      * @return {String}
-     * @constructor
+     * @public
      */
     GetIp() {
         return this._request.ip
@@ -375,7 +375,7 @@ module.exports = class HttpRequest {
     /**
      * Shorthand for: this.protocol == 'https'
      * @return {Boolean}
-     * @constructor
+     * @public
      */
     IsSecure() {
         return this.GetProtocol() == 'https'
@@ -384,7 +384,7 @@ module.exports = class HttpRequest {
     /**
      * Return the protocol string “http” or “https” when requested with TLS. When the proxy setting is enabled the “X-Forwarded-Proto” header field will be trusted. If you're running behind a reverse proxy that supplies https for you this may be enabled.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetProtocol() {
         return this._request.protocol
@@ -393,7 +393,7 @@ module.exports = class HttpRequest {
     /**
      * Return the request mime type void of parameters such as “charset”.
      * @return {String}
-     * @constructor
+     * @public
      */
     GetType() {
         return this._request.type
@@ -402,7 +402,7 @@ module.exports = class HttpRequest {
     /**
      * Get content-type value
      * @return {String}
-     * @constructor
+     * @public
      */
     GetContentType() {
         return this.Get('content-type')

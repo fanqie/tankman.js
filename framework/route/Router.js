@@ -1,11 +1,12 @@
 const path = require("path")
 const pathToRegexp = require("path-to-regexp")
-const {FC} = require("../Index");
+const {Facades} = require("../Index");
 
 class Router {
     /**
      *
-     * @type {{prefix: string, middleware: [string]}}
+     * @type {{prefix: string, middleware: string[]}}
+     * @public
      */
     options = {
         prefix: "",
@@ -14,44 +15,52 @@ class Router {
 
     /**
      *
-     * @type {[string]}
+     * @type {string[]}
+     * @public
      */
     methods = [];
     /**
      * input path value
      * @type {string}
+     * @public
      */
     vPath = "";
     /**
      * input redirect next page url value
      * @type {string}
+     * @public
      */
     redirectUrl = "";
     /**
      * _MakePath
      * @type {string}
+     * @public
      */
     path = "";
     /**
      *
-     * @type {Class|Function}
+     * @type {ClassDecorator|Function}
+     * @public
      */
     controllerClass = null;
     /**
      *
      * @type {Function}
+     * @public
      */
     actionFunc = null;
     /**
      *
      * @type {string}
+     * @public
      */
     action = "Index";
     /**
-     * RegExp
-     * @type {MatchFunction<object>|Function}
+     *
+     * @type  {import("path-to-regexp").MatchFunction<object>}
+     * @public
      */
-    match = null;
+    match
 
     name = "";
 
@@ -59,6 +68,7 @@ class Router {
      *
      * @param options
      * @param args
+     * @public
      */
     constructor(options, ...args) {
         this._SetOptions(options)
@@ -70,14 +80,13 @@ class Router {
      * @protected
      */
     MakePath() {
-
         return path.join(this.options.prefix, this.vPath).replace(/\\/g, "/")
     }
 
     /**
      *
-     * @return {MatchFunction<object>|Function}
-     * @protected
+     * @return {import("path-to-regexp").MatchFunction<object>}
+     * @public
      */
     MakeMath() {
         return pathToRegexp.match(this.path, {
@@ -122,7 +131,7 @@ class Router {
      * setName
      * @param name {string}
      * @return Router|undefined
-     * @constructor
+     * @public
      */
     Name(name) {
         if (name) {

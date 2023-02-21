@@ -1,6 +1,7 @@
 const RouterHandle = require("./RouterHandle");
 const {REQUEST_METHOD} = require("./Enums");
 const Redirect = require("./Redirect");
+const Router = require("./Router");
 
 /**
  *
@@ -14,7 +15,7 @@ class Route {
     _group_middleware = [];
     /**
      *
-     * @type {{prefix: string, middleware: [string]}}
+     * @type {{prefix: string, middleware: string[]}}
      */
     options = {
         prefix: "",
@@ -31,7 +32,7 @@ class Route {
 
     /**
      *
-     * @type {[Router]}
+     * @type {Router[]}
      * @private
      */
     _routers = [];
@@ -46,7 +47,7 @@ class Route {
      * @param func {Function:route:{RouterHandle|Router}
      * @param  {[string]?} groupMiddlewareItems
      * @return {Route}
-     * @constructor
+     * @public
      */
     Group(prefix, func, groupMiddlewareItems) {
         this._prefix = prefix;
@@ -58,7 +59,7 @@ class Route {
     /**
      * @param path
      * @return {string}
-     * @constructor
+     * @public
      */
     GetPath(path) {
         return this.options.prefix ? this.options.prefix + "/" : "" + path
@@ -68,7 +69,7 @@ class Route {
     /**
      * @param method {string[]|string}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router}
      * @private
@@ -86,7 +87,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -97,7 +98,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -108,7 +109,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -118,7 +119,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -128,7 +129,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -138,7 +139,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -149,7 +150,7 @@ class Route {
     /**
      * @param methodsArray {string[]}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Class|Function}
+     * @param controllerClassOrActionFunc {ClassDecorator|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -198,7 +199,7 @@ class Route {
      * Get route by route name
      * @param name {string}
      * @return {Router | RouterHandle}
-     * @constructor
+     * @public
      */
     GetRoute(name) {
         return this._routesMap.get(name)
@@ -209,7 +210,7 @@ class Route {
      * @param pathname {string}
      * @param method {string} post|put|get|delete|put
      * @return {Router|RouterHandle|Redirect|boolean}
-     * @constructor
+     * @public
      */
     GetByPathname(pathname, method) {
         method = method = method.toLowerCase();

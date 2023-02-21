@@ -1,12 +1,13 @@
+const Db = require('./orm/Db');
+const Env = require('./config/Env');
+const Log = require('./log/Log');
+const Route = require('./route/Route');
+const ProcessInfo = require('./utils/ProcessInfo');
+
 /** @typedef {typeof import('./orm/Db')} DB */
-/** @typedef {typeof import('./config/config')} Config */
-/** @typedef {typeof import('./config/Env')} Env */
-/** @typedef {typeof import('./log/log')} Log */
-/** @typedef {typeof import('./route/route')} Route */
-/** @typedef {typeof import('./utils/ProcessInfo')} ProcessInfo */
 module.exports = {
     /**
-     * @type Config
+     * @type import('log4js').Config
      */
     Config: null,
     /**
@@ -18,10 +19,7 @@ module.exports = {
      */
     Route: null,
     Cache: null,
-    /**
-     * @type DB|Knex
-     */
-    DB: null,
+    Db,
     Auth: null,
     /**
      * @type Log

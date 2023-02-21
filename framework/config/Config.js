@@ -19,7 +19,7 @@ class Config {
      * @param name
      * @param defaultVal
      * @return {*|null}
-     * @constructor
+     * @public
      */
     Get(name, defaultVal = null) {
         return this._Config[name] || defaultVal
@@ -29,7 +29,7 @@ class Config {
      *
      * @param name
      * @param v
-     * @constructor
+     * @public
      */
     Set(name, v) {
         this._Config[name] = v
@@ -38,7 +38,7 @@ class Config {
 
     /**
      *
-     * @constructor
+     * @public
      */
     Load() {
         const Config = LoadConfiguration.Load(Facades.Config.Get("APP_CONFIG_DIR","config"));

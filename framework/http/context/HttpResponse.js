@@ -1,22 +1,24 @@
-/** @typedef {typeof import('./HttpResponseWrite')} HttpResponseWrite */
-/** @typedef {typeof import('koa/lib/response')} KoaResponse */
-/** @typedef {typeof import('koa/lib/context')} KoaContext */
-const ResponseWrite = require("./HttpResponseWrite");
+const HttpResponseWrite = require("./HttpResponseWrite");
+const KoaResponse = require("koa/lib/response");
 module.exports = class HttpResponse {
+    constructor(ctx) {
+        this._response = ctx.response
+    }
+
     /**
      *
      * @type {HttpResponseWrite}
      */
     output;
     /**
-     * @type KoaResponse
+     * @type KoaResponse()
      * @private
      */
     _response;
 
     constructor(ctx) {
         this._response=ctx.response;
-        this.output = new ResponseWrite(ctx)
+        this.output = new HttpResponseWrite(ctx)
     }
 
     WriteBytes(bytes) {
@@ -30,7 +32,7 @@ module.exports = class HttpResponse {
     /**
      * Set Content-Type response header with type through mime.lookup() when it does not contain a charset.
      * @param type
-     * @constructor
+     * @public
      */
     SetContentType(type) {
         this._response.type = type;
@@ -39,7 +41,7 @@ module.exports = class HttpResponse {
     /**
      *
      * @return {String|string|*}
-     * @constructor
+     * @public
      */
     GetContentType() {
         return this._response.type;
@@ -52,7 +54,7 @@ module.exports = class HttpResponse {
      * this.redirect('back'); this.redirect('back', '/index.html'); this.redirect('/login'); this.redirect('http://google.com');
      * @param url
      * @param alt
-     * @constructor
+     * @public
      */
     Redirect(url, alt) {
         this._response.redirect(url, alt)
@@ -61,14 +63,15 @@ module.exports = class HttpResponse {
     /**
      * @param name
      * @return {*|null}
-     * @constructor
+     * @public
      */
     GetHeader(name) {
         return name ? this._response.get(name) : null
     }
 
     /**
-     * @return {exports.header}
+     *
+     * @return {*}
      * @constructor
      */
     GetHeaderAll() {
@@ -86,7 +89,7 @@ module.exports = class HttpResponse {
      *    ctx.Response.SetHeader({ Accept: 'text/plain', 'X-API-Key': 'tobi' });
      * @param {String|Object|Array} field
      * @param value {any?}
-     * @constructor
+     * @public
      */
     SetHeader(field, value) {
         typeof field == "string" ? this._response.set(field, value) : this._response.set(field);
@@ -100,7 +103,7 @@ module.exports = class HttpResponse {
      * ctx.Response.AppendHeader('Warning', '199 Miscellaneous warning');
      * @param field
      * @param value
-     * @constructor
+     * @public
      */
     AppendHeader(field, value) {
         this.SetHeader(field, value)
@@ -109,7 +112,7 @@ module.exports = class HttpResponse {
     /**
      * Set response status code.
      * @param code
-     * @constructor
+     * @public
      */
     SetStatus(code = 200) {
         this._response.status = code
@@ -118,7 +121,7 @@ module.exports = class HttpResponse {
     /**
      * Remove header field.
      * @param field
-     * @constructor
+     * @public
      */
     RemoveHeader(field) {
         this._response.remove(field)
@@ -126,6 +129,7 @@ module.exports = class HttpResponse {
 
     /**
      * Get response status code.
+     * @description
      * 100 "continue"
      * 101 "switching protocols"
      * 102 "processing"
@@ -184,7 +188,7 @@ module.exports = class HttpResponse {
      * 508 "loop detected"
      * 510 "not extended"
      * 511 "network authentication required"
-     * @constructor
+     * @public
      */
     GetStatus() {
         return this._response.status
@@ -193,7 +197,7 @@ module.exports = class HttpResponse {
     /**
      * Set response status message
      * @param message
-     * @constructor
+     * @public
      */
     SetStatusMessage(message) {
         this._response.message = message
@@ -203,7 +207,7 @@ module.exports = class HttpResponse {
      * Get response status message
      * @param message
      * @return {String}
-     * @constructor
+     * @public
      */
     GetStatusMessage(message) {
         return this._response.message
@@ -212,7 +216,7 @@ module.exports = class HttpResponse {
     /**
      * Return parsed response Content-Length when present.
      * @return {Number|number|*}
-     * @constructor
+     * @public
      */
     GetContentLength() {
         return this._response.length;
@@ -221,7 +225,7 @@ module.exports = class HttpResponse {
     /**
      * Set Content-Length field to n.
      * @param contentLength
-     * @constructor
+     * @public
      */
     SetContentLength(contentLength) {
         this._response.length = contentLength;
@@ -229,13 +233,13 @@ module.exports = class HttpResponse {
 
     /**
      * Set response body.
-     * @param {String|Buffer|Object|Stream} val
+     * @param {String|Buffer|Object} val
      * string written
      * Buffer written
      * Stream piped
      * Object || Array json-stringified
      * null no content response
-     * @constructor
+     * @public
      */
     SetBody(val) {
         this._response.body = val
@@ -243,8 +247,8 @@ module.exports = class HttpResponse {
 
     /**
      * Get response body.
-     * @return {Mixed|null|*}
-     * @constructor
+     * @return {null|*}
+     * @public
      */
     GetBody() {
         return this._response.body
@@ -252,11 +256,11 @@ module.exports = class HttpResponse {
 
     /**
      * Check whether the response is one of the listed types.
-     * Pretty much the same as `ctx.request.is()`.
+     * Pretty much the same as `ctx.request.Is()`.
      * @param type
      * @param types
      * @return {String|false}
-     * @constructor
+     * @public
      */
     Is(type, ...types) {
         return this._response.is(type, ...types)
@@ -274,28 +278,28 @@ module.exports = class HttpResponse {
     /**
      * Check if a header has been written to the socket.
      * @return {Boolean}
-     * @constructor
+     * @public
      */
     CheckHeaderSent() {
         return this._response.headerSent
     }
 
     /**
-     * Set the Last-Modified date using a string or a Date.
-     *
-     *     this.response.lastModified = new Date();
-     *     this.response.lastModified = '2013-09-13';
+     * get the Last-Modified date using a string or a Date
      * @return {Date}
-     * @constructor
+     * @public
      */
     GetLastModified() {
         return this._response.lastModified
     }
 
     /**
-     * Set the Last-Modified date in Date form, if it exists.
+     * set the Last-Modified date using a string or a Date.
+     *
+     *     this.lastModified(new Date());
+     *     this.lastModified('2013-09-13');
      * @param date {Date}
-     * @constructor
+     * @public
      */
     SetLastModified(date) {
         this._response.lastModified = date
@@ -304,12 +308,12 @@ module.exports = class HttpResponse {
     /**
      * Set the ETag of a response.
      * This will normalize the quotes if necessary.
+     * @example
+     *     this.SetETag('md5hashsum');
+     *     this.SetETag('"md5hashsum"');
+     *     this.SetETag('W/"123456789"');
      *
-     *     this.response.etag = 'md5hashsum';
-     *     this.response.etag = '"md5hashsum"';
-     *     this.response.etag = 'W/"123456789"';
-     *
-     * @param {String} etag
+     * @param {String} val
      */
     SetETag(val) {
         this._response.etag = val
@@ -317,7 +321,7 @@ module.exports = class HttpResponse {
 
     /**
      * Flush any set headers and begin the body
-     * @constructor
+     * @public
      */
     FlushHeaders() {
         this._response.flushHeaders()

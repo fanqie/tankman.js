@@ -3,10 +3,10 @@ const fs = require("fs");
 
 class LoadRouters {
     /**
-     *
+     * install project defined routers
      * @param filePath
-     * @return {{}}
-     * @constructor
+     * @static
+     * @public
      */
     static Load(filePath) {
         if (!path.isAbsolute(filePath || "")) {
