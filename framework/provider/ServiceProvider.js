@@ -1,4 +1,4 @@
-class ServiceProvider {
+module.exports = class ServiceProvider {
     static app
 
     constructor(app) {
@@ -19,4 +19,3 @@ class ServiceProvider {
     }
 }
 
-module.exports = ServiceProvider
