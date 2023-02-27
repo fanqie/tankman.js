@@ -10,16 +10,21 @@ const ServiceProvider = require("../provider/ServiceProvider");
  *
  */
 class Application {
-
-
+    Facades={}
     /**
      *
      */
     constructor() {
         this.registerBaseServiceProviders();
         this.bootBaseServiceProviders()
+
     }
 
+    _register(){
+        for (const key of Object.keys(Facades)) {
+            this.Facades[key]=Facades[key]
+        }
+    }
     /**
      *
      */
@@ -29,6 +34,7 @@ class Application {
         this.bootConfiguredServiceProviders();
 
         this.setRootPath();
+        this._register()
     }
 
     /**

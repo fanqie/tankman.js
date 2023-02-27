@@ -2,7 +2,7 @@ const RouterHandle = require("./RouterHandle");
 const {REQUEST_METHOD} = require("./Enums");
 const Redirect = require("./Redirect");
 const Router = require("./Router");
-
+const Controller =require("../http/controller/Controller")
 /**
  *
  */
@@ -69,7 +69,7 @@ class Route {
     /**
      * @param method {string[]|string}
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router}
      * @private
@@ -87,7 +87,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -98,7 +98,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -109,7 +109,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -119,7 +119,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -129,7 +129,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -139,7 +139,7 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
@@ -150,7 +150,7 @@ class Route {
     /**
      * @param methodsArray {string[]}
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */

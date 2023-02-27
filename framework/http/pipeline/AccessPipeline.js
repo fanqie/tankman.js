@@ -1,7 +1,6 @@
 //@ts-nocheck
 const Middleware = require("../middleware/Middleware");
 
-const FC = require("../../facades/Facades");
 const CtxPipeline = require("./CtxPipeline");
 
 module.exports = class AccessPipeline {
@@ -10,9 +9,10 @@ module.exports = class AccessPipeline {
      * @type Object:string:Middleware
      */
     middlewareMaps = {};
-
-    constructor() {
-        const configMaps = FC.Config.Get('app', {})['middleware'];
+    app
+    constructor(app) {
+        this.app=app
+        const configMaps = this.app.Facades.Config.Get('app', {})['middleware'];
         Object.keys(configMaps).forEach(key => {
             this.middlewareMaps[key] = new configMaps[key]()
         })

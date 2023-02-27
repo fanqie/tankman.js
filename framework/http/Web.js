@@ -5,15 +5,15 @@ const os = require("os");
 const cluster = require("cluster");
 const Facades = require("../facades/Facades");
 module.exports = class Web extends Koa {
-    constructor(options) {
+
+
+    constructor(options ){
         super(options);
     }
 
-    Run(port, func) {
-        const clusterConfig = Facades.Config.Get("cluster", {
-            enabled: true,
-            process_max_count: 128
-        })
+    Run(port, func,config) {
+
+        const clusterConfig = config
         if (cluster.isMaster && clusterConfig.enabled) {
             /**
              * Clusters of Tankman.js processes can be used to run multiple instances of http-server that can distribute workloads among their application threads.
