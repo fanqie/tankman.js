@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "ds": "^1.4.2",
     "http-errors": "^2.0.0",
     "knex": "^2.4.2",
     "koa": "^2.14.1",
@@ -12,9 +13,11 @@
     "microtime": "^3.1.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.1.2",
+    "parse-comments": "^1.0.0",
     "path-to-regexp": "^6.2.1",
     "tedious": "^15.1.2",
-    "tern": "^0.24.3"
+    "tern": "^0.24.3",
+    "xss": "^1.0.14"
   },
   "scripts": {
     "test": "mocha test/**/*.js",
