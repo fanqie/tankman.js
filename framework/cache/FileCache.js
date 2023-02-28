@@ -3,34 +3,21 @@ const path = require("path");
 const fs = require("fs");
 const Cache = require("./Cache");
 const DS = require("ds").DS;
+const tankCache = require("tank-cache")
 module.exports = class FileCache extends Cache {
-    config = {
-        saveFile: ".runtime/cache.json"
-    }
-    data = new DS();
+    // config = {
+    //     saveFile: ".runtime/cache.json"
+    // }
 
-    dirPath = ""
 
-    //Facades.Config.Get("cache")?.file
-    constructor(config) {
-
+    constructor(savePath) {
         super();
-        this.config = config || this.config;
-        if (!path.isAbsolute(this.config.saveFile)) {
-            this.dirPath = path.join(process.cwd(), this.config.saveFile)
-        } else {
-            this.dirPath = this.config.saveFile
-        }
-        if (!fs.existsSync(this.dirPath)) {
-            fs.mkdirSync(path.dirname(this.dirPath))
-            // throw new Error("not found cache.saveFile：" + this.dirPath)
-        }
-
+        this.cache = new tankCache(savePath)
 
     }
 
     Has(key) {
-        return this.data.hasOwnProperty(key)
+        return this.cache.Has(key)
     }
 
     /**
@@ -41,21 +28,11 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     Get(key, defaultVal = null) {
-        let val = null
-        let obj = this.data[key]
-        if (obj) {
-            if (obj.expires === 0 || this._Now() < obj.expires) {
-                val = obj.val;
-            } else {
-                val = null;
-                this._Nuke(key);
-            }
-        }
-        return val || defaultVal;
+        return this.cache.Get(key, defaultVal)
     }
 
     Forever(key, val) {
-        this.Store(key, val, 0)
+        return this.cache.Forever(key, val)
     }
 
     /**
@@ -65,10 +42,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     Forget(key) {
-        if (this.Has(key)) {
-            this._Nuke(key)
-        }
-        return null;
+        return this.cache.Forget(key)
     }
 
     /**
@@ -77,17 +51,9 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     Pull(key) {
-        if (this.Has(key)) {
-            const oldValue = this.Get(key)
-            this._Nuke(key)
-            return oldValue
-        }
-        return null;
+        return this.cache.Pull(key)
     }
 
-    _Now() {
-        return (new Date()).getTime()
-    }
 
     /**
      * Set Store an item in the cache for a given number of seconds.
@@ -98,14 +64,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     Store(key, val = null, ttl = 0) {
-        let expires = ttl === 0 ? 0 : (this._Now() + ttl * 1000);
-        if (val !== null) {
-            this.data[key] = {
-                expires,
-                val,
-            }
-            this._Save()
-        }
+        this.cache.Store(key, val, ttl);
     }
 
     /**
@@ -117,7 +76,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     Set(key, val = null, ttl = 0) {
-        this.Store(key, val, ttl)
+        this.cache.Store(key, val, ttl);
     }
 
     /**
@@ -129,33 +88,14 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     Add(key, val = null, ttl = 0) {
-        //if existed
-        if (!this.Has(key)) {
-            this.Store(key, val, ttl)
-            return true
-        }
-        return false
+        return this.cache.Add(key, val, ttl);
     }
 
+    /**
+     * clear Cache
+     * @Function
+     */
     Flush() {
-        this.data = {}
-        this._Save()
-    }
-
-    /**
-     *
-     * @private
-     */
-    _Nuke(key) {
-        delete this.data[key]
-        this._Save()
-    }
-
-    /**
-     *
-     * @private
-     */
-    _Save() {
-        this.data.save(this.dirPath);
+        return this.cache.Flush();
     }
 }
