@@ -4,13 +4,19 @@ const ConfigProvider = require("../provider/ConfigProvider");
 const EnvProvider = require("../provider/EnvProvider");
 
 const ServiceProvider = require("../provider/ServiceProvider");
+const FacadesClass = require("../facades/FacadesClass");
 
 
 /**
  *
  */
 class Application {
-    Facades={}
+    /**
+     *
+     * @type FacadesClass
+     */
+    Facades
+
     /**
      *
      */
@@ -20,11 +26,13 @@ class Application {
 
     }
 
-    _register(){
-        for (const key of Object.keys(Facades)) {
-            this.Facades[key]=Facades[key]
-        }
+    _register() {
+        // for (const key of Object.keys(Facades)) {
+        //     this.Facades[key]=Facades[key]
+        // }
+        this.Facades = Facades
     }
+
     /**
      *
      */

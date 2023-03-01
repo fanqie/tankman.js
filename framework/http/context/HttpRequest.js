@@ -18,11 +18,39 @@ module.exports = class HttpRequest {
      */
     _originalUrl
 
+    _postParams
+
     /**
+     * @param ctx
+     */
+    constructor(ctx) {
+        this._ctx = ctx;
+        this._request = ctx.request;
+        this._originalUrl = this._request.url;
+        this._postParams = ctx.request.body;
+    }
+
+    Post(name) {
+        return this._postParams[name] || null
+    }
+
+    Get(name) {
+        return this._request.query[name] || null
+    }
+
+    GetPostAll() {
+        return this._request._postParams
+    }
+
+    /**
+     * Return request header.
+     * The Referrer header field is special-cased, both Referrer and Referer are interchangeable.
+     * Examples:
+     * this.getHeader('Content-Type'); // => “text/plain”
+     * this.getHeader('content-type'); // => “text/plain”
+     * this.getHeader('Something'); // => ''
+     * @return {String|null}
      *
-     * @param name? {string}
-     * @return {*|null}
-     * @constructor
      */
     GetHeader(name) {
         return name ? this._request.get(name) : null
@@ -242,19 +270,6 @@ module.exports = class HttpRequest {
         return this._request.charset
     }
 
-    /**
-     * Return request header.
-     * The Referrer header field is special-cased, both Referrer and Referer are interchangeable.
-     * Examples:
-     * this.get('Content-Type'); // => “text/plain”
-     * this.get('content-type'); // => “text/plain”
-     * this.get('Something'); // => ''
-     * @return {String}
-     *
-     */
-    Get(field) {
-        return this._request.get(field)
-    }
 
     /**
      * Return accepted charsets or best fit based on charsets.
@@ -409,12 +424,5 @@ module.exports = class HttpRequest {
         return this.Get('content-type')
     }
 
-    /**
-     * @param ctx
-     */
-    constructor(ctx) {
-        this._ctx = ctx;
-        this._request = ctx.request;
-        this._originalUrl = this._request.url;
-    }
+
 }
