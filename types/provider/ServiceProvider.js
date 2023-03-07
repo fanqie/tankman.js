@@ -1,4 +1,4 @@
-class ServiceProvider {
+module.exports = class ServiceProvider {
     constructor(app) {
         this.app = app;
     }
@@ -12,5 +12,4 @@ class ServiceProvider {
      */
     boot() {
     }
-}
-module.exports = ServiceProvider;
+};

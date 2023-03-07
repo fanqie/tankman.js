@@ -19,14 +19,17 @@ module.exports = class Engine {
         this.app = null;
         this.port = 8002;
         this.app = app;
-        this.port = Facades.Env.Get("APP_PORT") || 8002;
-        this.accessPipeline = new AccessPipeline();
+        this.port = this.app.Facades.Env.Get("APP_PORT") || 8002;
+        this.accessPipeline = new AccessPipeline(this.app);
     }
     Run() {
         this.HttpServer = new Web();
         this.HttpServer.Run(this.port, (pid) => {
             Facades.Log.Info(`run process：${pid}`);
-        });
+        }, Object.assign({}, this.app.Facades.Config.Get("cluster", {
+            enabled: true,
+            process_max_count: 128
+        })));
         this.HttpServer.use((ctx, next) => __awaiter(this, void 0, void 0, function* () {
             yield this._RouteHandle(new HttpContext(this.app, ctx), next);
         }));
@@ -40,7 +43,7 @@ module.exports = class Engine {
      */
     _RouteHandle(httpCtx, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            const route = Facades.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
+            const route = this.app.Facades.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
             // console.log(route,ctx.request.path,ctx.request.method)
             if (route) {
                 if (typeof route !== "boolean" && route.redirectUrl) {
@@ -53,16 +56,16 @@ module.exports = class Engine {
                         yield this.accessPipeline.HandleNext(httpCtx, route);
                         const ms = microtime.now() - start;
                         httpCtx.request.SetHeader('X-Response-Time', `${ms}ms`);
-                        Facades.Log.InfoHttp(`【PID:${process.pid}】${httpCtx.request.GetMethod()} ${httpCtx.request.GetUrl()} time:${ms}ns`);
+                        this.app.Facades.Log.InfoHttp(`【PID:${process.pid}】${httpCtx.request.GetMethod()} ${httpCtx.request.GetUrl()} time:${ms}ns`);
                     }
                     catch (err) {
-                        Facades.Log.ErrorHttp(err.message);
+                        this.app.Facades.Log.ErrorHttp(err.message);
                         console.error(err);
                     }
                 }
             }
             else {
-                const route = Facades.Route.GetRoute("404");
+                const route = this.app.Facades.Route.GetRoute("404");
                 route ? httpCtx.Redirect(route.path) : next(createError.NotFound());
             }
         });

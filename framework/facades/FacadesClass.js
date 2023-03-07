@@ -1,6 +1,8 @@
 //@ts-nocheck
 module.exports = class FacadesClass {
-    constructor(){}
+    constructor() {
+    }
+
     /**
      * @type import('log4js').Config
      */
@@ -15,7 +17,7 @@ module.exports = class FacadesClass {
     Route;
     Cache;
     /**
-     * @type Db
+     * @type OrmClassType|Knex|Function
      */
     Db;
     Auth;

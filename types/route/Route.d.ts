@@ -47,7 +47,7 @@ declare class Route {
     /**
      * @param method {string[]|string}
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router}
      * @private
@@ -55,54 +55,54 @@ declare class Route {
     private _CreateRouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Post(path: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string | null): Router | RouterHandle;
+    Post(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Get(path: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string | null): Router | RouterHandle;
+    Get(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Patch(path: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string | null): Router | RouterHandle;
+    Patch(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Put(path: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string | null): Router | RouterHandle;
+    Put(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Any(path: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string | null): Router | RouterHandle;
+    Any(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Delete(path: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string | null): Router | RouterHandle;
+    Delete(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
     /**
      * @param methodsArray {string[]}
      * @param path {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Match(methodsArray: string[], path: string, controllerClassOrActionFunc: ClassDecorator | Function, action: string | null): Router | RouterHandle;
+    Match(methodsArray: string[], path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
     /**
      * @param path
      * @param redirectUrl
@@ -133,5 +133,6 @@ declare class Route {
     public GetByPathname(pathname: string, method: string): Router | RouterHandle | Redirect;
 }
 import Router = require("./Router");
+import Controller = require("../http/controller/Controller");
 import RouterHandle = require("./RouterHandle");
 import Redirect = require("./Redirect");

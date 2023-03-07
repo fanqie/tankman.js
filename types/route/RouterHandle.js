@@ -1,11 +1,12 @@
 //@ts-nocheck
 const Router = require("./Router");
+const Controller = require("../http/controller/Controller");
 class RouterHandle extends Router {
     /**
      * @param options {{middleware: *[], prefix: string}}
      * @param methods {string|string[]}
      * @param vPath {string}
-     * @param controllerClassOrActionFunc {ClassDecorator|Function}
+     * @param controllerClassOrActionFunc {Controller|Function}
      * @param action {string}
      * @param action
      */

@@ -1,12 +1,14 @@
 const ServiceProvider = require("./ServiceProvider");
-const DB = require("../orm/Db.js");
+const DbManager = require("../orm/DbManager.js");
 const Facades = require("../facades/Facades");
+const Orm = require("../orm/Orm");
 class DatabaseProvider extends ServiceProvider {
     constructor(app) {
         super(app);
     }
     register() {
-        Facades.Db = new DB();
+        const dbManager = new DbManager();
+        Facades.Db = dbManager.GetDefault();
     }
     boot() {
     }

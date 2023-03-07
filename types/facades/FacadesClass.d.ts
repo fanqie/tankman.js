@@ -14,9 +14,9 @@ declare class FacadesClass {
     Route: Route;
     Cache: any;
     /**
-     * @type Db
+     * @type OrmClassType|Knex|Function
      */
-    Db: Db;
+    Db: OrmClassType | Knex | Function;
     Auth: any;
     /**
      * @type Log

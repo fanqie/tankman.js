@@ -3,10 +3,32 @@ const KoaRequest = require("koa/lib/request");
 const KoaContext = require("koa/lib/context");
 module.exports = class HttpRequest {
     /**
+     * @param ctx
+     */
+    constructor(ctx) {
+        this._ctx = ctx;
+        this._request = ctx.request;
+        this._originalUrl = this._request.url;
+        this._postParams = ctx.request.body;
+    }
+    Post(name) {
+        return this._postParams[name] || null;
+    }
+    Get(name) {
+        return this._request.query[name] || null;
+    }
+    GetPostAll() {
+        return this._request._postParams;
+    }
+    /**
+     * Return request header.
+     * The Referrer header field is special-cased, both Referrer and Referer are interchangeable.
+     * Examples:
+     * this.getHeader('Content-Type'); // => “text/plain”
+     * this.getHeader('content-type'); // => “text/plain”
+     * this.getHeader('Something'); // => ''
+     * @return {String|null}
      *
-     * @param name? {string}
-     * @return {*|null}
-     * @constructor
      */
     GetHeader(name) {
         return name ? this._request.get(name) : null;
@@ -203,19 +225,6 @@ module.exports = class HttpRequest {
         return this._request.charset;
     }
     /**
-     * Return request header.
-     * The Referrer header field is special-cased, both Referrer and Referer are interchangeable.
-     * Examples:
-     * this.get('Content-Type'); // => “text/plain”
-     * this.get('content-type'); // => “text/plain”
-     * this.get('Something'); // => ''
-     * @return {String}
-     *
-     */
-    Get(field) {
-        return this._request.get(field);
-    }
-    /**
      * Return accepted charsets or best fit based on charsets.
      * Given Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5 an array sorted by quality is returned:
      * ['utf-8', 'utf-7', 'iso-8859-1']
@@ -355,13 +364,5 @@ module.exports = class HttpRequest {
      */
     GetContentType() {
         return this.Get('content-type');
-    }
-    /**
-     * @param ctx
-     */
-    constructor(ctx) {
-        this._ctx = ctx;
-        this._request = ctx.request;
-        this._originalUrl = this._request.url;
     }
 };

@@ -1,10 +1,12 @@
 export = AccessPipeline;
 declare class AccessPipeline {
+    constructor(app: any);
     /**
      *
      * @type Object:string:Middleware
      */
     middlewareMaps: any;
+    app: any;
     /**
      * Handle Next
      * @param httpCtx {HttpContext}

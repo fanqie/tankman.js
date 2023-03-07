@@ -5,6 +5,12 @@ export = Application;
 declare class Application {
     /**
      *
+     * @type FacadesClass
+     */
+    Facades: FacadesClass;
+    _register(): void;
+    /**
+     *
      */
     bootTank(): void;
     /**
@@ -55,4 +61,5 @@ declare class Application {
      */
     getBaseServiceProviders(): ServiceProvider[];
 }
+import FacadesClass = require("../facades/FacadesClass");
 import ServiceProvider = require("../provider/ServiceProvider");

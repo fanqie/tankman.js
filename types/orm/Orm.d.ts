@@ -1,2 +1,2 @@
-declare const _exports: typeof import("knex");
+declare const _exports: any;
 export = _exports;

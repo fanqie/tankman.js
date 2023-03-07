@@ -24,7 +24,6 @@ class Log {
             return this.log4js.getLogger(category || "default");
         }
         catch (e) {
-            console.log(e);
             return this.log4js.getLogger("default");
         }
     }

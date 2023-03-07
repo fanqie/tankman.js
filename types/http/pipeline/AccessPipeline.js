@@ -9,16 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 //@ts-nocheck
 const Middleware = require("../middleware/Middleware");
-const FC = require("../../facades/Facades");
 const CtxPipeline = require("./CtxPipeline");
 module.exports = class AccessPipeline {
-    constructor() {
+    constructor(app) {
         /**
          *
          * @type Object:string:Middleware
          */
         this.middlewareMaps = {};
-        const configMaps = FC.Config.Get('app', {})['middleware'];
+        this.app = app;
+        const configMaps = this.app.Facades.Config.Get('app', {})['middleware'];
         Object.keys(configMaps).forEach(key => {
             this.middlewareMaps[key] = new configMaps[key]();
         });
@@ -48,7 +48,6 @@ module.exports = class AccessPipeline {
             }
             // @ts-ignore
             ctxPipeline.Pip(route.GetInstanceAction());
-            console.log(ctxPipeline.Next);
             // @ts-ignore
             yield ctxPipeline.Next();
         });

@@ -3,6 +3,7 @@ const ProcessInfoProvider = require("../provider/ProcessInfoProvider");
 const ConfigProvider = require("../provider/ConfigProvider");
 const EnvProvider = require("../provider/EnvProvider");
 const ServiceProvider = require("../provider/ServiceProvider");
+const FacadesClass = require("../facades/FacadesClass");
 /**
  *
  */
@@ -14,6 +15,12 @@ class Application {
         this.registerBaseServiceProviders();
         this.bootBaseServiceProviders();
     }
+    _register() {
+        // for (const key of Object.keys(Facades)) {
+        //     this.Facades[key]=Facades[key]
+        // }
+        this.Facades = Facades;
+    }
     /**
      *
      */
@@ -21,6 +28,7 @@ class Application {
         this.registerConfiguredServiceProviders();
         this.bootConfiguredServiceProviders();
         this.setRootPath();
+        this._register();
     }
     /**
      *

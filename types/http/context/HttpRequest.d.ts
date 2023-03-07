@@ -19,13 +19,21 @@ declare class HttpRequest {
      * @private
      */
     private _originalUrl;
+    _postParams: any;
+    Post(name: any): any;
+    Get(name: any): any;
+    GetPostAll(): any;
     /**
+     * Return request header.
+     * The Referrer header field is special-cased, both Referrer and Referer are interchangeable.
+     * Examples:
+     * this.getHeader('Content-Type'); // => “text/plain”
+     * this.getHeader('content-type'); // => “text/plain”
+     * this.getHeader('Something'); // => ''
+     * @return {String|null}
      *
-     * @param name? {string}
-     * @return {*|null}
-     * @constructor
      */
-    GetHeader(name: any): any | null;
+    GetHeader(name: any): string | null;
     /**
      *
      * @return {*}
@@ -161,17 +169,6 @@ declare class HttpRequest {
      * @public
      */
     public GetCharset(): string;
-    /**
-     * Return request header.
-     * The Referrer header field is special-cased, both Referrer and Referer are interchangeable.
-     * Examples:
-     * this.get('Content-Type'); // => “text/plain”
-     * this.get('content-type'); // => “text/plain”
-     * this.get('Something'); // => ''
-     * @return {String}
-     *
-     */
-    Get(field: any): string;
     /**
      * Return accepted charsets or best fit based on charsets.
      * Given Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5 an array sorted by quality is returned:

@@ -1,5 +1,7 @@
 export = Web;
-declare class Web {
+declare class Web extends Koa<Koa.DefaultState, Koa.DefaultContext> {
     constructor(options: any);
-    Run(port: any, func: any): void;
+    tempPath: string;
+    Run(port: any, func: any, config: any): void;
 }
+import Koa = require("koa");
