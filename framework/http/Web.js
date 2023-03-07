@@ -43,10 +43,24 @@ module.exports = class Web extends Koa {
 
             this.listen(port);
 
+            const toadyName=  new Date().getFullYear() +""+ (new Date().getMonth() + 1) + new Date().getDate()
+            const historyList = fs.readdirSync(this.tempPath)
+            let i=0
+            while (i<historyList.length){
+                if(historyList[i]<toadyName){
+                    fs.rmdirSync(path.join(this.tempPath +historyList[i]))
+                }
+                i++
+                break
+            }
+            const uploadDir=path.join(this.tempPath +toadyName)
+            if(!fs.existsSync(uploadDir)){
+                fs.mkdirSync(uploadDir,{recursive: true})
+            }
             this.use(koaBody({
                 multipart: true,
                 formidable: {
-                    uploadDir: path.join(this.tempPath + new Date().getFullYear() + (new Date().getMonth() + 1) + new Date().getDate()),//存储路径
+                    uploadDir:uploadDir ,//存储路径
                     keepExtensions: true,
                     maxFieldsSize: 2 * 1024 * 1024,
                     onError: (err) => {

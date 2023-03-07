@@ -45,6 +45,7 @@ module.exports = class Engine {
         const route = this.app.Facades.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
         // console.log(route,ctx.request.path,ctx.request.method)
         if (route) {
+            httpCtx.SetRouter(route);
             if (typeof route !== "boolean" && route.redirectUrl) {
 
                 httpCtx.Redirect(route.redirectUrl)

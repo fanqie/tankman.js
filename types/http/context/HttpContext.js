@@ -4,13 +4,33 @@ const HttpRequest = require("./HttpRequest");
 const HttpResponse = require("./HttpResponse");
 module.exports = class HttpContext {
     /**
+     *
+     * @param app
      * @param ctx
+
      */
     constructor(app, ctx) {
         this._ctx = ctx;
         this._app = app;
-        this.request = new HttpRequest(ctx);
-        this.response = new HttpResponse(ctx);
+        this.request = new HttpRequest(this);
+        this.response = new HttpResponse(this);
+    }
+    /**
+     *
+     * @return {Router|RouterHandle|Redirect}
+     * @constructor
+     */
+    GetRouter() {
+        return this._router;
+    }
+    /**
+     *
+     * @param router {Router|RouterHandle|Redirect}
+     * @return {Router|RouterHandle|Redirect}
+     * @function
+     */
+    SetRouter(router) {
+        this._router = router;
     }
     App() {
         return this._app;

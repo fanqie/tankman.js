@@ -5,17 +5,37 @@ module.exports = class HttpRequest {
     /**
      * @param ctx
      */
-    constructor(ctx) {
-        this._ctx = ctx;
-        this._request = ctx.request;
+    constructor(httpCtx) {
+        this.httpCtx = httpCtx;
+        this._ctx = httpCtx._ctx;
+        this._request = httpCtx._ctx.request;
         this._originalUrl = this._request.url;
-        this._postParams = ctx.request.body;
+        this._postParams = httpCtx._ctx.request.body;
+    }
+    /**
+     * Get Current Request Router
+     * @return {Router|RouterHandle|HttpContext.Redirect}
+     * @constructor
+     */
+    GetRouter() {
+        return this.httpCtx.GetRouter();
     }
     Post(name) {
-        return this._postParams[name] || null;
+        return this.httpCtx.App().Facades.Xss.Filter(this._postParams[name]) || null;
     }
     Get(name) {
-        return this._request.query[name] || null;
+        return this.httpCtx.App().Facades.Xss.Filter(this._request.query[name]) || null;
+    }
+    /**
+     * get file field value
+     * @param name
+     * @return {*|null}
+     * @function
+     */
+    File(name) {
+        var _a, _b;
+        console.log((_a = this._request.body) === null || _a === void 0 ? void 0 : _a.files[name]);
+        return ((_b = this._request.body) === null || _b === void 0 ? void 0 : _b.files[name]) || null;
     }
     GetPostAll() {
         return this._request._postParams;
@@ -147,7 +167,7 @@ module.exports = class HttpRequest {
      * @public
      */
     GetQuerystring() {
-        return this._request.querystring;
+        return this.httpCtx.App().Facades.Xss.Filter(this._request.querystring);
     }
     /**
      * Set the search string. Same as request.querystring= but included for ubiquity.

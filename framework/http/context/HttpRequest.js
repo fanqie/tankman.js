@@ -17,25 +17,50 @@ module.exports = class HttpRequest {
      * @private
      */
     _originalUrl
+    /**
+     * @type {HttpContext}
+     */
+    httpCtx
 
     _postParams
 
     /**
      * @param ctx
      */
-    constructor(ctx) {
-        this._ctx = ctx;
-        this._request = ctx.request;
+    constructor(httpCtx) {
+
+        this.httpCtx = httpCtx;
+        this._ctx = httpCtx._ctx;
+        this._request = httpCtx._ctx.request;
         this._originalUrl = this._request.url;
-        this._postParams = ctx.request.body;
+        this._postParams = httpCtx._ctx.request.body;
+    }
+
+    /**
+     * Get Current Request Router
+     * @return {Router|RouterHandle|HttpContext.Redirect}
+     * @constructor
+     */
+    GetRouter() {
+        return this.httpCtx.GetRouter()
     }
 
     Post(name) {
-        return this._postParams[name] || null
+        return this.httpCtx.App().Facades.Xss.Filter(this._postParams[name]) || null
     }
 
     Get(name) {
-        return this._request.query[name] || null
+        return this.httpCtx.App().Facades.Xss.Filter(this._request.query[name]) || null
+    }
+
+    /**
+     * get file field value
+     * @param name
+     * @return {*|null}
+     * @function
+     */
+    File(name) {
+        return this._request.files[name] || null
     }
 
     GetPostAll() {
@@ -183,7 +208,7 @@ module.exports = class HttpRequest {
      * @public
      */
     GetQuerystring() {
-        return this._request.querystring
+        return this.httpCtx.App().Facades.Xss.Filter(this._request.querystring)
     }
 
     /**

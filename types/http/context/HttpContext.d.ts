@@ -1,7 +1,10 @@
 export = HttpContext;
 declare class HttpContext {
     /**
+     *
+     * @param app
      * @param ctx
+
      */
     constructor(app: any, ctx: any);
     /**
@@ -22,6 +25,23 @@ declare class HttpContext {
      * @type {Application}
      */
     _app: Application;
+    /**
+     * @type {Router|RouterHandle|Redirect}
+     */
+    _router: Router | RouterHandle | Redirect;
+    /**
+     *
+     * @return {Router|RouterHandle|Redirect}
+     * @constructor
+     */
+    GetRouter(): Router | RouterHandle | Redirect;
+    /**
+     *
+     * @param router {Router|RouterHandle|Redirect}
+     * @return {Router|RouterHandle|Redirect}
+     * @function
+     */
+    SetRouter(router: Router | RouterHandle | Redirect): Router | RouterHandle | Redirect;
     App(): Application;
     /**
      * set cookies

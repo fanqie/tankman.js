@@ -32,4 +32,8 @@ declare class FacadesClass {
     ProcessInfo: ProcessInfo;
     Engine: any;
     UpLo: any;
+    /**
+     * @type Xss
+     */
+    Xss: Xss;
 }

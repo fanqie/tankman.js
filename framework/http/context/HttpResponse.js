@@ -14,9 +14,9 @@ module.exports = class HttpResponse {
      */
     _response;
 
-    constructor(ctx) {
-        this._response=ctx.response;
-        this.output = new HttpResponseWrite(ctx)
+    constructor(httpCtx) {
+        this._response=httpCtx._ctx.response;
+        this.output = new HttpResponseWrite(httpCtx._ctx)
     }
 
     WriteBytes(bytes) {

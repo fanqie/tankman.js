@@ -1,5 +1,5 @@
 // @ts-nocheck
-const KoaContext =require("koa/lib/context");
+const KoaContext = require("koa/lib/context");
 const HttpRequest = require("./HttpRequest");
 const HttpResponse = require("./HttpResponse");
 module.exports = class HttpContext {
@@ -22,15 +22,41 @@ module.exports = class HttpContext {
      * @type {Application}
      */
     _app;
+    /**
+     * @type {Router|RouterHandle|Redirect}
+     */
+    _router;
 
     /**
+     *
+     * @param app
      * @param ctx
+
      */
     constructor(app, ctx) {
         this._ctx = ctx;
         this._app = app;
-        this.request = new HttpRequest(ctx);
-        this.response = new HttpResponse(ctx);
+        this.request = new HttpRequest(this);
+        this.response = new HttpResponse(this);
+    }
+
+    /**
+     *
+     * @return {Router|RouterHandle|Redirect}
+     * @constructor
+     */
+    GetRouter() {
+        return this._router;
+    }
+
+    /**
+     *
+     * @param router {Router|RouterHandle|Redirect}
+     * @return {Router|RouterHandle|Redirect}
+     * @function
+     */
+    SetRouter(router) {
+        this._router = router;
     }
 
     App() {
@@ -103,8 +129,8 @@ module.exports = class HttpContext {
      * @param properties?
      * @constructor
      */
-    ThrowHttpError(status=503,msg='server error',properties){
-        this._ctx.throw(status,msg,properties)
+    ThrowHttpError(status = 503, msg = 'server error', properties) {
+        this._ctx.throw(status, msg, properties)
     }
 
     /**
@@ -113,7 +139,7 @@ module.exports = class HttpContext {
      * @param alt?
      * @public
      */
-    Redirect(url, alt="") {
-        this.response.Redirect(url,alt)
+    Redirect(url, alt = "") {
+        this.response.Redirect(url, alt)
     }
 };

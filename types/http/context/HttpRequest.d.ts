@@ -3,7 +3,7 @@ declare class HttpRequest {
     /**
      * @param ctx
      */
-    constructor(ctx: any);
+    constructor(httpCtx: any);
     /**
      * @type KoaRequest()
      * @private
@@ -19,9 +19,26 @@ declare class HttpRequest {
      * @private
      */
     private _originalUrl;
+    /**
+     * @type {HttpContext}
+     */
+    httpCtx: HttpContext;
     _postParams: any;
+    /**
+     * Get Current Request Router
+     * @return {Router|RouterHandle|HttpContext.Redirect}
+     * @constructor
+     */
+    GetRouter(): Router | RouterHandle | HttpContext.Redirect;
     Post(name: any): any;
     Get(name: any): any;
+    /**
+     * get file field value
+     * @param name
+     * @return {*|null}
+     * @function
+     */
+    File(name: any): any | null;
     GetPostAll(): any;
     /**
      * Return request header.
