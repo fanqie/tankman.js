@@ -29,11 +29,5 @@ function Orm(){
  */
 Orm.instance = null
 
-class OrmClassType{
-    /**
-     * @type {DbManager}
-     */
-    instance
-}
 module.exports = lodash.merge(Knex,Orm)
 

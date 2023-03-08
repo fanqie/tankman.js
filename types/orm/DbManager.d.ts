@@ -5,12 +5,9 @@ declare class DbManager {
      */
     defaultConn: any | typeof Knex;
     /**
-     *
-     * @type {{string:Orm|Knex}}
+     * @type {Map<string, OrmClassType>}
      */
-    connMap: {
-        string: any | typeof Knex;
-    };
+    connMap: Map<string, OrmClassType>;
     /**
      * @return {OrmClassType|Knex}
      * @public
@@ -51,9 +48,35 @@ declare class DbManager {
     /**
      * Get Orm instance
      * @param client
-     * @return {Orm|Knex}
+     * @return {OrmClassType|Knex}
      * @public
      */
-    public Get(client: any): any | typeof Knex;
+    public Get(client: any): OrmClassType | typeof Knex;
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    public Mysql(): OrmClassType | typeof Knex;
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    public Postgre(): OrmClassType | typeof Knex;
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    public Oracle(): OrmClassType | typeof Knex;
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    public Sqlite3(): OrmClassType | typeof Knex;
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    public Mssql(): OrmClassType | typeof Knex;
 }
 import Knex = require("knex");
+import OrmClassType = require("./OrmType");

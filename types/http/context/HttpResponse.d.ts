@@ -1,6 +1,6 @@
 export = HttpResponse;
 declare class HttpResponse {
-    constructor(ctx: any);
+    constructor(httpCtx: any);
     /**
      *
      * @type {HttpResponseWrite}

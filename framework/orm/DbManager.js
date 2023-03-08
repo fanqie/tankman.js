@@ -1,7 +1,7 @@
-// @ts-nocheck
 const Facades = require("../facades/Facades")
 const Orm = require("./Orm");
 const Knex = require("knex");
+const OrmClassType = require("./OrmType");
 
 class DbManager {
     /**
@@ -9,10 +9,10 @@ class DbManager {
      */
     defaultConn;
     /**
-     *
-     * @type {{string:Orm|Knex}}
+     * @type {Map<string, OrmClassType>}
      */
-    connMap = {}
+    connMap = new Map()
+
 
     constructor() {
 
@@ -89,28 +89,71 @@ class DbManager {
             },
         }
         //singleton
-        this.connMap[client] = this.connMap.hasOwnProperty(client) ? this.connMap[client] : Orm(config)
+        if (this.connMap.has(client)) {
+            return this.connMap.get(client);
+        }
+        this.connMap.set(client, Orm(config))
         /**
          * @type {DbManager}
          */
-        this.connMap[client].instance = this.connMap[client].instance || this
-        return this.connMap[client]
+        this.connMap.get(client).instance = this
+
     }
 
     /**
      * Get Orm instance
      * @param client
-     * @return {Orm|Knex}
+     * @return {OrmClassType|Knex}
      * @public
      */
     Get(client) {
         const configs = Facades.Config.Get("database", null);
         if (configs.hasOwnProperty(client)) {
-            return this.connMap[client] || this._Connection(configs[client], client);
+            return this.connMap.get(client) || this._Connection(configs[client], client);
         } else {
             throw new Error(`Configuration default ${client} not found`)
 
         }
+    }
+
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    Mysql() {
+        return this.Get("mysql")
+    }
+
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    Postgre() {
+        return this.Get("pg")
+    }
+
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    Oracle() {
+        return this.Get("oracledb")
+    }
+
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    Sqlite3() {
+        return this.Get("sqlite3")
+    }
+
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    Mssql() {
+        return this.Get("mssql")
     }
 }
 

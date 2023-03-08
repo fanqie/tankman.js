@@ -8,10 +8,9 @@ const Facades = require("../facades/Facades");
 const {koaBody} = require('koa-body');
 const path = require("path");
 const fs = require("fs");
-const cors = require('@koa/cors');
 module.exports = class Web extends Koa {
 
-    tempPath = path.join(process.cwd(), 'storage/.temp/')
+    uploadPath = path.join(process.cwd(), 'storage/upload/')
 
     constructor(options) {
         super(options);
@@ -42,35 +41,7 @@ module.exports = class Web extends Koa {
         } else {
 
             this.listen(port);
-
-            const toadyName=  new Date().getFullYear() +""+ (new Date().getMonth() + 1) + new Date().getDate()
-            const historyList = fs.readdirSync(this.tempPath)
-            let i=0
-            while (i<historyList.length){
-                if(historyList[i]<toadyName){
-                    fs.rmdirSync(path.join(this.tempPath +historyList[i]))
-                }
-                i++
-                break
-            }
-            const uploadDir=path.join(this.tempPath +toadyName)
-            if(!fs.existsSync(uploadDir)){
-                fs.mkdirSync(uploadDir,{recursive: true})
-            }
-            this.use(koaBody({
-                multipart: true,
-                formidable: {
-                    uploadDir:uploadDir ,//存储路径
-                    keepExtensions: true,
-                    maxFieldsSize: 2 * 1024 * 1024,
-                    onError: (err) => {
-                        console.log(err);
-                    }
-                }
-            }));
-            this.use(cors({
-
-            }))
+            this.setBody();
 
             this.on('error', err => {
                 Facades.Log.ErrorHttp(`server error: ${err.message}`);
@@ -79,5 +50,33 @@ module.exports = class Web extends Koa {
             func(process.pid)
         }
 
+    }
+
+    setBody() {
+        const toadyName = new Date().getFullYear() + "" + (new Date().getMonth() + 1) + new Date().getDate()
+        const historyList = fs.readdirSync(this.uploadPath)
+        let i = 0
+        while (i < historyList.length) {
+            if (historyList[i] < toadyName) {
+                fs.rmSync(path.join(this.uploadPath + historyList[i]), {recursive: true})
+            }
+            i++
+            break
+        }
+        const uploadDir = path.join(this.uploadPath + toadyName)
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, {recursive: true})
+        }
+        this.use(koaBody({
+            multipart: true,
+            formidable: {
+                uploadDir: uploadDir,//存储路径
+                keepExtensions: true,
+                maxFieldsSize: 2 * 1024 * 1024,
+                onError: (err) => {
+                    console.log(err);
+                }
+            }
+        }));
     }
 }
