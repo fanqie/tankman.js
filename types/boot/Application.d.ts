@@ -8,58 +8,85 @@ declare class Application {
      * @type FacadesClass
      */
     Facades: FacadesClass;
-    _register(): void;
     /**
      *
+     * @type {Map<string,Command>}
      */
-    bootTank(): void;
+    commandHandles: Map<string, Command>;
+    /**
+     * @public
+     */
+    public bootTank(): void;
+    /**
+     * @private
+     */
+    private _linkFacades;
+    /**
+     * @private
+     */
+    private _registerBaseServiceProviders;
+    /**
+     * @private
+     */
+    private _bootBaseServiceProviders;
+    /**
+     * @private
+     */
+    private _registerConfiguredServiceProviders;
     /**
      *
+     * @private
      */
-    registerBaseServiceProviders(): void;
+    private _bootConfiguredServiceProviders;
     /**
-     *
+     * @private
      */
-    bootBaseServiceProviders(): void;
-    /**
-     *
-     */
-    registerConfiguredServiceProviders(): void;
-    /**
-     *
-     */
-    bootConfiguredServiceProviders(): void;
+    private _registerConfiguredCommands;
     /**
      *
      * @return {*[]}
+     * @private
      */
-    getConfiguredServiceProviders(): any[];
+    private _getConfiguredServiceProviders;
     /**
      *
+     * @return {*|Command[]}
+     * @private
+     */
+    private _getConfiguredCommands;
+    /**
      * @param serviceProviders
      */
-    registerServiceProviders(serviceProviders: any): void;
+    _registerServiceProviders(serviceProviders: any): void;
+    /**
+     * @param commands
+     * @private
+     */
+    private _registerCommands;
     /**
      *
      * @param serviceProviders {ServiceProvider[]}
+     * @private
      */
-    bootServiceProviders(serviceProviders: ServiceProvider[]): void;
+    private _bootServiceProviders;
     /**
      *
+     * @private
      */
-    setRootPath(): void;
+    private _setRootPath;
     /**
      * use case
      * @param fun {Function}
      * @return {Application}
      * @public
      */
-    public Use(fun: Function): Application;
+    public use(fun: Function): Application;
     /**
      *
      * @return {ServiceProvider[]}
+     * @private
      */
-    getBaseServiceProviders(): ServiceProvider[];
+    private _getBaseServiceProviders;
 }
 import FacadesClass = require("../facades/FacadesClass");
-import ServiceProvider = require("../provider/ServiceProvider");
+import Command = require("../command/Command");

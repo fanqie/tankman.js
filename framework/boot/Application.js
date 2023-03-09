@@ -2,7 +2,7 @@ const Facades = require("../facades/Facades");
 const ProcessInfoProvider = require("../provider/ProcessInfoProvider");
 const ConfigProvider = require("../provider/ConfigProvider");
 const EnvProvider = require("../provider/EnvProvider");
-
+const Command = require("../command/Command");
 const ServiceProvider = require("../provider/ServiceProvider");
 const FacadesClass = require("../facades/FacadesClass");
 
@@ -16,70 +16,88 @@ class Application {
      * @type FacadesClass
      */
     Facades
+    /**
+     *
+     * @type {Map<string,Command>}
+     */
+    commandHandles = new Map()
 
     /**
      *
      */
     constructor() {
-        this.registerBaseServiceProviders();
-        this.bootBaseServiceProviders()
+        this._registerBaseServiceProviders();
+        this._bootBaseServiceProviders()
 
     }
 
-    _register() {
-        // for (const key of Object.keys(Facades)) {
-        //     this.Facades[key]=Facades[key]
-        // }
-        this.Facades = Facades
-    }
 
     /**
-     *
+     * @public
      */
     bootTank() {
 
-        this.registerConfiguredServiceProviders();
-        this.bootConfiguredServiceProviders();
+        this._registerConfiguredServiceProviders();
+        this._bootConfiguredServiceProviders();
+        this._linkFacades()
+        this._registerConfiguredCommands()
+        this._setRootPath();
 
-        this.setRootPath();
-        this._register()
     }
 
     /**
-     *
+     * @private
      */
-    registerBaseServiceProviders() {
+    _linkFacades() {
+        this.Facades = Facades
+    }
+
+
+    /**
+     * @private
+     */
+    _registerBaseServiceProviders() {
         //init env config
-        this.registerServiceProviders(this.getBaseServiceProviders())
+        this._registerServiceProviders(this._getBaseServiceProviders())
     }
 
     /**
-     *
+     * @private
      */
-    bootBaseServiceProviders() {
-        this.bootServiceProviders(this.getBaseServiceProviders())
+    _bootBaseServiceProviders() {
+        this._bootServiceProviders(this._getBaseServiceProviders())
     }
 
     /**
-     *
+     * @private
      */
-    registerConfiguredServiceProviders() {
+    _registerConfiguredServiceProviders() {
         //get all provider and register
-        this.registerServiceProviders(this.getConfiguredServiceProviders())
+        this._registerServiceProviders(this._getConfiguredServiceProviders())
     }
 
     /**
      *
+     * @private
      */
-    bootConfiguredServiceProviders() {
-        this.bootServiceProviders(this.getConfiguredServiceProviders())
+    _bootConfiguredServiceProviders() {
+        this._bootServiceProviders(this._getConfiguredServiceProviders())
+    }
+
+    /**
+     * @private
+     */
+    _registerConfiguredCommands() {
+        this._registerCommands(this._getConfiguredCommands())
+
     }
 
     /**
      *
      * @return {*[]}
+     * @private
      */
-    getConfiguredServiceProviders() {
+    _getConfiguredServiceProviders() {
         return Facades.Config.Get("app").providers.map((Class => {
             return new Class(this)
         }))
@@ -87,19 +105,42 @@ class Application {
 
     /**
      *
+     * @return {*|Command[]}
+     * @private
+     */
+    _getConfiguredCommands() {
+        return Facades.Config.Get("app").commands.map((Class => {
+            return new Class(this)
+        }))
+    }
+
+    /**
      * @param serviceProviders
      */
-    registerServiceProviders(serviceProviders) {
+    _registerServiceProviders(serviceProviders) {
         serviceProviders.forEach(serviceProvider => {
             serviceProvider.register()
         })
     }
 
     /**
+     * @param commands
+     * @private
+     */
+    _registerCommands(commands) {
+
+        commands.forEach(commandInstance => {
+            commandInstance.register(this.commandHandles)
+            commandInstance.boot()
+        })
+    }
+
+    /**
      *
      * @param serviceProviders {ServiceProvider[]}
+     * @private
      */
-    bootServiceProviders(serviceProviders) {
+    _bootServiceProviders(serviceProviders) {
         serviceProviders.forEach(serviceProvider => {
             serviceProvider.boot()
         })
@@ -108,8 +149,9 @@ class Application {
 
     /**
      *
+     * @private
      */
-    setRootPath() {
+    _setRootPath() {
         //:todo
     }
 
@@ -119,7 +161,7 @@ class Application {
      * @return {Application}
      * @public
      */
-    Use(fun) {
+    use(fun) {
         fun.apply(this);
         return this
     }
@@ -127,8 +169,9 @@ class Application {
     /**
      *
      * @return {ServiceProvider[]}
+     * @private
      */
-    getBaseServiceProviders() {
+    _getBaseServiceProviders() {
 
         return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)]
     }

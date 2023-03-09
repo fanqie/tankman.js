@@ -8,6 +8,7 @@ const Facades = require("../facades/Facades");
 const {koaBody} = require('koa-body');
 const path = require("path");
 const fs = require("fs");
+
 module.exports = class Web extends Koa {
 
     uploadPath = path.join(process.cwd(), 'storage/upload/')
@@ -35,8 +36,8 @@ module.exports = class Web extends Koa {
             Facades.Log.InfoHttp(`server run in port=${port}`);
             Facades.Log.InfoHttp(`web url=http://127.0.0.1:${port}`);
             Facades.Log.InfoHttp(`start worker count${max}`)
-            if (!fs.existsSync(this.tempPath)) {
-                fs.mkdirSync(this.tempPath)
+            if (!fs.existsSync(this.uploadPath)) {
+                fs.mkdirSync(this.uploadPath)
             }
         } else {
 
@@ -67,6 +68,7 @@ module.exports = class Web extends Koa {
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, {recursive: true})
         }
+
         this.use(koaBody({
             multipart: true,
             formidable: {

@@ -23,19 +23,27 @@ declare class Env {
     /**
      *
      * @param name
-     * @param v
+     * @param value
      * @private
      */
     private Set;
     /**
-     *
+     * update or append a env filed
+     * @param name
+     * @param value
+     * @function
+     * @public
+     */
+    public SetAsFile(name: any, value: any): void;
+    /**
+     * @function
      * @public
      */
     public Load(): void;
     /**
      * check app run env is debugger mode
      * @returns {boolean}
-     * @constructor
+     * @public
      */
-    IsDebugger(): boolean;
+    public IsDebugger(): boolean;
 }

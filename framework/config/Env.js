@@ -32,27 +32,39 @@ module.exports = class Env {
      * @return {*|null}
      * @public
      */
-    Get(name,defaultVal=null) {
-        return this._Envs[name] ||defaultVal
+    Get(name, defaultVal = null) {
+        return this._Envs[name] || defaultVal
     }
 
     /**
      *
      * @param name
-     * @param v
+     * @param value
      * @private
      */
-    Set(name, v) {
-        this._Envs[name] = v
+    Set(name, value) {
+        this._Envs[name] = value
     }
 
     /**
-     *
+     * update or append a env filed
+     * @param name
+     * @param value
+     * @function
+     * @public
+     */
+    SetAsFile(name, value) {
+        this._Envs[name] = value
+        LoadEnvironmentVariables.AppendToFile(name, value, Facades.ProcessInfo.Flags.get("--ENV") || "")
+    }
+
+    /**
+     * @function
      * @public
      */
     Load() {
         //Load Environment Variables
-        const envs = LoadEnvironmentVariables.Load(Facades.ProcessInfo.Flags.get("--ENV")||"")
+        const envs = LoadEnvironmentVariables.Load(Facades.ProcessInfo.Flags.get("--ENV") || "")
         this._Envs = {...this._Envs, ...envs}
 
     }
@@ -60,12 +72,12 @@ module.exports = class Env {
     /**
      * check app run env is debugger mode
      * @returns {boolean}
-     * @constructor
+     * @public
      */
-    IsDebugger(){
-        return this.Get("APP_DEBUG",'true')==='true'
+    IsDebugger() {
+        return this.Get("APP_DEBUG", 'true') === 'true'
     }
 }
 
 
- 
+

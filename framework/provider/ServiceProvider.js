@@ -1,5 +1,5 @@
 module.exports = class ServiceProvider {
-    static app
+    app
 
     constructor(app) {
         this.app = app

@@ -12,7 +12,10 @@ declare class FacadesClass {
      * @type Route
      */
     Route: Route;
-    Cache: any;
+    /**
+     * @type Cache
+     */
+    Cache: Cache;
     /**
      * @type OrmClassType|Knex|Function
      */

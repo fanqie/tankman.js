@@ -30,6 +30,11 @@ declare class HttpContext {
      */
     _router: Router | RouterHandle | Redirect;
     /**
+     * @type {HttpCookie}
+     */
+    cookie: HttpCookie;
+    session: HttpSession;
+    /**
      *
      * @return {Router|RouterHandle|Redirect}
      * @constructor
@@ -108,3 +113,5 @@ declare class HttpContext {
 }
 import HttpRequest = require("./HttpRequest");
 import HttpResponse = require("./HttpResponse");
+import HttpCookie = require("./HttpCookie");
+import HttpSession = require("./HttpSession");

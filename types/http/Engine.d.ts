@@ -2,9 +2,14 @@ export = Engine;
 declare class Engine {
     constructor(app: any);
     HttpServer: any;
-    app: any;
+    /**
+     *
+     * @type {Application}
+     */
+    app: Application;
     port: number;
     accessPipeline: AccessPipeline;
+    appKey: any[];
     Run(): void;
     /**
      *
@@ -15,4 +20,5 @@ declare class Engine {
      */
     private _RouteHandle;
 }
+import Application = require("../boot/Application");
 import AccessPipeline = require("./pipeline/AccessPipeline");

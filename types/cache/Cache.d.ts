@@ -26,21 +26,22 @@ declare class Cache {
      * @param key
      * @param defaultVal?
      * @return {string|null}
-     * @Function
+     * @public
+     * @function
      */
-    Get(key: any, defaultVal?: any): string | null;
+    public Get(key: any, defaultVal?: any): string | null;
     Forever(key: any, val: any): void;
     /**
      * Forget Remove an item from the cache.
      * @param key
      * @return {null|*}
-     * @Function
+     * @function
      */
     Forget(key: any): null | any;
     /**
      * Pull Retrieve an item from the cache and delete it.
      * @param key
-     * @Function
+     * @function
      */
     Pull(key: any): any;
     _Now(): number;
@@ -50,7 +51,7 @@ declare class Cache {
      * @param val
      * @param ttl Second
      * @return {*}
-     * @Function
+     * @function
      */
     Store(key: any, val?: any, ttl?: number): any;
     /**
@@ -59,7 +60,7 @@ declare class Cache {
      * @param val
      * @param ttl Second
      * @return {*}
-     * @Function
+     * @function
      */
     Set(key: any, val?: any, ttl?: number): any;
     /**
@@ -68,7 +69,7 @@ declare class Cache {
      * @param val
      * @param ttl
      * @return {boolean}
-     * @Function
+     * @function
      */
     Add(key: any, val?: any, ttl?: number): boolean;
 }

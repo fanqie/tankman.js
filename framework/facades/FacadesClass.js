@@ -15,6 +15,9 @@ module.exports = class FacadesClass {
      * @type Route
      */
     Route;
+    /**
+     * @type Cache
+     */
     Cache;
     /**
      * @type OrmClassType|Knex|Function

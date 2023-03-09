@@ -1,4 +1,4 @@
-module.exports = class Cache {
+class Cache {
 
     /**
      * @public
@@ -33,7 +33,8 @@ module.exports = class Cache {
      * @param key
      * @param defaultVal?
      * @return {string|null}
-     * @Function
+     * @public
+     * @function
      */
     Get(key, defaultVal = null) {
         return null;
@@ -47,7 +48,7 @@ module.exports = class Cache {
      * Forget Remove an item from the cache.
      * @param key
      * @return {null|*}
-     * @Function
+     * @function
      */
     Forget(key) {
         return null;
@@ -56,7 +57,7 @@ module.exports = class Cache {
     /**
      * Pull Retrieve an item from the cache and delete it.
      * @param key
-     * @Function
+     * @function
      */
     Pull(key) {
         return null;
@@ -72,7 +73,7 @@ module.exports = class Cache {
      * @param val
      * @param ttl Second
      * @return {*}
-     * @Function
+     * @function
      */
     Store(key, val = null, ttl = 0) {
     }
@@ -83,7 +84,7 @@ module.exports = class Cache {
      * @param val
      * @param ttl Second
      * @return {*}
-     * @Function
+     * @function
      */
     Set(key, val = null, ttl = 0) {
     }
@@ -94,9 +95,11 @@ module.exports = class Cache {
      * @param val
      * @param ttl
      * @return {boolean}
-     * @Function
+     * @function
      */
     Add(key, val = null, ttl = 0) {
         return false
     }
 }
+
+module.exports = Cache

@@ -2,27 +2,41 @@ const HttpContext = require("./context/HttpContext");
 
 const Web = require("./Web");
 const AccessPipeline = require("./pipeline/AccessPipeline");
-const Facades = require("../facades/Facades")
 const createError = require("http-errors");
 const microtime = require('microtime');
+const Application = require("../boot/Application");
+const Cookies = require("cookies");
 
 module.exports = class Engine {
 
     HttpServer = null;
+    /**
+     *
+     * @type {Application}
+     */
     app = null
     port = 8002
     accessPipeline
+    appKey = []
 
     constructor(app) {
         this.app = app
+        this.appKey = (this.app.Facades.Env.Get("APP_KEY") || "").trim()
+        if (!this.appKey) {
+            this.app.Facades.Log.Error(" \n please use the command to generate：$tankMan generate:key")
+            throw new Error("The APP_KEY is missing")
+        }
         this.port = this.app.Facades.Env.Get("APP_PORT") || 8002
         this.accessPipeline = new AccessPipeline(this.app)
     }
 
     Run() {
         this.HttpServer = new Web();
+        // this.HttpServer.proxy =true
+        this.HttpServer.keys = [this.appKey]
+
         this.HttpServer.Run(this.port, (pid) => {
-            Facades.Log.Info(`run process：${pid}`)
+            this.app.Facades.Log.Info(`run process：${pid}`)
         }, {
             ...this.app.Facades.Config.Get("cluster", {
                 enabled: true,
@@ -30,6 +44,7 @@ module.exports = class Engine {
             })
         });
         this.HttpServer.use(async (ctx, next) => {
+            ctx.cookies = new Cookies(ctx.req, ctx.res, {keys: this.HttpServer.keys})
             await this._RouteHandle(new HttpContext(this.app, ctx), next)
         });
     }
@@ -52,7 +67,6 @@ module.exports = class Engine {
             } else {
                 try {
                     const start = microtime.now();
-                    // await route.action(ctx)
                     await this.accessPipeline.HandleNext(httpCtx, route);
 
                     const ms = microtime.now() - start;

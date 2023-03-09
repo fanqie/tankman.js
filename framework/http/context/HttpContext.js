@@ -1,7 +1,10 @@
 // @ts-nocheck
 const KoaContext = require("koa/lib/context");
 const HttpRequest = require("./HttpRequest");
+const HttpCookie = require("./HttpCookie");
+const HttpSession = require("./HttpSession");
 const HttpResponse = require("./HttpResponse");
+const Cookies = require('cookies')
 module.exports = class HttpContext {
     /**
      * @type  KoaContext()
@@ -26,6 +29,10 @@ module.exports = class HttpContext {
      * @type {Router|RouterHandle|Redirect}
      */
     _router;
+    /**
+     * @type {HttpCookie}
+     */
+    cookie;
 
     /**
      *
@@ -38,6 +45,8 @@ module.exports = class HttpContext {
         this._app = app;
         this.request = new HttpRequest(this);
         this.response = new HttpResponse(this);
+        this.cookie = new HttpCookie(this);
+        this.session = new HttpSession(this);
     }
 
     /**
