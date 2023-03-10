@@ -97,7 +97,7 @@ class DbManager {
          * @type {DbManager}
          */
         this.connMap.get(client).instance = this
-
+        return this.connMap.get(client)
     }
 
     /**

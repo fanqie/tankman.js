@@ -1,5 +1,5 @@
 // @ts-nocheck
-const KoaContext = require("koa/lib/context");
+const KoaContext = require("koa2/lib/context");
 const HttpRequest = require("./HttpRequest");
 const HttpCookie = require("./HttpCookie");
 const HttpSession = require("./HttpSession");

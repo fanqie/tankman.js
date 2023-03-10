@@ -39,10 +39,10 @@ class Application {
 
         this._registerConfiguredServiceProviders();
         this._bootConfiguredServiceProviders();
-        this._linkFacades()
+
         this._registerConfiguredCommands()
         this._setRootPath();
-
+        this._linkFacades()
     }
 
     /**

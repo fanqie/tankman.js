@@ -1,6 +1,6 @@
 // @ts-nocheck
 const HttpResponseWrite = require("./HttpResponseWrite");
-const KoaResponse = require("koa/lib/response");
+const KoaResponse = require("koa2/lib/response");
 module.exports = class HttpResponse {
 
     /**

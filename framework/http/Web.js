@@ -1,5 +1,5 @@
 // @ts-nocheck
-const Koa = require("koa")
+const Koa = require("koa2")
 const os = require("os");
 
 const cluster = require("cluster");
