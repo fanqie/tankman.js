@@ -1,13 +1,8 @@
 // @ts-nocheck
 const HttpResponseWrite = require("./HttpResponseWrite");
 const KoaResponse = require("koa2/lib/response");
-module.exports = class HttpResponse {
+module.exports = class HttpResponse extends HttpResponseWrite{
 
-    /**
-     *
-     * @type {HttpResponseWrite}
-     */
-    output;
     /**
      * @type KoaResponse()
      * @private
@@ -15,14 +10,22 @@ module.exports = class HttpResponse {
     _response;
 
     constructor(httpCtx) {
+        super(httpCtx);
         this._response=httpCtx._ctx.response;
-        this.output = new HttpResponseWrite(httpCtx._ctx)
-    }
 
+    }
+    /**
+     * @param bytes
+     * @override
+     */
     WriteBytes(bytes) {
         this._response.body = bytes
     }
 
+    /**
+     * @param text
+     * @override
+     */
     WriteText(text) {
         this._response.body = text
     }

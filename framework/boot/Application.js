@@ -49,6 +49,7 @@ class Application {
      * @private
      */
     _linkFacades() {
+        Facades.App = this
         this.Facades = Facades
     }
 

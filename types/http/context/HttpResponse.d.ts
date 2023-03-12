@@ -1,18 +1,6 @@
 export = HttpResponse;
-declare class HttpResponse {
+declare class HttpResponse extends HttpResponseWrite {
     constructor(httpCtx: any);
-    /**
-     *
-     * @type {HttpResponseWrite}
-     */
-    output: HttpResponseWrite;
-    /**
-     * @type KoaResponse()
-     * @private
-     */
-    private _response;
-    WriteBytes(bytes: any): void;
-    WriteText(text: any): void;
     /**
      * Set Content-Type response header with type through mime.lookup() when it does not contain a charset.
      * @param type

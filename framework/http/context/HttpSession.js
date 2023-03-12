@@ -28,7 +28,7 @@ class HttpSession {
         this.httpCtx = httpCtx;
         this._ctx = httpCtx._ctx;
         if (!this.httpCtx.cookie.Get(sessionId, {signed: true})) {
-            this.httpCtx.cookie.Set(sessionId, randomUUID(), {signed: true,sameSite:"lax",secure:true})
+            this.httpCtx.cookie.Set(sessionId, randomUUID(), {signed: true,sameSite:"lax"})
         }
         this._driver = Facades.Cache
     }

@@ -1,12 +1,16 @@
 const HttpContext = require("../context/HttpContext");
 
-module.exports=class Middleware{
+/**
+ * @abstract
+ */
+class Middleware {
     /**
      *
      * @param httpCtx {HttpContext}
      * @param next
      * @returns {Promise<void>}
      * @public
+     * @abstract
      */
     async Handle(httpCtx, next) {
         //before something
@@ -15,3 +19,4 @@ module.exports=class Middleware{
 
     }
 };
+module.exports = Middleware

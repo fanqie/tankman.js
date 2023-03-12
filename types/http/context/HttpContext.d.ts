@@ -112,6 +112,5 @@ declare class HttpContext {
     public Redirect(url: any, alt?: string): void;
 }
 import HttpRequest = require("./HttpRequest");
-import HttpResponse = require("./HttpResponse");
 import HttpCookie = require("./HttpCookie");
 import HttpSession = require("./HttpSession");

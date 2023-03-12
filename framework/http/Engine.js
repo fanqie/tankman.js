@@ -5,7 +5,6 @@ const AccessPipeline = require("./pipeline/AccessPipeline");
 const createError = require("http-errors");
 const microtime = require('microtime');
 const Application = require("../boot/Application");
-const Cookies = require("cookies");
 
 module.exports = class Engine {
 
@@ -32,7 +31,6 @@ module.exports = class Engine {
 
     Run() {
         this.HttpServer = new Web();
-        // this.HttpServer.proxy =true
         this.HttpServer.keys = [this.appKey]
 
         this.HttpServer.Run(this.port, (pid) => {
@@ -44,7 +42,6 @@ module.exports = class Engine {
             })
         });
         this.HttpServer.use(async (ctx, next) => {
-            ctx.cookies = new Cookies(ctx.req, ctx.res, {keys: this.HttpServer.keys})
             await this._RouteHandle(new HttpContext(this.app, ctx), next)
         });
     }

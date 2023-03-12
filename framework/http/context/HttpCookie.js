@@ -37,7 +37,7 @@ class HttpCookie {
      * @function
      */
     Set(name, value, opts = undefined) {
-        this._ctx.cookies.set(name, value, opts || {})
+        this._ctx.cookies.set(name, value, Object.assign(opts || {}))
     }
 }
 

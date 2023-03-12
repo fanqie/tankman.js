@@ -37,7 +37,10 @@ module.exports = class FacadesClass {
      */
     ProcessInfo;
     Engine;
-    UpLo;
+    /**
+     * @type Application
+     */
+    App;
     /**
      * @type Xss
      */
