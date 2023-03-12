@@ -13,6 +13,7 @@ declare class Application {
      * @type {Map<string,Command>}
      */
     commandHandles: Map<string, Command>;
+    rootPath: string;
     /**
      * @public
      */
@@ -70,10 +71,14 @@ declare class Application {
      */
     private _bootServiceProviders;
     /**
-     *
      * @private
      */
     private _setRootPath;
+    /**
+     * get run app at root path
+     * @return {string}
+     */
+    getRootPath(): string;
     /**
      * use case
      * @param fun {Function}

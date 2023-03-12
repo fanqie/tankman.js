@@ -69,17 +69,17 @@ class Route {
     /**
      * @param method {string[]|string}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router}
      * @private
      */
-    _CreateRouterHandle(method, path, controllerClassOrActionFunc, action) {
+    _CreateRouterHandle(method, path, controllerOrActionFunc, action) {
 
         const handle = new RouterHandle({
             prefix: this._prefix,
             middleware: [...this._group_middleware]
-        }, method, path, controllerClassOrActionFunc, action);
+        }, method, path, controllerOrActionFunc, action);
 
         this._routers.push(handle);
         return handle;
@@ -87,80 +87,80 @@ class Route {
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Post(path, controllerClassOrActionFunc, action) {
+    Post(path, controllerOrActionFunc, action) {
 
-        return this._CreateRouterHandle(REQUEST_METHOD.POST, path, controllerClassOrActionFunc, action)
+        return this._CreateRouterHandle(REQUEST_METHOD.POST, path, controllerOrActionFunc, action)
     }
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Get(path, controllerClassOrActionFunc, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.GET, path, controllerClassOrActionFunc, action)
+    Get(path, controllerOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.GET, path, controllerOrActionFunc, action)
     }
 
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Patch(path, controllerClassOrActionFunc, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.PATCH, path, controllerClassOrActionFunc, action)
+    Patch(path, controllerOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.PATCH, path, controllerOrActionFunc, action)
     }
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Put(path, controllerClassOrActionFunc, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.PUT, path, controllerClassOrActionFunc, action)
+    Put(path, controllerOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.PUT, path, controllerOrActionFunc, action)
     }
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Any(path, controllerClassOrActionFunc, action) {
-        return this._CreateRouterHandle(Object.values(REQUEST_METHOD), path, controllerClassOrActionFunc, action)
+    Any(path, controllerOrActionFunc, action) {
+        return this._CreateRouterHandle(Object.values(REQUEST_METHOD), path, controllerOrActionFunc, action)
     }
 
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Delete(path, controllerClassOrActionFunc, action) {
-        return this._CreateRouterHandle(REQUEST_METHOD.DELETE, path, controllerClassOrActionFunc, action)
+    Delete(path, controllerOrActionFunc, action) {
+        return this._CreateRouterHandle(REQUEST_METHOD.DELETE, path, controllerOrActionFunc, action)
     }
 
     /**
      * @param methodsArray {string[]}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string?}
      * @return {Router|RouterHandle}
      */
-    Match(methodsArray, path, controllerClassOrActionFunc, action) {
+    Match(methodsArray, path, controllerOrActionFunc, action) {
         if (!Array.isArray(methodsArray)) {
             throw new Error("methodsArray must array")
         }
         const methods = methodsArray.filter(method => Object.values(REQUEST_METHOD).includes(method))
         if (methods.length > 0) {
-            return this._CreateRouterHandle(methods, path, controllerClassOrActionFunc, action)
+            return this._CreateRouterHandle(methods, path, controllerOrActionFunc, action)
         }
         throw new Error("methodsArray must values [post|put|get|delete|put]")
     }

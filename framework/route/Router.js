@@ -63,6 +63,7 @@ class Router {
     match
 
     name = "";
+    params = {}
 
     /**
      *
@@ -122,8 +123,14 @@ class Router {
         path = path.toLowerCase();
         method = method.toLowerCase();
         if (this.methods.includes(method)) {
-            return this.Parse(path)
+            const res = this.Parse(path)
+            if (res) {
+                // @ts-ignore
+                this.params = res.params
+                return res
+            }
         }
+        return false
     }
 
 

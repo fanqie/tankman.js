@@ -1,6 +1,8 @@
-// @ts-nocheck
 const KoaRequest = require("koa2/lib/request");
 const KoaContext = require("koa2/lib/context");
+const HttpContext = require("./HttpContext");
+const RouterHandle = require("../../route/RouterHandle");
+const Router = require("../../route/Router");
 module.exports = class HttpRequest {
     /**
      * @type KoaRequest()
@@ -25,7 +27,7 @@ module.exports = class HttpRequest {
     _postParams
 
     /**
-     * @param ctx
+     * @param httpCtx {HttpContext}
      */
     constructor(httpCtx) {
 
@@ -38,7 +40,7 @@ module.exports = class HttpRequest {
 
     /**
      * Get Current Request Router
-     * @return {Router|RouterHandle|HttpContext.Redirect}
+     * @return {Router|RouterHandle|function}
      * @constructor
      */
     GetRouter() {
@@ -187,7 +189,7 @@ module.exports = class HttpRequest {
      * @return {String}
      * @public
      */
-    GetPath() {
+    GetPathName() {
         return this._request.path
     }
 

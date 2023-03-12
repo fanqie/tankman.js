@@ -32,7 +32,7 @@ module.exports = class Engine {
     Run() {
         this.HttpServer = new Web();
         this.HttpServer.keys = [this.appKey]
-
+        this.HttpServer.Static()
         this.HttpServer.Run(this.port, (pid) => {
             this.app.Facades.Log.Info(`run process：${pid}`)
         }, {
@@ -54,7 +54,10 @@ module.exports = class Engine {
      * @private
      */
     async _RouteHandle(httpCtx, next) {
-        const route = this.app.Facades.Route.GetByPathname(httpCtx.request.GetPath(), httpCtx.request.GetMethod());
+        if (this.HttpServer.RenderStatic(httpCtx)) {
+            return;
+        }
+        const route = this.app.Facades.Route.GetByPathname(httpCtx.request.GetPathName(), httpCtx.request.GetMethod());
         // console.log(route,ctx.request.path,ctx.request.method)
         if (route) {
             httpCtx.SetRouter(route);

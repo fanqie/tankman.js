@@ -1,4 +1,7 @@
 export = Middleware;
+/**
+ * @abstract
+ */
 declare class Middleware {
     /**
      *
@@ -6,6 +9,7 @@ declare class Middleware {
      * @param next
      * @returns {Promise<void>}
      * @public
+     * @abstract
      */
     public Handle(httpCtx: HttpContext, next: any): Promise<void>;
 }

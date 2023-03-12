@@ -1,13 +1,13 @@
 //@ts-nocheck
-module.exports=class CtxPipeline {
-    handles=[];
-    _httpCtx=null;
+module.exports = class CtxPipeline {
+    handles = [];
+    _httpCtx = null;
 
     /**
      * @param httpCtx {HttpContext}
      */
-    constructor(httpCtx){
-        this._httpCtx=httpCtx
+    constructor(httpCtx) {
+        this._httpCtx = httpCtx
     }
 
     /**
@@ -27,9 +27,16 @@ module.exports=class CtxPipeline {
      * @constructor
      */
     async Next() {
-        const next=this.handles.shift();
-        if(next){
-          await  next(this._httpCtx,()=>{this.Next.apply(this)});
+        const next = this.handles.shift();
+        if (next) {
+            if (this.handles.length > 0) {
+                await next(this._httpCtx, () => {
+                    this.Next.apply(this)
+                });
+            } else {
+                await next(this._httpCtx);
+            }
+
             return false
         }
         return this

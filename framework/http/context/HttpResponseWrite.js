@@ -1,4 +1,7 @@
 const lodash = require("lodash")
+const Facades = require("../../facades/Facades")
+const mineTypes = require("mime-types");
+const fs = require("fs");
 
 /**
  * @abstract
@@ -13,7 +16,10 @@ class HttpResponseWrite {
                 err_msg: '#err_msg',
                 time: '#time',
             },
-            successErrorNo: 0,
+            defaultErrNo: {
+                success: 200,
+                error: 503,
+            },
         },
 
     }
@@ -22,7 +28,7 @@ class HttpResponseWrite {
         if (new.target === HttpResponseWrite) {
             throw new Error('HttpResponseWrite class Instantiation is not allowed');
         }
-
+        this._config.json.template = Facades.Config.Get("response")?.json?.template || this._config.json.template
     }
 
     RenderTemplate(path, data) {
@@ -61,15 +67,22 @@ class HttpResponseWrite {
     }
 
     JsonSuccess(data, errMsg = "success") {
-        this.Json(data, errMsg, this._config.json.successErrorNo)
+        this.Json(data, errMsg, this._config.json.defaultErrNo.success)
     }
 
-    JsonError(data, errMsg, errNo = 503) {
+    JsonError(data, errMsg, errNo = this._config.json.defaultErrNo.error) {
         this.Json(data, errMsg, errNo)
     }
 
     Download(filePath, fileName, headers) {
         this.DownloadIo(filePath, fileName, headers)
+    }
+
+    WriteStatic(filePath) {
+        const fileType = mineTypes.lookup(filePath)
+        const fileBuffer = fs.createReadStream(filePath)
+        this.SetResponseType(`${fileType}; charset=utf-8`)
+        this.WriteStream(fileBuffer)
     }
 
     DownloadIo(bytes, fileName, headers = {}, type = 'application/octet-stream; charset=utf-8') {
@@ -106,6 +119,22 @@ class HttpResponseWrite {
      * @abstract
      */
     WriteText(string) {
+    }
+
+    /**
+     *
+     * @param buffers
+     * @abstract
+     */
+    WriteBuffer(buffers) {
+    }
+
+    /**
+     *
+     * @param stream
+     * @abstract
+     */
+    WriteStream(stream) {
     }
 
     SetResponseType(type) {

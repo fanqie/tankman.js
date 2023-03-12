@@ -21,11 +21,13 @@ class Application {
      * @type {Map<string,Command>}
      */
     commandHandles = new Map()
+    rootPath = "./"
 
     /**
      *
      */
     constructor() {
+        Facades.App = this
         this._registerBaseServiceProviders();
         this._bootBaseServiceProviders()
 
@@ -49,7 +51,7 @@ class Application {
      * @private
      */
     _linkFacades() {
-        Facades.App = this
+
         this.Facades = Facades
     }
 
@@ -149,11 +151,19 @@ class Application {
     }
 
     /**
-     *
      * @private
      */
     _setRootPath() {
-        //:todo
+        this.rootPath = process.cwd()
+        console.log(process.cwd())
+    }
+
+    /**
+     * get run app at root path
+     * @return {string}
+     */
+    getRootPath() {
+        return this.rootPath;
     }
 
     /**
@@ -175,6 +185,23 @@ class Application {
     _getBaseServiceProviders() {
 
         return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)]
+    }
+
+    /**
+     *
+     * @type {Map<string,any>}
+     */
+    singletonItems = new Map()
+
+    Singleton(Class, alisa = "") {
+        if (!alisa) {
+            alisa = Class.name
+        }
+        if (!this.singletonItems.has(alisa)) {
+            this.singletonItems.set(alisa, new Class())
+        }
+
+        return this.singletonItems.get(alisa)
     }
 }
 

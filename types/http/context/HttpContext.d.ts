@@ -37,7 +37,7 @@ declare class HttpContext {
     /**
      *
      * @return {Router|RouterHandle|Redirect}
-     * @constructor
+     * @function
      */
     GetRouter(): Router | RouterHandle | Redirect;
     /**
@@ -80,7 +80,7 @@ declare class HttpContext {
      *    });
      * @param name {string}
      * @param options?
-     * @constructor
+     * @function
      */
     GetCookies(name: string, options: any): void;
     /**
@@ -100,7 +100,7 @@ declare class HttpContext {
      * @param status
      * @param msg?
      * @param properties?
-     * @constructor
+     * @function
      */
     ThrowHttpError(status: number, msg: string, properties: any): void;
     /**

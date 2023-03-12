@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "art-template": "^4.13.2",
     "cookies": "^0.8.0",
     "dayjs": "^1.11.7",
     "http-errors": "^2.0.0",
@@ -16,6 +17,7 @@
     "lodash": "^4.17.21",
     "log4js": "^6.7.1",
     "microtime": "^3.1.1",
+    "mime-types": "^2.1.35",
     "mysql": "^2.18.1",
     "mysql2": "^3.1.2",
     "parse-comments": "^1.0.0",

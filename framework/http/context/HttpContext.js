@@ -34,6 +34,8 @@ module.exports = class HttpContext {
      */
     cookie;
 
+    params = {}
+
     /**
      *
      * @param app
@@ -52,7 +54,7 @@ module.exports = class HttpContext {
     /**
      *
      * @return {Router|RouterHandle|Redirect}
-     * @constructor
+     * @function
      */
     GetRouter() {
         return this._router;
@@ -66,6 +68,7 @@ module.exports = class HttpContext {
      */
     SetRouter(router) {
         this._router = router;
+        this.params = router.params
     }
 
     App() {
@@ -107,7 +110,7 @@ module.exports = class HttpContext {
      *    });
      * @param name {string}
      * @param options?
-     * @constructor
+     * @function
      */
     GetCookies(name, options) {
         this._ctx.cookies.get(name, options)
@@ -136,7 +139,7 @@ module.exports = class HttpContext {
      * @param status
      * @param msg?
      * @param properties?
-     * @constructor
+     * @function
      */
     ThrowHttpError(status = 503, msg = 'server error', properties) {
         this._ctx.throw(status, msg, properties)

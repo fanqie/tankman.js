@@ -9,12 +9,32 @@ const {koaBody} = require('koa-body');
 const path = require("path");
 const fs = require("fs");
 
-module.exports = class Web extends Koa {
+class Web extends Koa {
 
     uploadPath = path.join(process.cwd(), 'storage/upload/')
+    staticFolder
 
     constructor(options) {
         super(options);
+    }
+
+    Static(folder = "./public") {
+        this.staticFolder = path.isAbsolute(folder) ? folder : path.join(process.cwd(), folder || "public")
+    }
+
+    /**
+     * @param httpCtx {HttpContext}
+     * @return {boolean}
+     */
+    RenderStatic(httpCtx) {
+        const requestPath = path.join(this.staticFolder, httpCtx.request.GetPathName())
+        console.log(requestPath, fs.existsSync(requestPath))
+        if (fs.existsSync(requestPath)) {
+            httpCtx.response.WriteStatic(requestPath)
+            return true
+            // process.abort()
+        }
+        return false
     }
 
     Run(port, func, config) {
@@ -82,3 +102,5 @@ module.exports = class Web extends Koa {
         }));
     }
 }
+
+module.exports = Web

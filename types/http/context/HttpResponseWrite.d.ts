@@ -3,19 +3,28 @@ export = HttpResponseWrite;
  * @abstract
  */
 declare class HttpResponseWrite {
-    constructor(ctx: any, httpResponse: any);
     _response: any;
-    _httpResponse: any;
     _config: {
         json: {
-            httpStatus: string;
+            template: {
+                err_no: string;
+                data: string;
+                err_msg: string;
+                time: string;
+            };
+            defaultErrNo: {
+                success: number;
+                error: number;
+            };
         };
     };
     RenderTemplate(path: any, data: any): void;
-    Json(json: any): void;
-    JsonSuccess(data: any): void;
-    JsonError(data: any): void;
+    JsonFree(json: any): void;
+    Json(data: any, errMsg: any, errNo: any): void;
+    JsonSuccess(data: any, errMsg?: string): void;
+    JsonError(data: any, errMsg: any, errNo?: number): void;
     Download(filePath: any, fileName: any, headers: any): void;
+    WriteStatic(filePath: any): void;
     DownloadIo(bytes: any, fileName: any, headers?: {}, type?: string): void;
     Text(string: any, type?: string): void;
     Html(string: any, type?: string): void;
@@ -32,5 +41,17 @@ declare class HttpResponseWrite {
      * @abstract
      */
     WriteText(string: any): void;
+    /**
+     *
+     * @param buffers
+     * @abstract
+     */
+    WriteBuffer(buffers: any): void;
+    /**
+     *
+     * @param stream
+     * @abstract
+     */
+    WriteStream(stream: any): void;
     SetResponseType(type: any): void;
 }

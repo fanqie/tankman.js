@@ -1,3 +1,5 @@
+import CtxPipeline = require("../http/pipeline/CtxPipeline");
+
 export = RouterHandle;
 declare class RouterHandle extends Router {
     /**

@@ -7,9 +7,11 @@ module.exports = class Controller {
     }
 
     /**
+     *
      * @param httpCtx {HttpContext}
+     * @param params
      * @constructor
      */
-    Index(httpCtx) {
+    Index(httpCtx,...params) {
     }
 }

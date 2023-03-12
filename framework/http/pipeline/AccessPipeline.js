@@ -43,9 +43,7 @@ module.exports = class AccessPipeline {
                 }
             }
         }
-        // @ts-ignore
         ctxPipeline.Pip(route.GetInstanceAction());
-        // @ts-ignore
         await  ctxPipeline.Next()
     }
 

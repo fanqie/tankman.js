@@ -1,9 +1,9 @@
 export = HttpRequest;
 declare class HttpRequest {
     /**
-     * @param ctx
+     * @param httpCtx {HttpContext}
      */
-    constructor(httpCtx: any);
+    constructor(httpCtx: HttpContext);
     /**
      * @type KoaRequest()
      * @private
@@ -26,10 +26,10 @@ declare class HttpRequest {
     _postParams: any;
     /**
      * Get Current Request Router
-     * @return {Router|RouterHandle|HttpContext.Redirect}
+     * @return {Router|RouterHandle|function}
      * @constructor
      */
-    GetRouter(): Router | RouterHandle | HttpContext.Redirect;
+    GetRouter(): Router | RouterHandle | Function;
     Post(name: any): any;
     Get(name: any): any;
     /**
@@ -118,7 +118,7 @@ declare class HttpRequest {
      * @return {String}
      * @public
      */
-    public GetPath(): string;
+    public GetPathName(): string;
     /**
      * Set query string.
      * @param querystring {String}
@@ -304,3 +304,6 @@ declare class HttpRequest {
      */
     public GetContentType(): string;
 }
+import HttpContext = require("./HttpContext");
+import Router = require("../../route/Router");
+import RouterHandle = require("../../route/RouterHandle");

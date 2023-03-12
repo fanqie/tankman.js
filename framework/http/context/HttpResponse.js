@@ -1,6 +1,7 @@
 // @ts-nocheck
 const HttpResponseWrite = require("./HttpResponseWrite");
 const KoaResponse = require("koa2/lib/response");
+const mineTypes=require("mime-types")
 module.exports = class HttpResponse extends HttpResponseWrite{
 
     /**
@@ -30,6 +31,23 @@ module.exports = class HttpResponse extends HttpResponseWrite{
         this._response.body = text
     }
 
+    /**
+     *
+     * @param buffers
+     * @override
+     */
+    WriteBuffer(buffers) {
+        this._response.body = buffers
+    }
+
+    /**
+     *
+     * @param stream
+     * @override
+     */
+    WriteStream(stream) {
+        this._response.body = stream
+    }
     /**
      * Set Content-Type response header with type through mime.lookup() when it does not contain a charset.
      * @param type

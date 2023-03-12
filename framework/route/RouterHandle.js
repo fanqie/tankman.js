@@ -1,28 +1,30 @@
 //@ts-nocheck
 const Router = require("./Router");
-const Controller =require("../http/controller/Controller")
+const Controller = require("../http/controller/Controller")
+const {instanceLookup} = require("tedious/lib/instance-lookup");
+
 class RouterHandle extends Router {
     /**
      * @param options {{middleware: *[], prefix: string}}
      * @param methods {string|string[]}
      * @param vPath {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
+     * @param controllerOrActionFunc {Controller|Function}
      * @param action {string}
      * @param action
      */
     constructor(options = {
         middleware: [],
         prefix: ""
-    }, methods, vPath, controllerClassOrActionFunc, action) {
-        super(options, methods, vPath, controllerClassOrActionFunc, action);
+    }, methods, vPath, controllerOrActionFunc, action) {
+        super(options, methods, vPath, controllerOrActionFunc, action);
         super.methods = Array.isArray(methods) ? methods : [methods];
         super.vPath = vPath;
         super.path = super.MakePath();
-        if (this._IsClass(controllerClassOrActionFunc)) {
-            super.controllerClass = controllerClassOrActionFunc;
+        if (this._IsClass(controllerOrActionFunc)) {
+            super.controllerClass = controllerOrActionFunc;
             super.action = action;
         } else {
-            super.actionFunc = controllerClassOrActionFunc
+            super.actionFunc = controllerOrActionFunc
         }
 
         // @ts-ignore
@@ -31,7 +33,7 @@ class RouterHandle extends Router {
     }
 
     _IsClass(val) {
-        return /^class\s/.test(Function.prototype.toString.call(val))   //false
+        return /^class\s/.test(val.constructor.toString())   //false
 
     }
 
@@ -64,12 +66,17 @@ class RouterHandle extends Router {
 
     /**
      * Get Any route action
-     * @return {Promise<CtxPipeline|boolean>}
-     * @constructor
+     * @return {function(*): *}
+     * @function
      */
     GetInstanceAction() {
         // @ts-ignore
-        return this.controllerClass ? new this.controllerClass().__proto__[this.action] : this.actionFunc
+        const instance = this.controllerClass;
+        return (httpContext) => {
+
+            return instance ?instance.__proto__[this.action].call(instance, httpContext, Object.values(httpContext.params))
+                : this.actionFunc(httpContext, Object.values(httpContext.params))
+        }
     }
 
 
