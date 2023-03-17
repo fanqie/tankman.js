@@ -47,62 +47,54 @@ declare class Route {
     /**
      * @param method {string[]|string}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router}
      * @private
      */
     private _CreateRouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router|RouterHandle}
      */
-    Post(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
+    Post(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router|RouterHandle}
      */
-    Get(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
+    Get(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router|RouterHandle}
      */
-    Patch(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
+    Patch(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router|RouterHandle}
      */
-    Put(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
+    Put(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router|RouterHandle}
      */
-    Any(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
+    Any(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
     /**
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router|RouterHandle}
      */
-    Delete(path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
+    Delete(path: string, controllerOrActionFunc: [Controller, Function] | Function, action: any): Router | RouterHandle;
     /**
      * @param methodsArray {string[]}
      * @param path {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string?}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @return {Router|RouterHandle}
      */
-    Match(methodsArray: string[], path: string, controllerClassOrActionFunc: Controller | Function, action: string | null): Router | RouterHandle;
+    Match(methodsArray: string[], path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
     /**
      * @param path
      * @param redirectUrl

@@ -1,19 +1,16 @@
-import CtxPipeline = require("../http/pipeline/CtxPipeline");
-
 export = RouterHandle;
 declare class RouterHandle extends Router {
     /**
      * @param options {{middleware: *[], prefix: string}}
      * @param methods {string|string[]}
      * @param vPath {string}
-     * @param controllerClassOrActionFunc {Controller|Function}
-     * @param action {string}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @param action
      */
     constructor(options: {
         middleware: any[];
         prefix: string;
-    }, methods: string | string[], vPath: string, controllerClassOrActionFunc: Controller | Function, action: string);
+    }, methods: string | string[], vPath: string, controllerOrActionFunc: [Controller, Function] | Function);
     _IsClass(val: any): boolean;
     /**
      * get url values
@@ -34,10 +31,10 @@ declare class RouterHandle extends Router {
     public Middleware(middleware: string[] | string): Router | RouterHandle;
     /**
      * Get Any route action
-     * @return {Promise<CtxPipeline|boolean>}
-     * @constructor
+     * @return {function(*): *}
+     * @function
      */
-    GetInstanceAction(): Promise<CtxPipeline | boolean>;
+    GetInstanceAction(): (arg0: any) => any;
 }
 import Router = require("./Router");
 import Controller = require("../http/controller/Controller");

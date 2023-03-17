@@ -27,8 +27,10 @@ class Web extends Koa {
      * @return {boolean}
      */
     RenderStatic(httpCtx) {
+        if(httpCtx.request.GetPathName()==="/"){
+            return false
+        }
         const requestPath = path.join(this.staticFolder, httpCtx.request.GetPathName())
-        console.log(requestPath, fs.existsSync(requestPath))
         if (fs.existsSync(requestPath)) {
             httpCtx.response.WriteStatic(requestPath)
             return true

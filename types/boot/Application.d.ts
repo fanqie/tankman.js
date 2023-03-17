@@ -92,6 +92,20 @@ declare class Application {
      * @private
      */
     private _getBaseServiceProviders;
+    /**
+     *
+     * @type {Map<string,any>}
+     */
+    singletonItems: Map<string, any>;
+    /**
+     *
+     * @param Class
+     * @param alisa
+     * @return {Class|Controller|*}
+     * @function
+     */
+    Singleton(Class: any, alisa?: string): any | Controller | any;
 }
 import FacadesClass = require("../facades/FacadesClass");
 import Command = require("../command/Command");
+import Controller = require("../http/controller/Controller");

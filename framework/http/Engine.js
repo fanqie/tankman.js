@@ -32,7 +32,7 @@ module.exports = class Engine {
     Run() {
         this.HttpServer = new Web();
         this.HttpServer.keys = [this.appKey]
-        this.HttpServer.Static()
+        this.HttpServer.Static(this.app.Facades.Env.Get("APP_WEBROOT_DIR", "./public"))
         this.HttpServer.Run(this.port, (pid) => {
             this.app.Facades.Log.Info(`run process：${pid}`)
         }, {
@@ -58,7 +58,6 @@ module.exports = class Engine {
             return;
         }
         const route = this.app.Facades.Route.GetByPathname(httpCtx.request.GetPathName(), httpCtx.request.GetMethod());
-        // console.log(route,ctx.request.path,ctx.request.method)
         if (route) {
             httpCtx.SetRouter(route);
             if (typeof route !== "boolean" && route.redirectUrl) {

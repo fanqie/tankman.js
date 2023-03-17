@@ -33,6 +33,7 @@ declare class HttpContext {
      * @type {HttpCookie}
      */
     cookie: HttpCookie;
+    params: {};
     session: HttpSession;
     /**
      *

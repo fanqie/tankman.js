@@ -1,28 +1,31 @@
 //@ts-nocheck
 const Router = require("./Router");
 const Controller = require("../http/controller/Controller")
-const {instanceLookup} = require("tedious/lib/instance-lookup");
+const Facades = require("../facades/Facades");
 
 class RouterHandle extends Router {
     /**
      * @param options {{middleware: *[], prefix: string}}
      * @param methods {string|string[]}
      * @param vPath {string}
-     * @param controllerOrActionFunc {Controller|Function}
-     * @param action {string}
+     * @param controllerOrActionFunc {[Controller,Function]|Function}
      * @param action
      */
     constructor(options = {
         middleware: [],
         prefix: ""
-    }, methods, vPath, controllerOrActionFunc, action) {
-        super(options, methods, vPath, controllerOrActionFunc, action);
+    }, methods, vPath, controllerOrActionFunc) {
+        super(options, methods, vPath, controllerOrActionFunc);
         super.methods = Array.isArray(methods) ? methods : [methods];
         super.vPath = vPath;
         super.path = super.MakePath();
-        if (this._IsClass(controllerOrActionFunc)) {
-            super.controllerClass = controllerOrActionFunc;
-            super.action = action;
+        if (Array.isArray(controllerOrActionFunc)) {
+            if (this._IsClass(controllerOrActionFunc[0]) && controllerOrActionFunc.length === 2) {
+                super.controllerClass = Facades.App.Singleton(controllerOrActionFunc[0]);
+                super.action = controllerOrActionFunc[1];
+            } else {
+                throw new Error("Parameter error must be:[Controller,Function]|Function")
+            }
         } else {
             super.actionFunc = controllerOrActionFunc
         }
@@ -33,7 +36,7 @@ class RouterHandle extends Router {
     }
 
     _IsClass(val) {
-        return /^class\s/.test(val.constructor.toString())   //false
+        return /^class\s/.test(Object.valueOf.toString.call(val))   //false
 
     }
 
@@ -74,7 +77,7 @@ class RouterHandle extends Router {
         const instance = this.controllerClass;
         return (httpContext) => {
 
-            return instance ?instance.__proto__[this.action].call(instance, httpContext, Object.values(httpContext.params))
+            return instance ? instance.__proto__[this.action].call(instance, httpContext, Object.values(httpContext.params))
                 : this.actionFunc(httpContext, Object.values(httpContext.params))
         }
     }

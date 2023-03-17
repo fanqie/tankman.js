@@ -65,6 +65,7 @@ declare class Router {
      */
     public match: import("path-to-regexp").MatchFunction<object>;
     name: string;
+    params: {};
     /**
      * url
      * @return {string}

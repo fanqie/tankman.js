@@ -5,7 +5,7 @@ const EnvProvider = require("../provider/EnvProvider");
 const Command = require("../command/Command");
 const ServiceProvider = require("../provider/ServiceProvider");
 const FacadesClass = require("../facades/FacadesClass");
-
+const Controller = require("../http/controller/Controller")
 
 /**
  *
@@ -155,7 +155,6 @@ class Application {
      */
     _setRootPath() {
         this.rootPath = process.cwd()
-        console.log(process.cwd())
     }
 
     /**
@@ -193,7 +192,17 @@ class Application {
      */
     singletonItems = new Map()
 
+    /**
+     *
+     * @param Class
+     * @param alisa
+     * @return {Class|Controller|*}
+     * @function
+     */
     Singleton(Class, alisa = "") {
+        if (!/^class\s/.test(Object.valueOf.toString.call(Class))) {
+            throw new Error("Is not a construction class")
+        }
         if (!alisa) {
             alisa = Class.name
         }

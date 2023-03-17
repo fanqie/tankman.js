@@ -41,7 +41,7 @@ class Config {
      * @public
      */
     Load() {
-        const Config = LoadConfiguration.Load(Facades.Config.Get("APP_CONFIG_DIR","config"));
+        const Config = LoadConfiguration.Load(Facades.Env.Get("APP_CONFIG_DIR","./config"));
         this._Config = {...this._Config, ...Config};
     }
 
