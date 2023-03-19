@@ -1,11 +1,9 @@
-const describe = require('mocha').describe;
 const FileCache = require("../framework/cache/FileCache")
 
 const assert = require("assert");
 
-describe('CacheTest', () => {
 
-    it("fileCacheTest", (done) => {
+    test("fileCacheTest", (done) => {
         const fileCache = new FileCache()
         fileCache.Store("tank","man",fileCache.TIME_ONE_SECOND)
         assert.equal(fileCache.Get("tank"),"man");
@@ -28,4 +26,3 @@ describe('CacheTest', () => {
         },1100)
     })
 
-})
