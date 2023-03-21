@@ -2,78 +2,78 @@ export = HttpResponse;
 declare class HttpResponse extends HttpResponseWrite {
     constructor(httpCtx: any);
     /**
-     * Set Content-Type response header with type through mime.lookup() when it does not contain a charset.
-     * @param type
+     * set Content-Type response header with type through mime.lookup() when it does not contain a charset.
+     * @param {string} type
      * @public
      */
-    public SetContentType(type: any): void;
+    public setContentType(type: string): void;
     /**
      *
      * @return {String|string|*}
      * @public
      */
-    public GetContentType(): string | string | any;
+    public getContentType(): string | string | any;
     /**
      * Perform a 302 redirect to url.
      * The string “back” is special-cased to provide Referrer support, when Referrer is not present alt or “/” is used.
      * Examples:
      * this.redirect('back'); this.redirect('back', '/index.html'); this.redirect('/login'); this.redirect('http://google.com');
-     * @param url
-     * @param alt
+     * @param {string} url
+     * @param {string} alt
      * @public
      */
-    public Redirect(url: any, alt: any): void;
+    public redirect(url: string, alt: string): void;
     /**
-     * @param name
+     * @param {string} name
      * @return {*|null}
      * @public
      */
-    public GetHeader(name: any): any | null;
+    public getHeader(name: string): any | null;
     /**
      *
      * @return {*}
      * @constructor
      */
-    GetHeaderAll(): any;
+    getHeaderAll(): any;
     /**
-     * Set header `field` to `val` or pass
+     * set header `field` to `val` or pass
      * an object of header fields.
      *
      * Examples:
      *
-     *    ctx.Response.SetHeader('Foo', ['bar', 'baz']);
-     *    ctx.Response.SetHeader('Accept', 'application/json');
-     *    ctx.Response.SetHeader({ Accept: 'text/plain', 'X-API-Key': 'tobi' });
+     *    ctx.Response.setHeader('Foo', ['bar', 'baz']);
+     *    ctx.Response.setHeader('Accept', 'application/json');
+     *    ctx.Response.setHeader({ Accept: 'text/plain', 'X-API-Key': 'tobi' });
      * @param {String|Object|Array} field
-     * @param value {any?}
+     * @param {any} [value=""]
      * @public
      */
-    public SetHeader(field: string | any | any[], value: any | null): void;
+    public setHeader(field: string | any | any[], value?: any): void;
     /**
      * Append additional header field with value val.
      * Examples:
-     * ctx.Response.AppendHeader('Link', ['<http://localhost/>', '<http://localhost:3000/>']);
-     * ctx.Response.AppendHeader('Set-Cookie', 'foo=bar; Path=/; HttpOnly');
-     * ctx.Response.AppendHeader('Warning', '199 Miscellaneous warning');
-     * @param field
-     * @param value
+     * ctx.Response.appendHeader('Link', ['<http://localhost/>', '<http://localhost:3000/>']);
+     * ctx.Response.appendHeader('set-Cookie', 'foo=bar; Path=/; HttpOnly');
+     * ctx.Response.appendHeader('Warning', '199 Miscellaneous warning');
+     * @param {string} field
+     * @param {string} value
      * @public
      */
-    public AppendHeader(field: any, value: any): void;
+    public appendHeader(field: string, value: string): void;
     /**
-     * Set response status code.
-     * @param code
+     * set response status code.
+     * @param {number} code
      * @public
      */
-    public SetStatus(code?: number): void;
+    public setStatus(code?: number): void;
     /**
-     * Remove header field.
-     * @param field
+     * remove header field.
+     * @param {string} field
      * @public
      */
-    public RemoveHeader(field: any): void;
+    public removeHeader(field: string): void;
     /**
-     * Get response status code.
+     * get response status code.
      * @description
      * 100 "continue"
      * 101 "switching protocols"
@@ -133,36 +133,37 @@ declare class HttpResponse extends HttpResponseWrite {
      * 508 "loop detected"
      * 510 "not extended"
      * 511 "network authentication required"
+     * @return {*}
      * @public
      */
-    public GetStatus(): any;
+    public getStatus(): any;
     /**
-     * Set response status message
-     * @param message
+     * set response status message
+     * @param {string} message
      * @public
      */
-    public SetStatusMessage(message: any): void;
+    public setStatusMessage(message: string): void;
     /**
-     * Get response status message
-     * @param message
+     * get response status message
+     * @param  {string} message
      * @return {String}
      * @public
      */
-    public GetStatusMessage(message: any): string;
+    public getStatusMessage(message: string): string;
     /**
      * Return parsed response Content-Length when present.
      * @return {Number|number|*}
      * @public
      */
-    public GetContentLength(): number | number | any;
+    public getContentLength(): number | number | any;
     /**
-     * Set Content-Length field to n.
-     * @param contentLength
+     * set Content-Length field to n.
+     * @param {number} contentLength
      * @public
      */
-    public SetContentLength(contentLength: any): void;
+    public setContentLength(contentLength: number): void;
     /**
-     * Set response body.
+     * set response body.
      * @param {String|Buffer|Object} val
      * string written
      * Buffer written
@@ -171,64 +172,64 @@ declare class HttpResponse extends HttpResponseWrite {
      * null no content response
      * @public
      */
-    public SetBody(val: string | Buffer | any): void;
+    public setBody(val: string | Buffer | any): void;
     /**
-     * Get response body.
+     * get response body.
      * @return {null|*}
      * @public
      */
-    public GetBody(): null | any;
+    public getBody(): null | any;
     /**
      * Check whether the response is one of the listed types.
-     * Pretty much the same as `ctx.request.Is()`.
-     * @param type
-     * @param types
+     * Pretty much the same as `ctx.request.is()`.
+     * @param {string} type
+     * @param {[]} types
      * @return {String|false}
      * @public
      */
-    public Is(type: any, ...types: any[]): string | false;
+    public is(type: string): string | false;
     /**
-     * Set Content-Disposition header to "attachment" with optional `filename`.
-     * @param filename
-     * @param options
+     * set Content-Disposition header to "attachment" with optional `filename`.
+     * @param {string} filename
+     * @param {Object} options
      */
-    SetAttachment(filename: any, options: any): void;
+    setAttachment(filename: string, options: any): void;
     /**
      * Check if a header has been written to the socket.
      * @return {Boolean}
      * @public
      */
-    public CheckHeaderSent(): boolean;
+    public checkHeaderSent(): boolean;
     /**
      * get the Last-Modified date using a string or a Date
      * @return {Date}
      * @public
      */
-    public GetLastModified(): Date;
+    public getLastModified(): Date;
     /**
      * set the Last-Modified date using a string or a Date.
      *
      *     this.lastModified(new Date());
      *     this.lastModified('2013-09-13');
-     * @param date {Date}
+     * @param {Date} date
      * @public
      */
-    public SetLastModified(date: Date): void;
+    public setLastModified(date: Date): void;
     /**
-     * Set the ETag of a response.
+     * set the ETag of a response.
      * This will normalize the quotes if necessary.
      * @example
-     *     this.SetETag('md5hashsum');
-     *     this.SetETag('"md5hashsum"');
-     *     this.SetETag('W/"123456789"');
+     *     this.setETag('md5hashsum');
+     *     this.setETag('"md5hashsum"');
+     *     this.setETag('W/"123456789"');
      *
      * @param {String} val
      */
-    SetETag(val: string): void;
+    setETag(val: string): void;
     /**
-     * Flush any set headers and begin the body
+     * flush any set headers and begin the body
      * @public
      */
-    public FlushHeaders(): void;
+    public flushHeaders(): void;
 }
 import HttpResponseWrite = require("./HttpResponseWrite");

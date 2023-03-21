@@ -5,23 +5,23 @@ const assert = require("assert");
 
     test("fileCacheTest", (done) => {
         const fileCache = new FileCache()
-        fileCache.Store("tank","man",fileCache.TIME_ONE_SECOND)
-        assert.equal(fileCache.Get("tank"),"man");
-        fileCache.Store("tankPull","pull",fileCache.TIME_ONE_SECOND)
-        assert.equal(fileCache.Pull("tankPull"),"pull")
-        assert.equal(fileCache.Get("tankPull"),null)
-        fileCache.Forever("tankForever","forever")
-        fileCache.Add("tankAdd","add",fileCache.TIME_ONE_DAY)
-        assert.equal(fileCache.Get("tankPull"),null)
+        fileCache.store("tank","man",fileCache.TIME_ONE_SECOND)
+        assert.equal(fileCache.get("tank"),"man");
+        fileCache.store("tankPull","pull",fileCache.TIME_ONE_SECOND)
+        assert.equal(fileCache.pull("tankPull"),"pull")
+        assert.equal(fileCache.get("tankPull"),null)
+        fileCache.forever("tankForever","forever")
+        fileCache.add("tankAdd","add",fileCache.TIME_ONE_DAY)
+        assert.equal(fileCache.get("tankPull"),null)
         setTimeout(()=>{
-            assert.equal(fileCache.Get("tank"),"man");
-            assert.equal(fileCache.Get("tankForever"),"forever");
-            fileCache.Forget("tankForever")
+            assert.equal(fileCache.get("tank"),"man");
+            assert.equal(fileCache.get("tankForever"),"forever");
+            fileCache.forget("tankForever")
         },800)
         setTimeout(()=>{
-            assert.notEqual(fileCache.Get("tank"),"man");
-            assert.equal(fileCache.Get("tankForever"),null);
-            assert.equal(fileCache.Get("tankAdd"),"add");
+            assert.notEqual(fileCache.get("tank"),"man");
+            assert.equal(fileCache.get("tankForever"),null);
+            assert.equal(fileCache.get("tankAdd"),"add");
             done();
         },1100)
     })

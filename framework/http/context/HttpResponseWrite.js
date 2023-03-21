@@ -1,13 +1,13 @@
-const lodash = require("lodash")
-const Facades = require("../../facades/Facades")
-const mineTypes = require("mime-types");
-const fs = require("fs");
+const lodash = require('lodash');
+const facades = require('../../facades/Facades');
+const mineTypes = require('mime-types');
+const fs = require('fs');
 
 /**
  * @abstract
  */
 class HttpResponseWrite {
-    _response
+    _response;
     _config = {
         json: {
             template: {
@@ -22,124 +22,120 @@ class HttpResponseWrite {
             },
         },
 
-    }
+    };
 
     constructor() {
         if (new.target === HttpResponseWrite) {
             throw new Error('HttpResponseWrite class Instantiation is not allowed');
         }
-        this._config.json.template = Facades.Config.Get("response")?.json?.template || this._config.json.template
+        this._config.json.template = facades.config.get('response')?.json?.template || this._config.json.template;
     }
 
-    RenderTemplate(path, data) {
+    renderTemplate(path, data) {
     }
 
-    JsonFree(json) {
-        this.SetResponseType('application/json; charset=utf-8')
-        this.WriteText(JSON.stringify(json))
+    jsonFree(json) {
+        this.setResponseType('application/json; charset=utf-8');
+        this.writeText(JSON.stringify(json));
     }
 
-    Json(data, errMsg, errNo) {
-
-
+    json(data, errMsg, errNo) {
         const tpl = lodash.cloneDeep(this._config.json.template);
         for (const filed in tpl) {
-            // err_no: '#err_no',
-            //     data: '#data',
-            //     err_msg: '#err_msg',
-            //     time: '#time',
-            switch (tpl[filed]) {
-                case "#err_no":
+            if (tpl.hasOwnProperty(filed)) {
+                switch (tpl[filed]) {
+                case '#err_no':
                     tpl[filed] = errNo;
                     break;
-                case "#data":
+                case '#data':
                     tpl[filed] = data;
                     break;
-                case "#err_msg":
+                case '#err_msg':
                     tpl[filed] = errMsg;
                     break;
-                case "#time":
+                case '#time':
                     tpl[filed] = new Date().getTime();
                     break;
+                }
             }
         }
-        this.JsonFree(tpl)
+        this.jsonFree(tpl);
     }
 
-    JsonSuccess(data, errMsg = "success") {
-        this.Json(data, errMsg, this._config.json.defaultErrNo.success)
+    jsonSuccess(data, errMsg = 'success') {
+        this.json(data, errMsg, this._config.json.defaultErrNo.success);
     }
 
-    JsonError(data, errMsg, errNo = this._config.json.defaultErrNo.error) {
-        this.Json(data, errMsg, errNo)
+    jsonError(data, errMsg, errNo = this._config.json.defaultErrNo.error) {
+        this.json(data, errMsg, errNo);
     }
 
-    Download(filePath, fileName, headers) {
-        this.DownloadIo(filePath, fileName, headers)
+    download(filePath, fileName, headers) {
+        this.downloadIo(filePath, fileName, headers);
     }
 
-    WriteStatic(filePath) {
-        const fileType = mineTypes.lookup(filePath)
-        const fileBuffer = fs.createReadStream(filePath)
-        this.SetResponseType(`${fileType}; charset=utf-8`)
-        this.WriteStream(fileBuffer)
+    writeStatic(filePath) {
+        const fileType = mineTypes.lookup(filePath);
+        const fileBuffer = fs.createReadStream(filePath);
+        this.setResponseType(`${fileType}; charset=utf-8`);
+        this.writeStream(fileBuffer);
     }
 
-    DownloadIo(bytes, fileName, headers = {}, type = 'application/octet-stream; charset=utf-8') {
-        this.SetResponseType(type)
-        this.WriteBytes(bytes)
+    downloadIo(bytes, fileName, headers = {}, type = 'application/octet-stream; charset=utf-8') {
+        this.setResponseType(type);
+        this.writeBytes(bytes);
     }
 
-    Text(string, type = 'text/plain; charset=utf-8') {
-        this.SetResponseType(type)
-        this.WriteText(string)
+    text(string, type = 'text/plain; charset=utf-8') {
+        this.setResponseType(type);
+        this.writeText(string);
     }
 
-    Html(string, type = 'text/html;charset=utf-8') {
-        this.SetResponseType(type)
-        this.WriteText(string)
+    html(string, type = 'text/html;charset=utf-8') {
+        this.setResponseType(type);
+        this.writeText(string);
     }
 
-    Xml(string, type = 'text/xml;charset=utf-8') {
-        this.SetResponseType(type)
-        this.WriteText(string)
-    }
-
-    /**
-     *
-     * @param bytes
-     * @abstract
-     */
-    WriteBytes(bytes) {
+    xml(string, type = 'text/xml;charset=utf-8') {
+        this.setResponseType(type);
+        this.writeText(string);
     }
 
     /**
      *
-     * @param string
+     * @param {any} bytes
      * @abstract
      */
-    WriteText(string) {
+    writeBytes(bytes) {
     }
 
     /**
      *
-     * @param buffers
+     * @param {string} string
      * @abstract
      */
-    WriteBuffer(buffers) {
+    writeText(string) {
     }
 
     /**
      *
-     * @param stream
+     * @param {any} buffers
      * @abstract
      */
-    WriteStream(stream) {
+    writeBuffer(buffers) {
     }
 
-    SetResponseType(type) {
+    /**
+     *
+     * @param {any} stream
+     * @abstract
+     */
+    writeStream(stream) {
+    }
+
+    setResponseType(type) {
         this._response.type = type;
     }
 }
 
-module.exports = HttpResponseWrite
+module.exports = HttpResponseWrite;

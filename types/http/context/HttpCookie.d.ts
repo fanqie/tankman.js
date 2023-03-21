@@ -2,7 +2,7 @@ export = HttpCookie;
 declare class HttpCookie {
     /**
      *
-     * @param httpCtx {HttpContext}
+     * @param {HttpContext} httpCtx
      */
     constructor(httpCtx: HttpContext);
     _ctx: KoaContext;
@@ -13,22 +13,22 @@ declare class HttpCookie {
     private httpCtx;
     /**
      *
-     * @param name {string}
-     * @param opts {{signed:Boolean}|undefined}
-     * @return  string | null
+     * @param  {string} name
+     * @param {{signed:Boolean}|undefined} opts
+     * @return  {string | null}
      * @function
      */
-    Get(name: string, opts?: {
+    get(name: string, opts?: {
         signed: boolean;
-    } | undefined): any;
+    } | undefined): string | null;
     /**
      * set cookie
-     * @param name {string}
-     * @param value {string}
-     * @param opts {{domain?:String,signed?:Boolean,maxAge?: Number, path?:String, httpOnly?: Boolean,secure?:Boolean,overwrite?:Boolean,sameSite?: 'strict'|'lax'|'none'}|undefined}
+     * @param {string} name
+     * @param {string} value
+     * @param {{domain?:String,signed?:Boolean,maxAge?: Number, path?:String, httpOnly?: Boolean,secure?:Boolean,overwrite?:Boolean,sameSite?: 'strict'|'lax'|'none'}|undefined} opts
      * @function
      */
-    Set(name: string, value: string, opts?: {
+    set(name: string, value: string, opts?: {
         domain?: string;
         signed?: boolean;
         maxAge?: number;

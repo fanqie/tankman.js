@@ -23,12 +23,13 @@
     "parse-comments": "^1.0.0",
     "path-to-regexp": "^6.2.1",
     "tank-cache": "^1.0.0",
-    "tank-http-client.js": "file:../tank-http-client",
+    "tank-http-client.js": "^1.0.04",
     "tedious": "^15.1.2",
     "xss": "^1.0.14"
   },
   "scripts": {
     "test": "jest test/**/*.js",
+    "lint": "eslint --fix framework/**/*.js ",
     "build:types": "tsc"
   },
   "repository": {
@@ -43,6 +44,8 @@
   "homepage": "https://github.com/curry-trooper/tankman.js#readme",
   "devDependencies": {
     "@types/node": "^18.14.0",
+    "eslint": ">=5.16.0",
+    "eslint-config-google": "^0.14.0",
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^3.0.0",
     "jest": "^29.5.0"

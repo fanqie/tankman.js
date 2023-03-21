@@ -1,5 +1,5 @@
-const Facades = require("../facades/Facades");
-const LoadEnvironmentVariables = require("./LoadEnvironmentVariables");
+const facades = require('../facades/Facades');
+const LoadEnvironmentVariables = require('./LoadEnvironmentVariables');
 
 module.exports = class Env {
     /**
@@ -7,7 +7,7 @@ module.exports = class Env {
      * @type {{}}
      * @private
      */
-    _Envs = {};
+    _envs = {};
 
     /**
      *
@@ -20,64 +20,62 @@ module.exports = class Env {
      * @return {{}}
      * @public
      */
-    All() {
-        return this._Envs
+    all() {
+        return this._envs;
     }
 
 
     /**
      *
-     * @param name
-     * @param defaultVal
+     * @param {string} name
+     * @param {*} [defaultVal=null]
      * @return {*|null}
      * @public
      */
-    Get(name, defaultVal = null) {
-        return this._Envs[name] || defaultVal
+    get(name, defaultVal = null) {
+        return this._envs[name] || defaultVal;
     }
 
     /**
      *
-     * @param name
-     * @param value
+     * @param {string} name
+     * @param {*} value
      * @private
      */
-    Set(name, value) {
-        this._Envs[name] = value
+    set(name, value) {
+        this._envs[name] = value;
     }
 
     /**
      * update or append a env filed
-     * @param name
-     * @param value
+     * @param {string} name
+     * @param {*} value
      * @function
      * @public
      */
-    SetAsFile(name, value) {
-        this._Envs[name] = value
-        LoadEnvironmentVariables.AppendToFile(name, value, Facades.ProcessInfo.Flags.get("--ENV") || "")
+    setAsFile(name, value) {
+        this._envs[name] = value;
+        LoadEnvironmentVariables.appendToFile(name, value, facades.processInfo.flags.get('--ENV') || '');
     }
 
     /**
      * @function
      * @public
      */
-    Load() {
-        //Load Environment Variables
-        const envs = LoadEnvironmentVariables.Load(Facades.ProcessInfo.Flags.get("--ENV") || "")
-        this._Envs = {...this._Envs, ...envs}
-
+    load() {
+    // load Environment Variables
+        const envs = LoadEnvironmentVariables.load(facades.processInfo.flags.get('--ENV') || '');
+        this._envs = {...this._envs, ...envs};
     }
 
     /**
      * check app run env is debugger mode
-     * @returns {boolean}
+     * @return {boolean}
      * @public
      */
-    IsDebugger() {
-        return this.Get("APP_DEBUG", 'true') === 'true'
+    isDebugger() {
+        return this.get('APP_DEBUG', 'true') === 'true';
     }
-}
-
+};
 
 

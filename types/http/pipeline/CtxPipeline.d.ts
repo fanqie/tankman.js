@@ -1,22 +1,22 @@
 export = CtxPipeline;
 declare class CtxPipeline {
     /**
-     * @param httpCtx {HttpContext}
+     * @param {HttpContext} httpCtx
      */
     constructor(httpCtx: HttpContext);
     handles: any[];
     _httpCtx: any;
     /**
      *
-     * @param handle {Promise<CtxPipeline>}
-     * @returns {CtxPipeline}
-     * @constructor
+     * @param {Promise<CtxPipeline>} handle
+     * @return {CtxPipeline}
+     * @function
      */
-    Pip(handle: Promise<CtxPipeline>): CtxPipeline;
+    pip(handle: Promise<CtxPipeline>): CtxPipeline;
     /**
      *
-     * @returns {Promise<CtxPipeline|boolean>}
-     * @constructor
+     * @return {Promise<CtxPipeline|boolean>}
+     * @function
      */
-    Next(): Promise<CtxPipeline | boolean>;
+    next(): Promise<CtxPipeline | boolean>;
 }

@@ -1,24 +1,24 @@
-const Facades = require("../facades/Facades")
-const ServiceProvider = require("./ServiceProvider");
-const Log = require("../log/Log");
+const facades = require('../facades/Facades');
+const ServiceProvider = require('./ServiceProvider');
+const Log = require('../log/Log');
 
 class LogProvider extends ServiceProvider {
     /**
      *
      */
     register() {
-        /**
+    /**
          *
          * @type {Log}
          */
-        Facades.Log = new Log()
+        facades.log = new Log();
     }
 
     /**
      *
      */
     boot() {
-        Facades.Log.SetConfig(Facades.Config.Get("log", {}))
+        facades.log.setConfig(facades.config.get('log', {}));
     }
 }
 

@@ -1,17 +1,17 @@
 const HttpContext = require('./HttpContext');
 
 class HttpCookie {
-    _ctx
+    _ctx;
     /**
      * @type HttpContext
      * @private
      */
-    httpCtx
+    httpCtx;
 
 
     /**
      *
-     * @param httpCtx {HttpContext}
+     * @param {HttpContext} httpCtx
      */
     constructor(httpCtx) {
         this.httpCtx = httpCtx;
@@ -20,25 +20,25 @@ class HttpCookie {
 
     /**
      *
-     * @param name {string}
-     * @param opts {{signed:Boolean}|undefined}
-     * @return  string | null
+     * @param  {string} name
+     * @param {{signed:Boolean}|undefined} opts
+     * @return  {string | null}
      * @function
      */
-    Get(name, opts = undefined) {
+    get(name, opts = undefined) {
         return this._ctx.cookies.get(name, opts || {}) || null;
     }
 
     /**
      * set cookie
-     * @param name {string}
-     * @param value {string}
-     * @param opts {{domain?:String,signed?:Boolean,maxAge?: Number, path?:String, httpOnly?: Boolean,secure?:Boolean,overwrite?:Boolean,sameSite?: 'strict'|'lax'|'none'}|undefined}
+     * @param {string} name
+     * @param {string} value
+     * @param {{domain?:String,signed?:Boolean,maxAge?: Number, path?:String, httpOnly?: Boolean,secure?:Boolean,overwrite?:Boolean,sameSite?: 'strict'|'lax'|'none'}|undefined} opts
      * @function
      */
-    Set(name, value, opts = undefined) {
-        this._ctx.cookies.set(name, value, Object.assign(opts || {}))
+    set(name, value, opts = undefined) {
+        this._ctx.cookies.set(name, value, Object.assign(opts || {}));
     }
 }
 
-module.exports = HttpCookie
+module.exports = HttpCookie;

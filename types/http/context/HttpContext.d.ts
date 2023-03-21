@@ -2,11 +2,11 @@ export = HttpContext;
 declare class HttpContext {
     /**
      *
-     * @param app
-     * @param ctx
-
+     * @param  {Application}  app
+     * @param {KoaContext} ctx
+     * @constructor
      */
-    constructor(app: any, ctx: any);
+    constructor(app: Application, ctx: KoaContext);
     /**
      * @type  KoaContext()
      */
@@ -26,9 +26,9 @@ declare class HttpContext {
      */
     _app: Application;
     /**
-     * @type {Router|RouterHandle|Redirect}
+     * @type {Router|RouterHandle|redirect}
      */
-    _router: Router | RouterHandle | Redirect;
+    _router: Router | RouterHandle | redirect;
     /**
      * @type {HttpCookie}
      */
@@ -37,26 +37,25 @@ declare class HttpContext {
     session: HttpSession;
     /**
      *
-     * @return {Router|RouterHandle|Redirect}
+     * @return {Router|RouterHandle|redirect}
      * @function
      */
-    GetRouter(): Router | RouterHandle | Redirect;
+    getRouter(): Router | RouterHandle | redirect;
     /**
      *
-     * @param router {Router|RouterHandle|Redirect}
-     * @return {Router|RouterHandle|Redirect}
+     * @param  {Router|RouterHandle|redirect} router
      * @function
      */
-    SetRouter(router: Router | RouterHandle | Redirect): Router | RouterHandle | Redirect;
-    App(): Application;
+    setRouter(router: Router | RouterHandle | redirect): void;
+    app(): Application;
     /**
      * set cookies
-     *  httpContext.SetCookies('userInfo', 'tankMan', {
+     *  httpContext.setCookies('userInfo', 'tankMan', {
      *      maxAge:60*1000*60
      *    });
-     * @param name {string}
-     * @param value
-     * @param options
+     * @param {string} name
+     * @param {string} value
+     * @param {Object} options
      * @description
      * This sets the given cookie in the response and returns the current context to allow chaining.
      * If the value is omitted, an outbound header with an expired date is used to delete the cookie.
@@ -70,47 +69,47 @@ declare class HttpContext {
      * priority: a string indicating the cookie priority. This can be set to 'low', 'medium', or 'high'.
      * sameSite: a boolean or string indicating whether the cookie is a "same site" cookie (false by default). This can be set to 'strict', 'lax', 'none', or true (which maps to 'strict').
      * signed: a boolean indicating whether the cookie is to be signed (false by default). If this is true, another cookie of the same name with the .sig suffix appended will also be sent, with a 27-byte url-safe base64 SHA1 value representing the hash of cookie-name=cookie-value against the first Keygrip key. This signature key is used to detect tampering the next time a cookie is received.
-     * overwrite: a boolean indicating whether to overwrite previously set cookies of the same name (false by default). If this is true, all cookies set during the same request with the same name (regardless of path or domain) are filtered out of the Set-Cookie header when setting this cookie.
+     * overwrite: a boolean indicating whether to overwrite previously set cookies of the same name (false by default). If this is true, all cookies set during the same request with the same name (regardless of path or domain) are filtered out of the set-Cookie header when setting this cookie.
      * @public
      */
-    public SetCookies(name: string, value: any, options: any): void;
+    public setCookies(name: string, value: string, options: any): void;
     /**
      * get cookies
-     *  httpContext.SetCookies('userInfo', 'tankMan', {
+     *  httpContext.setCookies('userInfo', 'tankMan', {
      *      maxAge:60*1000*60
      *    });
-     * @param name {string}
-     * @param options?
+     * @param  {string} name
+     * @param  {any} [options={}]
      * @function
      */
-    GetCookies(name: string, options: any): void;
+    getCookies(name: string, options?: any): void;
     /**
      * get origin node request object
-     * @returns {Http2ServerRequest | Request}
+     * @return {Http2ServerRequest | Request}
      * @public
      */
-    public GetNodeRequest(): Http2ServerRequest | Request;
+    public getNodeRequest(): Http2ServerRequest | Request;
     /**
      *  get origin node response object
-     * @returns {Http2ServerRequest | Request}
+     * @return {Http2ServerRequest | Request}
      * @public
      */
-    public GetNodeResponse(): Http2ServerRequest | Request;
+    public getNodeResponse(): Http2ServerRequest | Request;
     /**
      * throw http error
-     * @param status
-     * @param msg?
-     * @param properties?
+     * @param {number} status
+     * @param {string} [msg='']
+     * @param {any} [properties=null]
      * @function
      */
-    ThrowHttpError(status: number, msg: string, properties: any): void;
+    throwHttpError(status?: number, msg?: string, properties?: any): void;
     /**
      *
-     * @param url
-     * @param alt?
+     * @param {string} url
+     * @param {string} [alt='']
      * @public
      */
-    public Redirect(url: any, alt?: string): void;
+    public redirect(url: string, alt?: string): void;
 }
 import HttpRequest = require("./HttpRequest");
 import HttpCookie = require("./HttpCookie");

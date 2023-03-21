@@ -1,29 +1,28 @@
-const path = require("path");
-const fs = require("fs");
+const path = require('path');
+const fs = require('fs');
+const facades = require("../facades/Facades");
 
 class LoadRouters {
     /**
      * install project defined routers
-     * @param filePath
+     * @param {string} filePath
      * @static
      * @public
      */
-    static Load(filePath) {
-        if (!path.isAbsolute(filePath || "")) {
-            filePath = filePath || "route"
+    static load(filePath) {
+        if (!path.isAbsolute(filePath || '')) {
+            filePath = filePath || 'route';
         }
         const dirPath = path.join(process.cwd(), filePath);
 
         if (!fs.existsSync(dirPath)) {
-            throw Error(` no found file or directory->>> '${filePath}'`)
+            throw Error(` no found file or directory->>> '${filePath}'`);
         }
 
-        fs.readdirSync(dirPath).filter((filename) => filename.indexOf(".js") > 0).forEach((filename) => {
-
+        fs.readdirSync(dirPath).filter((filename) => filename.indexOf('.js') > 0).forEach((filename) => {
             const routeLoadFunc = require(path.join(dirPath, filename));
-            routeLoadFunc();
+            routeLoadFunc(facades.route);
         });
-
     }
 }
 

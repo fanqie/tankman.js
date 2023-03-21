@@ -3,43 +3,43 @@ declare class FacadesClass {
     /**
      * @type import('log4js').Config
      */
-    Config: import('log4js').Config;
+    config: import('log4js').Config;
     /**
      * @type Env
      */
-    Env: Env;
+    env: Env;
     /**
      * @type Route
      */
-    Route: Route;
+    route: Route;
     /**
      * @type Cache
      */
-    Cache: Cache;
+    cache: Cache;
     /**
      * @type OrmClassType|Knex|Function
      */
-    Db: OrmClassType | Knex | Function;
-    Auth: any;
+    db: OrmClassType | Knex | Function;
+    auth: any;
     /**
      * @type Log
      */
-    Log: Log;
-    FileSystem: any;
-    Grpc: any;
-    Queue: any;
-    Schedule: any;
+    log: Log;
+    fileSystem: any;
+    grpc: any;
+    queue: any;
+    schedule: any;
     /**
      * @type ProcessInfo
      */
-    ProcessInfo: ProcessInfo;
-    Engine: any;
+    processInfo: ProcessInfo;
+    engine: any;
     /**
      * @type Application
      */
-    App: Application;
+    app: Application;
     /**
      * @type Xss
      */
-    Xss: Xss;
+    xss: Xss;
 }

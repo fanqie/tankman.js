@@ -1,87 +1,82 @@
-const HttpContext = require("./context/HttpContext");
+const HttpContext = require('./context/HttpContext');
 
-const Web = require("./Web");
-const AccessPipeline = require("./pipeline/AccessPipeline");
-const createError = require("http-errors");
+const Web = require('./Web');
+const AccessPipeline = require('./pipeline/AccessPipeline');
+const createError = require('http-errors');
 const microtime = require('microtime');
-const Application = require("../boot/Application");
+const Application = require('../boot/Application');
 
 module.exports = class Engine {
-
     HttpServer = null;
     /**
      *
      * @type {Application}
      */
-    app = null
-    port = 8002
-    accessPipeline
-    appKey = []
+    app = null;
+    port = 8002;
+    accessPipeline;
+    appKey = [];
 
     constructor(app) {
-        this.app = app
-        this.appKey = (this.app.Facades.Env.Get("APP_KEY") || "").trim()
+        this.app = app;
+        this.appKey = (this.app.facades.env.get('APP_KEY') || '').trim();
         if (!this.appKey) {
-            this.app.Facades.Log.Error(" \n please use the command to generate：$tankMan generate:key")
-            throw new Error("The APP_KEY is missing")
+            this.app.facades.env.error(' \n please use the command to generate：$tankMan generate:key');
+            throw new Error('The APP_KEY is missing');
         }
-        this.port = this.app.Facades.Env.Get("APP_PORT") || 8002
-        this.accessPipeline = new AccessPipeline(this.app)
+        this.port = this.app.facades.env.get('APP_PORT') || 8002;
+        this.accessPipeline = new AccessPipeline(this.app);
     }
 
-    Run() {
+    run() {
         this.HttpServer = new Web();
-        this.HttpServer.keys = [this.appKey]
-        this.HttpServer.Static(this.app.Facades.Env.Get("APP_WEBROOT_DIR", "./public"))
-        this.HttpServer.Run(this.port, (pid) => {
-            this.app.Facades.Log.Info(`run process：${pid}`)
+        this.HttpServer.keys = [this.appKey];
+        this.HttpServer.static(this.app.facades.env.get('APP_WEBROOT_DIR', './public'));
+        this.HttpServer.run(this.port, (pid) => {
+            this.app.facades.log.info(`run process：${pid}`);
         }, {
-            ...this.app.Facades.Config.Get("cluster", {
+            ...this.app.facades.config.get('cluster', {
                 enabled: true,
-                process_max_count: 128
-            })
+                process_max_count: 128,
+            }),
         });
         this.HttpServer.use(async (ctx, next) => {
-            await this._RouteHandle(new HttpContext(this.app, ctx), next)
+            await this._routeHandle(new HttpContext(this.app, ctx), next);
         });
     }
 
     /**
      *
-     * @param httpCtx {HttpContext}
-     * @param next
+     * @param {HttpContext} httpCtx
+     * @param {function} next
      * @return {Promise<void>}
      * @private
      */
-    async _RouteHandle(httpCtx, next) {
-        if (this.HttpServer.RenderStatic(httpCtx)) {
+    async _routeHandle(httpCtx, next) {
+        if (this.HttpServer.renderStatic(httpCtx)) {
             return;
         }
-        const route = this.app.Facades.Route.GetByPathname(httpCtx.request.GetPathName(), httpCtx.request.GetMethod());
+        const route = this.app.facades.route.getByPathname(httpCtx.request.getPathName(), httpCtx.request.getMethod());
         if (route) {
-            httpCtx.SetRouter(route);
-            if (typeof route !== "boolean" && route.redirectUrl) {
-
-                httpCtx.Redirect(route.redirectUrl)
+            httpCtx.setRouter(route);
+            if (typeof route !== 'boolean' && route.redirectUrl) {
+                httpCtx.redirect(route.redirectUrl);
             } else {
                 try {
                     const start = microtime.now();
-                    await this.accessPipeline.HandleNext(httpCtx, route);
+                    await this.accessPipeline.handleNext(httpCtx, route);
 
                     const ms = microtime.now() - start;
-                    httpCtx.request.SetHeader('X-Response-Time', `${ms}ms`);
-                    this.app.Facades.Log.InfoHttp(`【PID:${process.pid}】${httpCtx.request.GetMethod()} ${httpCtx.request.GetUrl()} time:${ms}ns`)
-
+                    httpCtx.request.setHeader('X-Response-Time', `${ms}ms`);
+                    this.app.facades.log.infoHttp(`【PID:${process.pid}】${httpCtx.request.getMethod()} ${httpCtx.request.getUrl()} time:${ms}ns`);
                 } catch (err) {
-                    this.app.Facades.Log.ErrorHttp(err.message);
-                    console.error(err)
+                    this.app.facades.log.errorHttp(err.message);
+                    console.error(err);
                 }
-
             }
-
         } else {
-            const route = this.app.Facades.Route.GetRoute("404")
-            route ? httpCtx.Redirect(route.path) : next(createError.NotFound());
+            const route = this.app.facades.route.getRoute('404');
+            route ? httpCtx.redirect(route.path) : next(createError.NotFound());
         }
     }
-}
+};

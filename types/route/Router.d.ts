@@ -1,12 +1,15 @@
 export = Router;
+/**
+ *
+ */
 declare class Router {
     /**
      *
-     * @param options
-     * @param args
+     * @param {Object} options
+     * @param {...string|[Controller,string]|Function} args
      * @public
      */
-    constructor(options: any, ...args: any[]);
+    constructor(options: any, ...args: (string | [Controller, string] | Function)[]);
     /**
      *
      * @type {{prefix: string, middleware: string[]}}
@@ -71,46 +74,47 @@ declare class Router {
      * @return {string}
      * @protected
      */
-    protected MakePath(): string;
+    protected makePath(): string;
     /**
-     *
-     * @return {import("path-to-regexp").MatchFunction<object>}
-     * @public
+     * @typedef {import('path-to-regexp').MatchFunction<object>} MatchFunction
+     * @return {MatchFunction}
      */
-    public MakeMath(): import("path-to-regexp").MatchFunction<object>;
+    makeMath(): pathToRegexp.MatchFunction<any>;
     /**
      * options {{middleware: *[], prefix: string}}
-     * @param options
+     * @param {{}} options
      * @private
      */
-    private _SetOptions;
+    private _setOptions;
     /**
      * parse url
-     * @param path
+     * @param {string} path
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
-    Parse(path: any): {
+    parse(path: string): {
         path: string;
         index: number;
         params: {};
     } | boolean;
     /**
      * get url values
-     * @param path
-     * @param method
+     * @param {string} path
+     * @param {string} method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
-    Is(path: any, method: any): {
+    is(path: string, method: string): {
         path: string;
         index: number;
         params: {};
     } | boolean;
     /**
      * setName
-     * @param name {string}
-     * @return Router|undefined
+     * @param {string} name
+     * @return {Router|undefined}
      * @public
      */
-    public Name(name: string): Router;
+    public routeName(name: string): Router | undefined;
 }
+import pathToRegexp = require("path-to-regexp");
 import path = require("path");
+import Controller = require("../http/controller/Controller");

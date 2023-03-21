@@ -1,16 +1,21 @@
+const Application = require('../boot/Application');
+
 /**
  * @abstract
  */
-class  ServiceProvider {
-    app
+class ServiceProvider {
+    /**
+   * @type {Application}
+   */
+    app;
 
     /**
      *
-     * @param app
+     * @param {Application} app
      * @abstract
      */
     constructor(app) {
-        this.app = app
+        this.app = app;
     }
 
     /**
@@ -27,4 +32,4 @@ class  ServiceProvider {
     }
 }
 
-module.exports = ServiceProvider
+module.exports = ServiceProvider;

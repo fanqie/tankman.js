@@ -1,9 +1,10 @@
-const Knex = require("knex")
-const DbManager = require("./DbManager")
+// @ts-nocheck
+const knex = require('knex');
+const DbManager = require('./DbManager');
 
 class OrmClassType {
     /**
-     * @type OrmClassType|Knex
+     * @type {knex|knex.Client|knex.TableBuilder|knex.ColumnBuilder|knex.QueryBuilder|knex.KnexTimeoutError|knex.ViewBuilder|knex.SchemaBuilder|knex.KnexTimeoutError}
      */
     constructor() {
     }
@@ -11,8 +12,13 @@ class OrmClassType {
     /**
      * @type {DbManager}
      */
-    instance = null
+    instance = null;
+    /**
+     *
+     * @type {knex|function}
+     */
+    table = null;
 }
 
-module.exports = OrmClassType
+module.exports = OrmClassType;
 

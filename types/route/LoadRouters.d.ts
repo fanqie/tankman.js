@@ -2,9 +2,9 @@ export = LoadRouters;
 declare class LoadRouters {
     /**
      * install project defined routers
-     * @param filePath
+     * @param {string} filePath
      * @static
      * @public
      */
-    public static Load(filePath: any): void;
+    public static load(filePath: string): void;
 }

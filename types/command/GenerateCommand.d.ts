@@ -7,6 +7,5 @@ declare class GenerateCommand extends Command {
      * @public
      */
     public register(commands?: Map<string, Command>): void;
-    boot(): void;
 }
 import Command = require("./Command");

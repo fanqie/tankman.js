@@ -3,15 +3,15 @@ declare class AccessPipeline {
     constructor(app: any);
     /**
      *
-     * @type Object:string:Middleware
+     * @type Object:string:middleware
      */
     middlewareMaps: any;
     app: any;
     /**
-     * Handle Next
-     * @param httpCtx {HttpContext}
-     * @param route {Router|RouterHandle}
+     * handle next
+     * @param {HttpContext} httpCtx
+     * @param {Router|RouterHandle} route
      * @public
      */
-    public HandleNext(httpCtx: HttpContext, route: Router | RouterHandle): Promise<void>;
+    public handleNext(httpCtx: HttpContext, route: Router | RouterHandle): Promise<void>;
 }

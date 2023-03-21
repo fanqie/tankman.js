@@ -20,56 +20,54 @@ declare class Cache {
      * @public
      */
     public TIME_ONE_YEAR: number;
-    Has(key: any): any;
+    has(key: any): any;
     /**
-     * Get Retrieve an item from the cache by key.
-     * @param key
-     * @param defaultVal?
+     * get Retrieve an item from the cache by key.
+     * @param {string} key
+     * @param {*} [defaultVal=null]
      * @return {string|null}
      * @public
      * @function
      */
-    public Get(key: any, defaultVal?: any): string | null;
-    Forever(key: any, val: any): void;
+    public get(key: string, defaultVal?: any): string | null;
+    forever(key: any, val: any): void;
     /**
-     * Forget Remove an item from the cache.
-     * @param key
+     * forget remove an item from the cache.
+     * @param {string} key
      * @return {null|*}
      * @function
      */
-    Forget(key: any): null | any;
+    forget(key: string): null | any;
     /**
-     * Pull Retrieve an item from the cache and delete it.
-     * @param key
+     * pull Retrieve an item from the cache and delete it.
+     * @param  {string} key
+     * @return {null|*}
+     */
+    pull(key: string): null | any;
+    _now(): number;
+    /**
+     * set store an item in the cache for a given number of seconds.
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @function
      */
-    Pull(key: any): any;
-    _Now(): number;
+    store(key: string, val?: any, ttl?: number): void;
     /**
-     * Set Store an item in the cache for a given number of seconds.
-     * @param key
-     * @param val
-     * @param ttl Second
-     * @return {*}
+     * set store an item in the cache for a given number of seconds. as same store function
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @function
      */
-    Store(key: any, val?: any, ttl?: number): any;
+    set(key: string, val?: any, ttl?: number): void;
     /**
-     * Set Store an item in the cache for a given number of seconds. as same Store function
-     * @param key
-     * @param val
-     * @param ttl Second
-     * @return {*}
-     * @function
-     */
-    Set(key: any, val?: any, ttl?: number): any;
-    /**
-     * The Add method will only store data that does not exist in the cache. If the storage is successful, it will return true, otherwise it will return false:
-     * @param key
-     * @param val
-     * @param ttl
+     * The add method will only store data that does not exist in the cache. If the storage is successful, it will return true, otherwise it will return false:
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @return {boolean}
      * @function
      */
-    Add(key: any, val?: any, ttl?: number): boolean;
+    add(key: string, val?: any, ttl?: number): boolean;
 }

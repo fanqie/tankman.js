@@ -1,12 +1,12 @@
-const Facades = require("../facades/Facades");
-const LoadConfiguration = require("./LoadConfigration");
+const Facades = require('../facades/Facades');
+const LoadConfiguration = require('./LoadConfigration');
 
 /**
  * config class
  * @type {Config}
  */
 class Config {
-    _Config = {}
+    _config = {};
 
     /**
      *
@@ -16,23 +16,23 @@ class Config {
 
     /**
      *
-     * @param name
-     * @param defaultVal
+     * @param {string} name
+     * @param {*} [defaultVal=null]
      * @return {*|null}
      * @public
      */
-    Get(name, defaultVal = null) {
-        return this._Config[name] || defaultVal
+    get(name, defaultVal = null) {
+        return this._config[name] || defaultVal;
     }
 
     /**
      *
-     * @param name
-     * @param v
+     * @param {string} name
+     * @param {*} v
      * @public
      */
-    Set(name, v) {
-        this._Config[name] = v
+    set(name, v) {
+        this._config[name] = v;
     }
 
 
@@ -40,12 +40,10 @@ class Config {
      *
      * @public
      */
-    Load() {
-        const Config = LoadConfiguration.Load(Facades.Env.Get("APP_CONFIG_DIR","./config"));
-        this._Config = {...this._Config, ...Config};
+    load() {
+        const config = LoadConfiguration.load(Facades.env.get('APP_CONFIG_DIR', './config'));
+        this._config = {...this._config, ...config};
     }
-
-
 }
 
 

@@ -13,21 +13,28 @@
 // $ npm install better-sqlite3
 
 // $ npm install oracledb
-const lodash = require("lodash")
-const Knex = require('knex')
+const lodash = require('lodash');
+const Knex = require('knex');
 
 /**
- * @field instance {DbManager}
- * @return {knex | (<TRecord=any extends {}, TResult=unknown[]>(config: (Knex.Config | string)) => Knex<TRecord, TResult>) | {Knex: Knex, knex: {<TRecord=any extends {}, TResult=unknown[]>(config: (Knex.Config | string)): Knex<TRecord, TResult>}, readonly default: knex | (<TRecord=any extends {}, TResult=unknown[]>(config: (Knex.Config | string)) => Knex<TRecord, TResult>)|}
- * @constructor
+ * @property {DbManager} instance
+ * @return {knex.Client|knex.TableBuilder|knex.ColumnBuilder|knex.QueryBuilder|knex.KnexTimeoutError|knex.ViewBuilder|knex.SchemaBuilder|knex.KnexTimeoutError}
+ * @function
  */
-function Orm(){
+function Orm() {
 
 }
+
 /**
  * @type {DbManager}
  */
-Orm.instance = null
+Orm.instance = null;
+/**
+ *
+ * @type {knex.Client|knex.TableBuilder|knex.ColumnBuilder|knex.QueryBuilder|knex.KnexTimeoutError|knex.ViewBuilder|knex.SchemaBuilder|knex.KnexTimeoutError|Function}
+ */
+Orm.table = null;
 
-module.exports = lodash.merge(Knex,Orm)
+
+module.exports = lodash.merge(Knex, Orm);
 

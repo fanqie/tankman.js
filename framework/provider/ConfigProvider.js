@@ -1,14 +1,20 @@
-const Facades = require("../facades/Facades")
-const ServiceProvider = require("./ServiceProvider");
-const Config = require("../config/Config")
- class ConfigProvider extends ServiceProvider {
+const facades = require('../facades/Facades');
+const ServiceProvider = require('./ServiceProvider');
+const Config = require('../config/Config');
+class ConfigProvider extends ServiceProvider {
+    /**
+   * register provider
+   */
     register() {
-        Facades.Config = new Config()
+        facades.config = new Config();
     }
 
+    /**
+   * bootstrap provider
+   */
     boot() {
-        Facades.Config.Load()
+        facades.config.load();
     }
 }
 
-module.exports = ConfigProvider
+module.exports = ConfigProvider;

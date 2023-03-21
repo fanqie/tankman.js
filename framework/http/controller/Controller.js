@@ -1,17 +1,16 @@
-const Application = require("../../boot/Application");
-const HttpContext = require("../context/HttpContext");
+const Application = require('../../boot/Application');
+const HttpContext = require('../context/HttpContext');
 module.exports = class Controller {
-
     constructor() {
 
     }
 
     /**
      *
-     * @param httpCtx {HttpContext}
-     * @param params
+     * @param {HttpContext} httpCtx
+     * @param {Object} params
      * @constructor
      */
-    Index(httpCtx,...params) {
+    index(httpCtx, ...params) {
     }
-}
+};

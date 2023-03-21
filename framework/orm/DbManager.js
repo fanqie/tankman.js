@@ -1,22 +1,21 @@
-const Facades = require("../facades/Facades")
-const Orm = require("./Orm");
-const Knex = require("knex");
-const OrmClassType = require("./OrmType");
+const facades = require('../facades/Facades');
+const orm = require('./Orm');
+const Knex = require('knex');
+const OrmClassType = require('./OrmType');
 
 class DbManager {
     /**
-     * @type {Orm|Knex}
+     * @type {orm|Knex}
      */
     defaultConn;
     /**
      * @type {Map<string, OrmClassType>}
      */
-    connMap = new Map()
+    connMap = new Map();
 
 
     constructor() {
-
-        this.defaultConn = this._ConnectionDefaultDb()
+        this.defaultConn = this._connectionDefaultDb();
     }
 
     /**
@@ -24,8 +23,8 @@ class DbManager {
      * @public
      * @inheritDoc https://knexjs.org/guide/query-builder.html
      */
-    GetDefault() {
-        return this.defaultConn
+    getDefault() {
+        return this.defaultConn;
     }
 
     /**
@@ -41,78 +40,77 @@ class DbManager {
      *          database : 'myapp_test'
      *      }
      *  });
-     * @param options
+     * @param {Object} options
      * @return {OrmClassType|Knex}
      * @inheritDoc https://knexjs.org/guide/#configuration-options
      */
-    NewConnection(options = {}) {
+    newConnection(options = {}) {
         if (!options.client || !options.connection) {
-            console.warn("Configuration error")
+            console.warn('Configuration error');
         }
-        return this._Connection(options, options.client);
+        return this._connection(options, options.client);
     }
 
     /**
      * @return {OrmClassType|Knex}
      * @private
      */
-    _ConnectionDefaultDb() {
-        const configs = Facades.Config.Get("database", null)
+    _connectionDefaultDb() {
+        const configs = facades.config.get('database', null);
         if (configs.default && configs.hasOwnProperty(configs.default)) {
-            return this._Connection(configs[configs.default], configs.default)
+            return this._connection(configs[configs.default], configs.default);
         } else {
-            console.warn("Configuration default database not found")
+            console.warn('Configuration default database not found');
         }
-
     }
 
     /**
      *
-     * @param config
-     * @param client
+     * @param {{log:{}}|null} config
+     * @param {string} client
      * @return {OrmClassType|Knex}
      * @private
      */
-    _Connection(config, client = "mysql") {
+    _connection(config, client = 'mysql') {
         if (config === null) {
-            throw new Error("Missing database configuration")
+            throw new Error('Missing database configuration');
         }
         config.log = {
             warn(message) {
-                Facades.Log.Warn(message, "database")
+                facades.log.warn(message, 'database');
             }, error(message) {
-                Facades.Log.Error(message, "database")
+                facades.log.error(message, 'database');
             }, deprecate(message) {
-                Facades.Log.Info(message, "database")
+                facades.log.info(message, 'database');
             }, debug(message) {
-                Facades.Log.Debug(message.sql, "database")
+                facades.log.debug(message.sql, 'database');
             },
-        }
-        //singleton
+        };
+        // singleton
         if (this.connMap.has(client)) {
             return this.connMap.get(client);
         }
-        this.connMap.set(client, Orm(config))
+        this.connMap.set(client, orm(config));
         /**
          * @type {DbManager}
          */
-        this.connMap.get(client).instance = this
-        return this.connMap.get(client)
+        this.connMap.get(client).instance = this;
+
+        return this.connMap.get(client);
     }
 
     /**
-     * Get Orm instance
-     * @param client
+     * get Orm instance
+     * @param {string} client
      * @return {OrmClassType|Knex}
      * @public
      */
-    Get(client) {
-        const configs = Facades.Config.Get("database", null);
+    get(client) {
+        const configs = facades.config.get('database', null);
         if (configs.hasOwnProperty(client)) {
-            return this.connMap.get(client) || this._Connection(configs[client], client);
+            return this.connMap.get(client) || this._connection(configs[client], client);
         } else {
-            throw new Error(`Configuration default ${client} not found`)
-
+            throw new Error(`Configuration default ${client} not found`);
         }
     }
 
@@ -120,40 +118,40 @@ class DbManager {
      * @return {OrmClassType|Knex}
      * @public
      */
-    Mysql() {
-        return this.Get("mysql")
+    mysql() {
+        return this.get('mysql');
     }
 
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    Postgre() {
-        return this.Get("pg")
+    postgre() {
+        return this.get('pg');
     }
 
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    Oracle() {
-        return this.Get("oracledb")
+    oracle() {
+        return this.get('oracledb');
     }
 
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    Sqlite3() {
-        return this.Get("sqlite3")
+    sqlite3() {
+        return this.get('sqlite3');
     }
 
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    Mssql() {
-        return this.Get("mssql")
+    mssql() {
+        return this.get('mssql');
     }
 }
 

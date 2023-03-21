@@ -4,66 +4,66 @@ declare class ProcessInfo {
      *
      * @type {string[]}
      */
-    Args: string[];
+    args: string[];
     /**
      *
      * @type {{}}
      */
-    Versions: {};
+    versions: {};
     /**
      *
      * @type {{}}
      */
-    OsEnv: {};
+    osEnv: {};
     /**
      *
      * @type {Map}
      */
-    Flags: Map<any, any>;
+    flags: Map<any, any>;
     /**
      *
      * @type {{}}
      */
-    Features: {};
+    features: {};
     /**
      *
      * @type {string}
      */
-    Arch: string;
+    arch: string;
     /**
      *
      * @type {string}
      */
-    NodeVersion: string;
+    nodeVersion: string;
     /**
      *
      * @type {number}
      */
-    Pid: number;
+    pid: number;
     /**
      *
      * @type {number}
      */
-    Ppid: number;
+    ppid: number;
     /**
      *
      * @type {string}
      */
-    ExecPath: string;
+    execPath: string;
     /**
      *
      * @type {number}
      */
-    DebugPort: number;
+    debugPort: number;
     /**
      *
      * @type {string}
      */
-    Argv0: string;
+    argv0: string;
     Platform: NodeJS.Platform;
     /**
      *
-     * @param args {string[]}
+     * @param {string[]} args
      */
     parse(args: string[]): void;
 }

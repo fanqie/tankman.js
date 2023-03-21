@@ -1,19 +1,17 @@
-const ServiceProvider = require("./ServiceProvider");
-const DbManager = require("../orm/DbManager.js");
-const Facades = require("../facades/Facades");
-
+const ServiceProvider = require('./ServiceProvider');
+const DbManager = require('../orm/DbManager.js');
+const Facades = require('../facades/Facades');
 
 
 class DatabaseProvider extends ServiceProvider {
     constructor(app) {
         super(app);
-
     }
 
     register() {
-        const dbManager = new DbManager()
+        const dbManager = new DbManager();
 
-        Facades.Db = dbManager.GetDefault()
+        Facades.db = dbManager.getDefault();
     }
 
     boot() {
@@ -21,4 +19,4 @@ class DatabaseProvider extends ServiceProvider {
     }
 }
 
-module.exports = DatabaseProvider
+module.exports = DatabaseProvider;

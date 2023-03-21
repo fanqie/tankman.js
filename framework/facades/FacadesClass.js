@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 module.exports = class FacadesClass {
     constructor() {
     }
@@ -6,43 +6,47 @@ module.exports = class FacadesClass {
     /**
      * @type import('log4js').Config
      */
-    Config;
+    config;
     /**
      * @type Env
      */
-    Env;
+    env;
     /**
      * @type Route
      */
-    Route;
+    route;
     /**
      * @type Cache
      */
-    Cache;
+    cache;
     /**
      * @type OrmClassType|Knex|Function
      */
-    Db;
-    Auth;
+    db;
+    auth;
     /**
      * @type Log
      */
-    Log;
-    FileSystem;
-    Grpc;
-    Queue;
-    Schedule;
+    log;
+    fileSystem;
+    grpc;
+    /**
+     * @type HttpClient
+     */
+    httpClient;
+    queue;
+    schedule;
     /**
      * @type ProcessInfo
      */
-    ProcessInfo;
-    Engine;
+    processInfo;
+    engine;
     /**
      * @type Application
      */
-    App;
+    app;
     /**
      * @type Xss
      */
-    Xss;
-}
+    xss;
+};

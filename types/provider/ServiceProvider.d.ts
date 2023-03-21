@@ -5,11 +5,14 @@ export = ServiceProvider;
 declare class ServiceProvider {
     /**
      *
-     * @param app
+     * @param {Application} app
      * @abstract
      */
-    constructor(app: any);
-    app: any;
+    constructor(app: Application);
+    /**
+   * @type {Application}
+   */
+    app: Application;
     /**
      * @abstract
      */
@@ -19,3 +22,4 @@ declare class ServiceProvider {
      */
     boot(): void;
 }
+import Application = require("../boot/Application");

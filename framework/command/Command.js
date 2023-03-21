@@ -1,44 +1,48 @@
-const Application = require("../boot/Application");
-const crypto = require("crypto");
+const Application = require('../boot/Application');
+const crypto = require('crypto');
 
 class Command {
-
     /**
      * @param app {Application}
      */
-    app
+    app;
     /**
      * @type {Map<string, {type:BooleanConstructor|StringConstructor|NumberConstructor,defaultVal:string|Number|Boolean|null,desc:String}>}
      */
-    flags = new Map()
+    flags = new Map();
     /**
      *
      * @type {string[]}
      */
-    args = []
+    args = [];
     /**
      *
      * @type {string}
      */
-    desc = ""
+    desc = '';
 
     /**
-     * @param app {Application}
+     * @param {Application} app
      */
     constructor(app) {
-        this.app = app
+        this.app = app;
     }
 
     /**
      *
-     * @param commands {Map<string,Command>}
+     * @param {Map<string,Command>} commands
      */
     register(commands) {
-        //demo: commands.set("generate:key", this)
+    // demo: commands.set("generate:key", this)
     }
 
+    /**
+   *
+   */
+    boot() {
+    }
     setDesc(desc) {
-        this.desc = desc
+        this.desc = desc;
     }
 
     getDesc() {
@@ -49,28 +53,28 @@ class Command {
      * @return {Command}
      */
     parse() {
-        this.args = this.getArgs()
-        return this
+        this.args = this.getArgs();
+        return this;
     }
 
     handle() {
-        //callFunction
+    // callFunction
 
     }
 
     /**
      * append flag
-     * @param name {string}
-     * @param type {BooleanConstructor|StringConstructor|NumberConstructor}
-     * @param defaultVal {string|Number|Boolean|null}
-     * @param desc {string}
+     * @param {string} name
+     * @param {BooleanConstructor|StringConstructor|NumberConstructor} type
+     * @param {string|Number|Boolean|null} defaultVal
+     * @param {string} desc
      */
     appendFlag(name, type, defaultVal, desc) {
         this.flags.set(name, {
             type,
             defaultVal,
-            desc
-        })
+            desc,
+        });
     }
 
     /**
@@ -78,57 +82,54 @@ class Command {
      * @return {string[]}
      */
     getArgs() {
-        const args = process.argv.slice(2)
-        return args.filter(arg => arg && arg.indexOf("--") === -1).slice(1)
+        const args = process.argv.slice(2);
+        return args.filter((arg) => arg && arg.indexOf('--') === -1).slice(1);
     }
 
     /**
-     *
-     * @param name
+     * @param {string} name
      * @function
      * @return string|number|boolean
      * @protected
      */
     getFlag(name) {
         if (!this.flags.has(name)) {
-            throw new Error("flags error:Undefined " + name)
+            throw new Error('flags error:Undefined ' + name);
         }
-        const flagDefine = this.flags.get(name)
-        const args = process.argv.slice(2)
+        const flagDefine = this.flags.get(name);
+        const args = process.argv.slice(2);
         for (const arg of args) {
-            if (arg && arg.indexOf("--") === 0) {
-                const flag = arg.replace("--", "").split("=")
+            if (arg && arg.indexOf('--') === 0) {
+                const flag = arg.replace('--', '').split('=');
 
                 if (flag[0].trim() === name) {
-
-                    let value = flag[1];
+                    const value = flag[1];
                     if (!value) {
-                        break
+                        break;
                     }
-                    value.trim().length > 0 ? value.trim() : flagDefine.defaultVal.toString()
+                    value.trim().length > 0 ? value.trim() : flagDefine.defaultVal.toString();
                     switch (flagDefine.type.name) {
-                        case "Number":
-                            return Number(value)
-                        case "Boolean":
-                            return value === "true"
-                        default:
-                            //string any
-                            return value
+                    case 'Number':
+                        return Number(value);
+                    case 'Boolean':
+                        return value === 'true';
+                    default:
+                        // string any
+                        return value;
                     }
                 }
             }
-
         }
         return flagDefine.defaultVal;
     }
 
     help() {
-        const rows = ["----------------------flags----------------------"]
+        const rows = ['----------------------flags----------------------'];
 
         this.flags.forEach((flag, key) => {
-            rows.push(`--${key}=<${flag.type.name}> \t default:(${flag.defaultVal})  \t${flag.desc}`)
-        })
-        return rows.join("\n")
+            rows.push(`--${key}=<${flag.type.name}> \t default:(${flag.defaultVal})  \t${flag.desc}`);
+        });
+        return rows.join('\n');
     }
 }
-module.exports = Command
+module.exports = Command;

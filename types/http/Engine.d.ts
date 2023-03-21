@@ -10,15 +10,15 @@ declare class Engine {
     port: number;
     accessPipeline: AccessPipeline;
     appKey: any[];
-    Run(): void;
+    run(): void;
     /**
      *
-     * @param httpCtx {HttpContext}
-     * @param next
+     * @param {HttpContext} httpCtx
+     * @param {function} next
      * @return {Promise<void>}
      * @private
      */
-    private _RouteHandle;
+    private _routeHandle;
 }
 import Application = require("../boot/Application");
 import AccessPipeline = require("./pipeline/AccessPipeline");

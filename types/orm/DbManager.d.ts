@@ -1,7 +1,7 @@
 export = DbManager;
 declare class DbManager {
     /**
-     * @type {Orm|Knex}
+     * @type {orm|Knex}
      */
     defaultConn: any | typeof Knex;
     /**
@@ -13,7 +13,7 @@ declare class DbManager {
      * @public
      * @inheritDoc https://knexjs.org/guide/query-builder.html
      */
-    public GetDefault(): OrmClassType | typeof Knex;
+    public getDefault(): OrmClassType | typeof Knex;
     /**
      * The connection options are passed directly to the appropriate database client to create the connection, and may be either an object, a connection string, or a function returning an object:
      * create free kNex connection
@@ -27,56 +27,56 @@ declare class DbManager {
      *          database : 'myapp_test'
      *      }
      *  });
-     * @param options
+     * @param {Object} options
      * @return {OrmClassType|Knex}
      * @inheritDoc https://knexjs.org/guide/#configuration-options
      */
-    NewConnection(options?: {}): OrmClassType | typeof Knex;
+    newConnection(options?: any): OrmClassType | typeof Knex;
     /**
      * @return {OrmClassType|Knex}
      * @private
      */
-    private _ConnectionDefaultDb;
+    private _connectionDefaultDb;
     /**
      *
-     * @param config
-     * @param client
+     * @param {{log:{}}|null} config
+     * @param {string} client
      * @return {OrmClassType|Knex}
      * @private
      */
-    private _Connection;
+    private _connection;
     /**
-     * Get Orm instance
-     * @param client
+     * get Orm instance
+     * @param {string} client
      * @return {OrmClassType|Knex}
      * @public
      */
-    public Get(client: any): OrmClassType | typeof Knex;
-    /**
-     * @return {OrmClassType|Knex}
-     * @public
-     */
-    public Mysql(): OrmClassType | typeof Knex;
+    public get(client: string): OrmClassType | typeof Knex;
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    public Postgre(): OrmClassType | typeof Knex;
+    public mysql(): OrmClassType | typeof Knex;
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    public Oracle(): OrmClassType | typeof Knex;
+    public postgre(): OrmClassType | typeof Knex;
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    public Sqlite3(): OrmClassType | typeof Knex;
+    public oracle(): OrmClassType | typeof Knex;
     /**
      * @return {OrmClassType|Knex}
      * @public
      */
-    public Mssql(): OrmClassType | typeof Knex;
+    public sqlite3(): OrmClassType | typeof Knex;
+    /**
+     * @return {OrmClassType|Knex}
+     * @public
+     */
+    public mssql(): OrmClassType | typeof Knex;
 }
 import Knex = require("knex");
 import OrmClassType = require("./OrmType");

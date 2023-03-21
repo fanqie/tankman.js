@@ -4,25 +4,25 @@ export = Config;
  * @type {Config}
  */
 declare class Config {
-    _Config: {};
+    _config: {};
     /**
      *
-     * @param name
-     * @param defaultVal
+     * @param {string} name
+     * @param {*} [defaultVal=null]
      * @return {*|null}
      * @public
      */
-    public Get(name: any, defaultVal?: any): any | null;
+    public get(name: string, defaultVal?: any): any | null;
     /**
      *
-     * @param name
-     * @param v
+     * @param {string} name
+     * @param {*} v
      * @public
      */
-    public Set(name: any, v: any): void;
+    public set(name: string, v: any): void;
     /**
      *
      * @public
      */
-    public Load(): void;
+    public load(): void;
 }

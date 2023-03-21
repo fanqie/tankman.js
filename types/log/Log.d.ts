@@ -8,108 +8,106 @@ declare class Log {
     log4js: Log4jS;
     /**
      *
-     * @param options {Object}
+     * @param {Object} options
      * @public
      */
-    public SetConfig(options: any): void;
+    public setConfig(options: any): void;
     /**
-     *
-     * @param category? { string}
+     * @param {String} [category=""]
      * @return {import('log4js').Logger}
      * @public
      */
-    public GetLogger(category: any): import('log4js').Logger;
+    public getLogger(category?: string): import('log4js').Logger;
     /**
-     *
-     * @param callback
+     * @param {any} callback
      * @constructor
      */
-    Shudown(callback: any): void;
+    shudown(callback: any): void;
     /**
      *
-     * @param type
-     * @param fn
+     * @param {string} type
+     * @param {any} fn
      * @constructor
      */
-    AddLayout(type: any, fn: any): void;
+    addLayout(type: string, fn: any): void;
     /**
      *
-     * @param message {any}
-     * @param category {string}
+     * @param {*} message
+     * @param {string} [category=""]
      * @public
      */
-    public Trace(message: any, category: string): void;
+    public trace(message: any, category?: string): void;
     /**
      *
-     * @param message {any}
-     * @param category? {string}
+     * @param {*} message
+     * @param {string} [category=""]
      * @public
      */
-    public Debug(message: any, category: any): void;
+    public debug(message: any, category?: string): void;
     /**
      *
-     * @param message {string}
-     * @param category {string?}
+     * @param {*} message
+     * @param {string} [category=""]
      * @public
      */
-    public Info(message: string, category?: string | null): void;
+    public info(message: any, category?: string): void;
     /**
      *
-     * @param message {any}
-     * @param category {string?}
+     * @param {*} message
+     * @param {string} [category=""]
      * @public
      */
-    public Warn(message: any, category: string | null): void;
+    public warn(message: any, category?: string): void;
     /**
      *
-     * @param message {any}
-     * @param category {string?}
+     * @param {*} message
+     * @param {string} [category=""]
      * @public
      */
-    public Error(message: any, category: string | null): void;
+    public error(message: any, category?: string): void;
     /**
      *
-     * @param message {any}
-     * @param category {string?}
+     * @param {*} message
+     * @param {string} [category=""]
      * @public
      */
-    public Fatal(message: any, category: string | null): void;
+    public fatal(message: any, category?: string): void;
     /**
      *
-     * @param message {any}
+     * @param {*} message
      * @public
      */
-    public TraceHttp(message: any): void;
+    public traceHttp(message: any): void;
     /**
      *
-     * @param message {any}
+     * @param {*} message
      * @public
      */
-    public DebugHttp(message: any): void;
+    public debugHttp(message: any): void;
     /**
      *
-     * @param message {string}
+     * @param {*} message
      * @public
      */
-    public InfoHttp(message?: string): void;
+    public infoHttp(message?: any): void;
     /**
      *
-     * @param message {any}
+     * @param {*} message
      * @public
      */
-    public WarnHttp(message: any): void;
+    public warnHttp(message: any): void;
     /**
      *
-     * @param message {any}
+     * @param {*} message
      * @public
      */
-    public ErrorHttp(message: any): void;
+    public errorHttp(message: any): void;
     /**
      *
-     * @param message {any}
+     * @param {*} message
      * @public
      */
-    public FatalHttp(message: any): void;
+    public fatalHttp(message: any): void;
 }
 declare namespace Log {
     export { Log4jS };

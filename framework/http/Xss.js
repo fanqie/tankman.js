@@ -1,5 +1,6 @@
-const _xss = require("xss")
-const Facades = require("../facades/Facades")
+const _xss = require('xss');
+const facades = require('../facades/Facades');
+const HttpRequest = require('./context/HttpRequest');
 module.exports = class Xss {
     /**
      *
@@ -12,30 +13,29 @@ module.exports = class Xss {
         options: {
             css: {},
             whiteList: {},
-        }
-    }
-    _xss
+        },
+    };
+    _xss;
 
     /**
-     * @type Xss
+     * @type {Xss}
      * @constructor
      */
     constructor() {
-        this._xss = new _xss.FilterXSS(Facades.Config.Get("xss") || this.conf.options)
-
+        this._xss = new _xss.FilterXSS(facades.config.get('xss') || this.conf.options);
     }
 
     /**
      *
-     * @param httpRequest
-     * @param value
+     * @param {HttpRequest} httpRequest
+     * @param {string|*} value
      * @return {string}
      * @constructor
      */
-    Filter(httpRequest, value) {
-        if (typeof value === "string" && !this.conf.routerWhiteList.includes(httpRequest.GetRoute().path)) {
-            return this._xss.process(value)
+    filter(httpRequest, value) {
+        if (typeof value === 'string' && !this.conf.routerWhiteList.includes(httpRequest.getRouter().path)) {
+            return this._xss.process(value);
         }
         return value;
     }
-}
+};

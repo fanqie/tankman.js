@@ -5,9 +5,12 @@ export = Route;
 declare class Route {
     /**
      *
-     * @param options
+     * @param {{prefix: string, middleware: string[]}|undefined} [options=undefined]
      */
-    constructor(options: any);
+    constructor(options?: {
+        prefix: string;
+        middleware: string[];
+    } | undefined);
     /**
      * @type  string
      * @private
@@ -28,101 +31,109 @@ declare class Route {
      * @private
      */
     private _routers;
-    All(): Router[];
     /**
      *
-     * @param prefix
-     * @param func:route {Function:route{Router|RouterHandel} }
-     * @param groupMiddlewareItems
-     * @returns {Route}
+     * @return {Router[]}
      * @constructor
      */
-    Group(prefix: any, func: (route: any) => void, groupMiddlewareItems: any): Route;
+    all(): Router[];
     /**
-     * @param path
-     * @return {string}
+     *
+     * @param {String} prefix
+     * @param {Function} func:route
+     * @param {[]} groupMiddlewareItems
+     * @return {Route}
+     * @constructor
+     */
+    group(prefix: string, func: Function, groupMiddlewareItems: []): Route;
+    /**
+     * @param {String} path
+     * @return {String}
      * @public
      */
-    public GetPath(path: any): string;
+    public getPath(path: string): string;
     /**
-     * @param method {string[]|string}
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string[]|string} method
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router}
      * @private
      */
-    private _CreateRouterHandle;
+    private _createRouterHandle;
     /**
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router|RouterHandle}
      */
-    Post(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
+    post(path: string, controllerOrActionFunc: [Controller, string] | Function): Router | RouterHandle;
     /**
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router|RouterHandle}
      */
-    Get(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
+    get(path: string, controllerOrActionFunc: [Controller, string] | Function): Router | RouterHandle;
     /**
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router|RouterHandle}
      */
-    Patch(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
+    patch(path: string, controllerOrActionFunc: [Controller, string] | Function): Router | RouterHandle;
     /**
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router|RouterHandle}
      */
-    Put(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
+    put(path: string, controllerOrActionFunc: [Controller, string] | Function): Router | RouterHandle;
     /**
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router|RouterHandle}
      */
-    Any(path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
+    any(path: string, controllerOrActionFunc: [Controller, string] | Function): Router | RouterHandle;
     /**
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router|RouterHandle}
      */
-    Delete(path: string, controllerOrActionFunc: [Controller, Function] | Function, action: any): Router | RouterHandle;
+    delete(path: string, controllerOrActionFunc: [Controller, string] | Function): Router | RouterHandle;
     /**
-     * @param methodsArray {string[]}
-     * @param path {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
+     * @param {string[]} methodsArray
+     * @param {string} path
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      * @return {Router|RouterHandle}
      */
-    Match(methodsArray: string[], path: string, controllerOrActionFunc: [Controller, Function] | Function): Router | RouterHandle;
+    match(methodsArray: string[], path: string, controllerOrActionFunc: [Controller, string] | Function): Router | RouterHandle;
     /**
-     * @param path
-     * @param redirectUrl
+     * @param {string} path
+     * @param {string} redirectUrl
      * @return {Router|RouterHandle}
      */
-    Redirect(path: any, redirectUrl: any): Router | RouterHandle;
+    redirect(path: string, redirectUrl: string): Router | RouterHandle;
     /**
      *
      * @type {Map<string,Router|RouterHandle>}
      * @private
      */
     private _routesMap;
-    LoadSet(): void;
     /**
-     * Get route by route name
-     * @param name {string}
+     * loadSet
+     */
+    loadSet(): void;
+    /**
+     * get route by route name
+     * @param {string} name
      * @return {Router | RouterHandle}
      * @public
      */
-    public GetRoute(name: string): Router | RouterHandle;
+    public getRoute(name: string): Router | RouterHandle;
     /**
-     * Get route by route pathname
-     * @param pathname {string}
-     * @param method {string} post|put|get|delete|put
+     * get route by route pathname
+     * @param {string} pathname
+     * @param {string} method 'post'|'put'|'get'|'delete'|'put'|'patch'
      * @return {Router|RouterHandle|Redirect}
      * @public
      */
-    public GetByPathname(pathname: string, method: string): Router | RouterHandle | Redirect;
+    public getByPathname(pathname: string, method: string): Router | RouterHandle | Redirect;
 }
 import Router = require("./Router");
 import Controller = require("../http/controller/Controller");

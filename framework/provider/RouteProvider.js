@@ -1,7 +1,7 @@
-const ServiceProvider = require("./ServiceProvider")
-const Route = require("../route/Route")
-const LoadRouters = require("../route/LoadRouters")
-const Facades = require("../facades/Facades")
+const ServiceProvider = require('./ServiceProvider');
+const Route = require('../route/Route');
+const LoadRouters = require('../route/LoadRouters');
+const facades = require('../facades/Facades');
 
 class RouteProvider extends ServiceProvider {
     /**
@@ -12,16 +12,17 @@ class RouteProvider extends ServiceProvider {
          *
          * @type {Route}
          */
-        Facades.Route = new Route(this.app)
+        facades.route = new Route();
     }
 
     /**
      *
      */
     boot() {
-        LoadRouters.Load(Facades.Config.Get("APP_ROUTES_DIR","routes"))
-        Facades.Route.LoadSet()
+
+        LoadRouters.load(facades.config.get('APP_ROUTES_DIR', 'routes'));
+        facades.route.loadSet();
     }
 }
 
-module.exports = RouteProvider
+module.exports = RouteProvider;

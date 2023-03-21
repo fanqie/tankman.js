@@ -1,7 +1,7 @@
 export = HttpRequest;
 declare class HttpRequest {
     /**
-     * @param httpCtx {HttpContext}
+     * @param  {HttpContext} httpCtx
      */
     constructor(httpCtx: HttpContext);
     /**
@@ -25,21 +25,35 @@ declare class HttpRequest {
     httpCtx: HttpContext;
     _postParams: any;
     /**
-     * Get Current Request Router
-     * @return {Router|RouterHandle|function}
-     * @constructor
+     * get Current Request Router
+     * @return {Router|RouterHandle}
+     * @function
      */
-    GetRouter(): Router | RouterHandle | Function;
-    Post(name: any): any;
-    Get(name: any): any;
+    getRouter(): Router | RouterHandle;
+    /**
+     *
+     * @param {string} name
+     * @return {*|null}
+     */
+    post(name: string): any | null;
+    /**
+     *
+     * @param {string} name
+     * @return {*|null}
+     */
+    get(name: string): any | null;
     /**
      * get file field value
-     * @param name
+     * @param  {string} name
      * @return {*|null}
      * @function
      */
-    File(name: any): any | null;
-    GetPostAll(): any;
+    file(name: string): any | null;
+    /**
+     *
+     * @return {any}
+     */
+    getPostAll(): any;
     /**
      * Return request header.
      * The Referrer header field is special-cased, both Referrer and Referer are interchangeable.
@@ -47,119 +61,120 @@ declare class HttpRequest {
      * this.getHeader('Content-Type'); // => “text/plain”
      * this.getHeader('content-type'); // => “text/plain”
      * this.getHeader('Something'); // => ''
+     * @param {string} name
      * @return {String|null}
      *
      */
-    GetHeader(name: any): string | null;
+    getHeader(name: string): string | null;
     /**
      *
      * @return {*}
      * @public
      */
-    public GetHeaderAll(): any;
+    public getHeaderAll(): any;
     /**
-     * @param name  {string}
-     * @param value  {any}
+     * @param {string} name
+     * @param {any} value
      * @public
      */
-    public SetHeader(name: string, value: any): void;
+    public setHeader(name: string, value: any): void;
     /**
-     * @param method
+     * @param {string} method
      * @public
      */
-    public SetMethod(method: any): void;
+    public setMethod(method: string): void;
     /**
      * @return {String}
      * @public
      */
-    public GetMethod(): string;
+    public getMethod(): string;
     /**
      * Return parsed Content-Length when present.
      * @return {Number}
      * @public
      */
-    public GetContentLength(): number;
+    public getContentLength(): number;
     /**
-     * @param url {string}
+     * @param {string} url
      * @public
      */
-    public SetUrl(url: string): void;
+    public setUrl(url: string): void;
     /**
-     * @return  url {String}
+     * @return  {String} url
      * @public
      */
-    public GetUrl(): any;
+    public getUrl(): string;
     /**
-     * Get full request URL.
+     * get full request URL.
      * @return {String|string|*}
      * @public
      */
-    public GetOriginalUrl(): string | string | any;
+    public getOriginalUrl(): string | string | any;
     /**
-     * Get origin of URL.
+     * get origin of URL.
      * @return {String}
      * @public
      */
-    public GetOrigin(): string;
+    public getOrigin(): string;
     /**
-     * Get full request URL.
+     * get full request URL.
      * @return {String}
      * @public
      */
-    public GetHref(): string;
+    public getHref(): string;
     /**
-     * Set pathname, retaining the query string when present.
-     * @param path {String}
+     * set pathname, retaining the query string when present.
+     * @param  {String} path
      * @public
      */
-    public SetPath(path: string): void;
+    public setPath(path: string): void;
     /**
-     * Get request pathname.
+     * get request pathname.
      * @return {String}
      * @public
      */
-    public GetPathName(): string;
+    public getPathName(): string;
     /**
-     * Set query string.
-     * @param querystring {String}
+     * set query string.
+     * @param  {String} querystring
      * @public
      */
-    public SetQuerystring(querystring: string): void;
+    public setQuerystring(querystring: string): void;
     /**
-     * Get parsed query string.
+     * get parsed query string.
      * @return {String}
      * @public
      */
-    public GetQuerystring(): string;
+    public getQuerystring(): string;
     /**
-     * Set the search string. Same as request.querystring= but included for ubiquity.
-     * @param search {String}
+     * set the search string. Same as request.querystring= but included for ubiquity.
+     * @param {String} search
      * @public
      */
-    public SetSearch(search: string): void;
+    public setSearch(search: string): void;
     /**
-     * Get the search string. Same as the query string except it includes the leading ?.
+     * get the search string. Same as the query string except it includes the leading ?.
      * @return {String}
      * @public
      */
-    public GetSearch(): string;
+    public getSearch(): string;
     /**
-     * Parse the “Host” header field host and support X-Forwarded-Host when a proxy is enabled.
+     * parse the “Host” header field host and support X-Forwarded-Host when a proxy is enabled.
      * @return {String}
      * @public
      */
-    public GetHost(): string;
+    public getHost(): string;
     /**
-     * Parse the “Host” header field hostname and support X-Forwarded-Host when a proxy is enabled.
+     * parse the “Host” header field hostname and support X-Forwarded-Host when a proxy is enabled.
      * @return {String}
      * @public
      */
-    public GetHostname(): string;
+    public getHostname(): string;
     /**
-     * Get WHATWG parsed URL. Lazily memoized.
+     * get WHATWG parsed URL. Lazily memoized.
      * @public
      */
-    public GetWHATWG_URL(): void;
+    public getWHATWG_URL(): void;
     /**
      * Check if the request is fresh, aka
      * Last-Modified and/or the ETag
@@ -167,65 +182,67 @@ declare class HttpRequest {
      * @return {Boolean}
      * @public
      */
-    public IsFresh(): boolean;
+    public isFresh(): boolean;
     /**
      * Check if the request is idempotent.
      * @return {Boolean}
      * @public
      */
-    public IsIdempotent(): boolean;
+    public isIdempotent(): boolean;
     /**
      * Return the request socket.
-     * @return Connection
+     * @return {import('mysql2').Connection}
      * @public
      */
-    public GetSocket(): any;
+    public getSocket(): import('mysql2').Connection;
     /**
      *
      * @return {String}
      * @public
      */
-    public GetCharset(): string;
+    public getCharset(): string;
     /**
      * Return accepted charsets or best fit based on charsets.
      * Given Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5 an array sorted by quality is returned:
      * ['utf-8', 'utf-7', 'iso-8859-1']
-     * @param charsets
+     * @param {string[]}  charsets
      * @return {String|Array}
      * @public
      */
-    public AcceptsCharsets(charsets: any): string | any[];
+    public acceptsCharsets(charsets: string[]): string | any[];
     /**
      * Return accepted languages or best fit based on languages.
      * Given Accept-Language: en;q=0.8, es, pt an array sorted by quality is returned:
      * ['es', 'pt', 'en']
-     * @param languages
+     * @param {string[]} languages
      * @return {Array|String}
      * @public
      */
-    public AcceptsLanguages(languages: any): any[] | string;
+    public acceptsLanguages(languages: string[]): any[] | string;
     /**
      * Return accepted encodings or best fit based on encodings.
      * Given Accept-Encoding: gzip, deflate an array sorted by quality is returned:
      * ['gzip', 'deflate']
-     * @param encodings
+     * @param {string[]} encodings
      * @return {String|Array}
      * @public
      */
-    public AcceptsEncodings(encodings: any): string | any[];
+    public acceptsEncodings(encodings: string[]): string | any[];
     /**
      * Check if the given type(s) is acceptable, returning the best match when true, otherwise false, in which case you should respond with 406 “Not Acceptable”.
-     * The type value may be a single mime type string such as “application/json”, the extension name such as “json” or an array ["json", "html", "text/plain"]. When a list or array is given the best match, if any is returned.
+     * The type value may be a single mime type string such as “application/json”, the extension name such as “json” or an array ["json", "html", "text/plain"].
+     * When a list or array is given the best match, if any is returned.
      * Examples:
      * // Accept: text/html this.accepts('html'); // => “html”
-     * // Accept: text/*, application/json this.accepts('html'); // => “html” this.accepts('text/html'); // => “text/html” this.accepts('json', 'text'); // => “json” this.accepts('application/json'); // => “application/json”
+     * // Accept: text/*, application/json this.accepts('html'); // => “html” this.accepts('text/html');
+     * // => “text/html” this.accepts('json', 'text'); // => “json” this.accepts('application/json'); // => “application/json”
      * // Accept: text/*, application/json this.accepts('image/png'); this.accepts('png'); // => false
      * // Accept: text/*;q=.5, application/json this.accepts(['html', 'json']); this.accepts('html', 'json'); // => “json”
-     * @param args
+     * @param {...string} args
      * @return {String|Array|false}
      * @public
      */
-    public Accepts(...args: any[]): string | any[] | false;
+    public accepts(...args: string[]): string | any[] | false;
     /**
      * Check if the incoming request contains the "Content-Type"
      * header field and if it contains any of the given mime `type`s.
@@ -246,12 +263,12 @@ declare class HttpRequest {
      *     this.is('html', 'application/*'); // => 'application/json'
      *
      *     this.is('html'); // => false
-     * @param type
-     * @param types
+     * @param {string} type
+     * @param {string[]} types
      * @return {String|false|null}
      * @public
      */
-    public Is(type: any, ...types: any[]): string | false | null;
+    public is(type: string, ...types: string[]): string | false | null;
     /**
      * Return subdomains as an array.
      *
@@ -266,43 +283,45 @@ declare class HttpRequest {
      * @return {Array}
      * @public
      */
-    public GetSubdomains(): any[];
+    public getSubdomains(): any[];
     /**
-     * When app.proxy is true, parse the “X-Forwarded-For” ip address list. For example if the value was “client, proxy1, proxy2” you would receive the array ["client", "proxy1", "proxy2"] where “proxy2” is the furthest down-stream.
+     * When app.proxy is true, parse the “X-Forwarded-For” ip address list. For example if the value was
+     * “client, proxy1, proxy2” you would receive the array ["client", "proxy1", "proxy2"] where “proxy2” is the furthest down-stream.
      * @return {Array}
      * @public
      */
-    public GetIps(): any[];
+    public getIps(): any[];
     /**
      * Return request's remote address When app.proxy is true, parse the “X-Forwarded-For” ip address list and return the first one
      * @return {String}
      * @public
      */
-    public GetIp(): string;
+    public getIp(): string;
     /**
      * Shorthand for: this.protocol == 'https'
      * @return {Boolean}
      * @public
      */
-    public IsSecure(): boolean;
+    public isSecure(): boolean;
     /**
-     * Return the protocol string “http” or “https” when requested with TLS. When the proxy setting is enabled the “X-Forwarded-Proto” header field will be trusted. If you're running behind a reverse proxy that supplies https for you this may be enabled.
+     * Return the protocol string “http” or “https” when requested with TLS. When the proxy setting is enabled the “X-Forwarded-Proto”
+     * header field will be trusted. If you're running behind a reverse proxy that supplies https for you this may be enabled.
      * @return {String}
      * @public
      */
-    public GetProtocol(): string;
+    public getProtocol(): string;
     /**
      * Return the request mime type void of parameters such as “charset”.
      * @return {String}
      * @public
      */
-    public GetType(): string;
+    public getType(): string;
     /**
-     * Get content-type value
+     * get content-type value
      * @return {String}
      * @public
      */
-    public GetContentType(): string;
+    public getContentType(): string;
 }
 import HttpContext = require("./HttpContext");
 import Router = require("../../route/Router");

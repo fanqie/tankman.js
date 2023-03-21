@@ -9,26 +9,25 @@ declare class LoadEnvironmentVariables {
     static varReg: RegExp;
     /**
      *
-     * @param filePath
-     * @return {{}}
+     * @param {string} filePath
+     * @return {Object}
      * @public
      */
-    public static Load(filePath?: string): {};
+    public static load(filePath?: string): any;
     /**
      *
-     * @param filePath
+   * @param {string} filePath
      * @return string
      * @private
      */
-    private static _GetContent;
-    static _SaveContent(filePath: any, content: any): number;
+    private static _getContent;
+    static _saveContent(filePath: any, content: any): number;
     /**
      *
-     * @param name
-     * @param value
-     * @param filePath
-     * @return {*}
+     * @param {string} name
+     * @param {string} value
+     * @param {string} filePath
      * @function
      */
-    static AppendToFile(name: any, value: any, filePath?: string): any;
+    static appendToFile(name: string, value: string, filePath?: string): void;
 }

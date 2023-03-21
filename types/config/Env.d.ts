@@ -5,45 +5,45 @@ declare class Env {
      * @type {{}}
      * @private
      */
-    private _Envs;
+    private _envs;
     /**
      *
      * @return {{}}
      * @public
      */
-    public All(): {};
+    public all(): {};
     /**
      *
-     * @param name
-     * @param defaultVal
+     * @param {string} name
+     * @param {*} [defaultVal=null]
      * @return {*|null}
      * @public
      */
-    public Get(name: any, defaultVal?: any): any | null;
+    public get(name: string, defaultVal?: any): any | null;
     /**
      *
-     * @param name
-     * @param value
+     * @param {string} name
+     * @param {*} value
      * @private
      */
-    private Set;
+    private set;
     /**
      * update or append a env filed
-     * @param name
-     * @param value
+     * @param {string} name
+     * @param {*} value
      * @function
      * @public
      */
-    public SetAsFile(name: any, value: any): void;
+    public setAsFile(name: string, value: any): void;
     /**
      * @function
      * @public
      */
-    public Load(): void;
+    public load(): void;
     /**
      * check app run env is debugger mode
-     * @returns {boolean}
+     * @return {boolean}
      * @public
      */
-    public IsDebugger(): boolean;
+    public isDebugger(): boolean;
 }

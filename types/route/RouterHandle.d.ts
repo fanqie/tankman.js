@@ -1,40 +1,38 @@
 export = RouterHandle;
+/**
+ * RouterHandle
+ */
 declare class RouterHandle extends Router {
     /**
-     * @param options {{middleware: *[], prefix: string}}
-     * @param methods {string|string[]}
-     * @param vPath {string}
-     * @param controllerOrActionFunc {[Controller,Function]|Function}
-     * @param action
+     * @param {{middleware: *[], prefix: string}} options
+     * @param {string|string[]} methods
+     * @param {string} vPath
+     * @param {[Controller,string]|Function} controllerOrActionFunc
      */
     constructor(options: {
         middleware: any[];
         prefix: string;
-    }, methods: string | string[], vPath: string, controllerOrActionFunc: [Controller, Function] | Function);
-    _IsClass(val: any): boolean;
+    }, methods: string | string[], vPath: string, controllerOrActionFunc: [Controller, string] | Function);
     /**
-     * get url values
-     * @param path
-     * @return {{ path: string, index: number, params: {} }|boolean}
+     * check class
+     * @param {mixin} val
+     * @return {boolean}
+     * @private
      */
-    is(path: any, method: any): {
-        path: string;
-        index: number;
-        params: {};
-    } | boolean;
+    private _isClass;
     /**
      * middleware
-     * @param middleware {string[]|string}
+     * @param {string[]|string} middleware
      * @public
-     * @returns {Router|RouterHandle}
+     * @return {Router|RouterHandle}
      */
-    public Middleware(middleware: string[] | string): Router | RouterHandle;
+    public middleware(middleware: string[] | string): Router | RouterHandle;
     /**
-     * Get Any route action
-     * @return {function(*): *}
+     * get any route action
      * @function
+     * @return {function}
      */
-    GetInstanceAction(): (arg0: any) => any;
+    getInstanceAction(): Function;
 }
 import Router = require("./Router");
 import Controller = require("../http/controller/Controller");

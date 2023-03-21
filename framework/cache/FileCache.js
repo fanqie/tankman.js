@@ -1,101 +1,113 @@
-const Facades = require("../facades/Facades");
-const path = require("path");
-const fs = require("fs");
-const Cache = require("./Cache");
-const DS = require("ds").DS;
-const tankCache = require("tank-cache")
+const Facades = require('../facades/Facades');
+const path = require('path');
+const fs = require('fs');
+const Cache = require('./Cache');
+const DS = require('ds').DS;
+const TankCache = require('tank-cache');
 module.exports = class FileCache extends Cache {
     // config = {
     //     saveFile: ".runtime/cache.json"
     // }
 
-
+    /**
+     *
+     * @param {string} savePath
+     */
     constructor(savePath) {
         super();
-        this.cache = new tankCache(savePath)
-
-    }
-
-    Has(key) {
-        return this.cache.Has(key)
+        this.cache = new TankCache(savePath);
     }
 
     /**
-     * Get Retrieve an item from the cache by key.
-     * @param key
-     * @param defaultVal?
+     *
+     * @param {string} key
+     * @return {boolean}
+     */
+    has(key) {
+        return this.cache.Has(key);
+    }
+
+    /**
+     * get Retrieve an item from the cache by key.
+     * @param {string} key
+     * @param {*} defaultVal
      * @return {string|null}
      * @Function
      */
-    Get(key, defaultVal = null) {
-        return this.cache.Get(key, defaultVal)
-    }
-
-    Forever(key, val) {
-        return this.cache.Forever(key, val)
+    get(key, defaultVal = null) {
+        return this.cache.Get(key, defaultVal);
     }
 
     /**
-     * Forget Remove an item from the cache.
-     * @param key
+     *
+     * @param {string} key
+     * @param {*} val
+     */
+    forever(key, val) {
+        this.cache.Forever(key, val);
+    }
+
+    /**
+     * forget remove an item from the cache.
+     * @param {string} key
      * @return {null|*}
      * @Function
      */
-    Forget(key) {
-        return this.cache.Forget(key)
+    forget(key) {
+        return this.cache.Forget(key);
     }
 
     /**
-     * Pull Retrieve an item from the cache and delete it.
-     * @param key
-     * @Function
-     */
-    Pull(key) {
-        return this.cache.Pull(key)
-    }
-
-
-    /**
-     * Set Store an item in the cache for a given number of seconds.
-     * @param key
-     * @param val
-     * @param ttl Second
+     * pull Retrieve an item from the cache and delete it.
+     * @param {string} key
      * @return {*}
      * @Function
      */
-    Store(key, val = null, ttl = 0) {
+    pull(key) {
+        return this.cache.Pull(key);
+    }
+
+
+    /**
+     * set store an item in the cache for a given number of seconds.
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
+     * @Function
+     */
+    store(key, val = null, ttl = 0) {
         this.cache.Store(key, val, ttl);
     }
 
     /**
-     * Set Store an item in the cache for a given number of seconds. as same Store function
-     * @param key
-     * @param val
-     * @param ttl Second
-     * @return {*}
+     * set store an item in the cache for a given number of seconds. as same store function
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @Function
      */
-    Set(key, val = null, ttl = 0) {
+    set(key, val = null, ttl = 0) {
         this.cache.Store(key, val, ttl);
     }
 
     /**
-     * The Add method will only store data that does not exist in the cache. If the storage is successful, it will return true, otherwise it will return false:
-     * @param key
-     * @param val
-     * @param ttl
+     * The add method will only store data that does not exist in the cache. If the storage is successful,
+     * it will return true, otherwise it will return false:
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @return {boolean}
      * @Function
      */
-    Add(key, val = null, ttl = 0) {
+    add(key, val = null, ttl = 0) {
         return this.cache.Add(key, val, ttl);
     }
 
     /**
-     * clear Cache
+     * clear cache
      * @Function
      */
-    Flush() {
+    flush() {
         return this.cache.Flush();
     }
-}
+};

@@ -1,7 +1,11 @@
-const path = require("path")
-const pathToRegexp = require("path-to-regexp")
-const Facades = require("../facades/Facades");
+const path = require('path');
+const pathToRegexp = require('path-to-regexp');
+const Facades = require('../facades/Facades');
+const Controller = require('../http/controller/Controller');
 
+/**
+ *
+ */
 class Router {
     /**
      *
@@ -9,9 +13,9 @@ class Router {
      * @public
      */
     options = {
-        prefix: "",
-        middleware: []
-    }
+        prefix: '',
+        middleware: [],
+    };
 
     /**
      *
@@ -24,19 +28,19 @@ class Router {
      * @type {string}
      * @public
      */
-    vPath = "";
+    vPath = '';
     /**
      * input redirect next page url value
      * @type {string}
      * @public
      */
-    redirectUrl = "";
+    redirectUrl = '';
     /**
      * _MakePath
      * @type {string}
      * @public
      */
-    path = "";
+    path = '';
     /**
      *
      * @type {ClassDecorator|Function}
@@ -54,25 +58,25 @@ class Router {
      * @type {string}
      * @public
      */
-    action = "Index";
+    action = 'Index';
     /**
      *
      * @type  {import("path-to-regexp").MatchFunction<object>}
      * @public
      */
-    match
+    match;
 
-    name = "";
-    params = {}
+    name = '';
+    params = {};
 
     /**
      *
-     * @param options
-     * @param args
+     * @param {Object} options
+     * @param {...string|[Controller,string]|Function} args
      * @public
      */
     constructor(options, ...args) {
-        this._SetOptions(options)
+        this._setOptions(options);
     }
 
     /**
@@ -80,75 +84,71 @@ class Router {
      * @return {string}
      * @protected
      */
-    MakePath() {
-        return path.join(this.options.prefix, this.vPath).replace(/\\/g, "/")
+    makePath() {
+        return path.join(this.options.prefix, this.vPath).replace(/\\/g, '/');
     }
 
     /**
-     *
-     * @return {import("path-to-regexp").MatchFunction<object>}
-     * @public
+     * @typedef {import('path-to-regexp').MatchFunction<object>} MatchFunction
+     * @return {MatchFunction}
      */
-    MakeMath() {
+    makeMath() {
         return pathToRegexp.match(this.path, {
             decode: decodeURIComponent,
-        })
+        });
     }
 
     /**
      * options {{middleware: *[], prefix: string}}
-     * @param options
+     * @param {{}} options
      * @private
      */
-    _SetOptions(options) {
-        this.options = {...this.options, ...options}
+    _setOptions(options) {
+        this.options = {...this.options, ...options};
     }
 
     /**
      * parse url
-     * @param path
+     * @param {string} path
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
-    Parse(path) {
-        return this.match(path)
+    parse(path) {
+        return this.match(path);
     }
 
     /**
      * get url values
-     * @param path
-     * @param method
+     * @param {string} path
+     * @param {string} method
      * @return {{ path: string, index: number, params: {} }|boolean}
      */
-    Is(path, method) {
+    is(path, method) {
         path = path.toLowerCase();
         method = method.toLowerCase();
         if (this.methods.includes(method)) {
-            const res = this.Parse(path)
+            const res = this.parse(path);
             if (res) {
                 // @ts-ignore
-                this.params = res.params
-                return res
+                this.params = res.params;
+                return res;
             }
         }
-        return false
+        return false;
     }
 
 
     /**
      * setName
-     * @param name {string}
-     * @return Router|undefined
+     * @param {string} name
+     * @return {Router|undefined}
      * @public
      */
-    Name(name) {
+    routeName(name) {
         if (name) {
-            this.name = name
+            this.name = name;
         }
-        return this
-
+        return this;
     }
-
-
 }
 
 module.exports = Router;

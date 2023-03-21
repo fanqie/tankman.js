@@ -1,77 +1,74 @@
 const HttpContext = require('./HttpContext');
-const {randomUUID} = require("crypto");
-const sessionId = "TANK_MAN_JS_SESSION_ID"
-const Facades = require("../../facades/Facades")
-const Cache = require("../../cache/Cache")
+const {randomUUID} = require('crypto');
+const sessionId = 'TANK_MAN_JS_SESSION_ID';
+const Facades = require('../../facades/Facades');
+const Cache = require('../../cache/Cache');
 
 class HttpSession {
-
-    _ctx
+    _ctx;
     /**
      * @type HttpContext
      * @private
      */
-    httpCtx
+    httpCtx;
     /**
      * @type Cache
      * @private
      */
-    _driver
-    _defaultTtl = 60
+    _driver;
+    _defaultTtl = 60;
 
     /**
      *
-     * @param httpCtx {HttpContext}
+     * @param {HttpContext} httpCtx
      */
     constructor(httpCtx) {
-
         this.httpCtx = httpCtx;
         this._ctx = httpCtx._ctx;
-        if (!this.httpCtx.cookie.Get(sessionId, {signed: true})) {
-            this.httpCtx.cookie.Set(sessionId, randomUUID(), {signed: true,sameSite:"lax"})
+        if (!this.httpCtx.cookie.get(sessionId, {signed: true})) {
+            this.httpCtx.cookie.set(sessionId, randomUUID(), {signed: true, sameSite: 'lax'});
         }
-        this._driver = Facades.Cache
+        this._driver = Facades.cache;
     }
 
     /**
      * get httpSession
-     * @param name {string}
-     * @param defaultValue {*}
-     * @return  string | null
+     * @param {string} name
+     * @param {*} defaultValue
+     * @return  {string | null}
      * @function
      */
-    Get(name, defaultValue = "") {
-        return this._driver.Get(this._prefixName(name), defaultValue) || defaultValue
+    get(name, defaultValue = '') {
+        return this._driver.get(this._prefixName(name), defaultValue) || defaultValue;
     }
 
     /**
      * set httpSession
-     * @param key
-     * @param value
-     * @return {*}
+     * @param {string} name
+     * @param {string|number|null} value
      * @function
      */
-    Set(key, value = null) {
-        this._driver.Set(this._prefixName(name), value, 0)
+    set(name, value = null) {
+        this._driver.set(this._prefixName(name), value, 0);
     }
 
     /**
-     * Forget or remove httpSession
-     * @param name
+     * forget or remove httpSession
+     * @param {string} name
      * @function
      */
-    Remove(name) {
-        this._driver.Forget(this._prefixName(name))
+    remove(name) {
+        this._driver.forget(this._prefixName(name));
     }
 
     /**
-     * @param name
+     * @param {string} name
      * @return {string}
      * @private
      */
     _prefixName(name) {
-        return [sessionId, name].join("_")
+        return [sessionId, name].join('_');
     }
 }
 
-module.exports = HttpSession
+module.exports = HttpSession;

@@ -18,40 +18,40 @@ declare class HttpResponseWrite {
             };
         };
     };
-    RenderTemplate(path: any, data: any): void;
-    JsonFree(json: any): void;
-    Json(data: any, errMsg: any, errNo: any): void;
-    JsonSuccess(data: any, errMsg?: string): void;
-    JsonError(data: any, errMsg: any, errNo?: number): void;
-    Download(filePath: any, fileName: any, headers: any): void;
-    WriteStatic(filePath: any): void;
-    DownloadIo(bytes: any, fileName: any, headers?: {}, type?: string): void;
-    Text(string: any, type?: string): void;
-    Html(string: any, type?: string): void;
-    Xml(string: any, type?: string): void;
+    renderTemplate(path: any, data: any): void;
+    jsonFree(json: any): void;
+    json(data: any, errMsg: any, errNo: any): void;
+    jsonSuccess(data: any, errMsg?: string): void;
+    jsonError(data: any, errMsg: any, errNo?: number): void;
+    download(filePath: any, fileName: any, headers: any): void;
+    writeStatic(filePath: any): void;
+    downloadIo(bytes: any, fileName: any, headers?: {}, type?: string): void;
+    text(string: any, type?: string): void;
+    html(string: any, type?: string): void;
+    xml(string: any, type?: string): void;
     /**
      *
-     * @param bytes
+     * @param {any} bytes
      * @abstract
      */
-    WriteBytes(bytes: any): void;
+    writeBytes(bytes: any): void;
     /**
      *
-     * @param string
+     * @param {string} string
      * @abstract
      */
-    WriteText(string: any): void;
+    writeText(string: string): void;
     /**
      *
-     * @param buffers
+     * @param {any} buffers
      * @abstract
      */
-    WriteBuffer(buffers: any): void;
+    writeBuffer(buffers: any): void;
     /**
      *
-     * @param stream
+     * @param {any} stream
      * @abstract
      */
-    WriteStream(stream: any): void;
-    SetResponseType(type: any): void;
+    writeStream(stream: any): void;
+    setResponseType(type: any): void;
 }

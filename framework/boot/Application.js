@@ -1,11 +1,11 @@
-const Facades = require("../facades/Facades");
-const ProcessInfoProvider = require("../provider/ProcessInfoProvider");
-const ConfigProvider = require("../provider/ConfigProvider");
-const EnvProvider = require("../provider/EnvProvider");
-const Command = require("../command/Command");
-const ServiceProvider = require("../provider/ServiceProvider");
-const FacadesClass = require("../facades/FacadesClass");
-const Controller = require("../http/controller/Controller")
+const Facades = require('../facades/Facades');
+const ProcessInfoProvider = require('../provider/ProcessInfoProvider');
+const ConfigProvider = require('../provider/ConfigProvider');
+const EnvProvider = require('../provider/EnvProvider');
+const Command = require('../command/Command');
+const ServiceProvider = require('../provider/ServiceProvider');
+const FacadesClass = require('../facades/FacadesClass');
+const Controller = require('../http/controller/Controller');
 
 /**
  *
@@ -15,22 +15,21 @@ class Application {
      *
      * @type FacadesClass
      */
-    Facades
+    facades;
     /**
      *
      * @type {Map<string,Command>}
      */
-    commandHandles = new Map()
-    rootPath = "./"
+    commandHandles = new Map();
+    rootPath = './';
 
     /**
      *
      */
     constructor() {
-        Facades.App = this
+        Facades.app = this;
         this._registerBaseServiceProviders();
-        this._bootBaseServiceProviders()
-
+        this._bootBaseServiceProviders();
     }
 
 
@@ -38,21 +37,19 @@ class Application {
      * @public
      */
     bootTank() {
-
         this._registerConfiguredServiceProviders();
         this._bootConfiguredServiceProviders();
 
-        this._registerConfiguredCommands()
+        this._registerConfiguredCommands();
         this._setRootPath();
-        this._linkFacades()
+        this._linkFacades();
     }
 
     /**
      * @private
      */
     _linkFacades() {
-
-        this.Facades = Facades
+        this.facades = Facades;
     }
 
 
@@ -60,23 +57,23 @@ class Application {
      * @private
      */
     _registerBaseServiceProviders() {
-        //init env config
-        this._registerServiceProviders(this._getBaseServiceProviders())
+    // init env config
+        this._registerServiceProviders(this._getBaseServiceProviders());
     }
 
     /**
      * @private
      */
     _bootBaseServiceProviders() {
-        this._bootServiceProviders(this._getBaseServiceProviders())
+        this._bootServiceProviders(this._getBaseServiceProviders());
     }
 
     /**
      * @private
      */
     _registerConfiguredServiceProviders() {
-        //get all provider and register
-        this._registerServiceProviders(this._getConfiguredServiceProviders())
+    // get all provider and register
+        this._registerServiceProviders(this._getConfiguredServiceProviders());
     }
 
     /**
@@ -84,15 +81,14 @@ class Application {
      * @private
      */
     _bootConfiguredServiceProviders() {
-        this._bootServiceProviders(this._getConfiguredServiceProviders())
+        this._bootServiceProviders(this._getConfiguredServiceProviders());
     }
 
     /**
      * @private
      */
     _registerConfiguredCommands() {
-        this._registerCommands(this._getConfiguredCommands())
-
+        this._registerCommands(this._getConfiguredCommands());
     }
 
     /**
@@ -101,9 +97,9 @@ class Application {
      * @private
      */
     _getConfiguredServiceProviders() {
-        return Facades.Config.Get("app").providers.map((Class => {
-            return new Class(this)
-        }))
+        return Facades.config.get('app').providers.map(((Class) => {
+            return new Class(this);
+        }));
     }
 
     /**
@@ -112,49 +108,47 @@ class Application {
      * @private
      */
     _getConfiguredCommands() {
-        return Facades.Config.Get("app").commands.map((Class => {
-            return new Class(this)
-        }))
+        return Facades.config.get('app').commands.map(((Class) => {
+            return new Class(this);
+        }));
     }
 
     /**
-     * @param serviceProviders
+     * @param {ServiceProvider[]} serviceProviders
      */
     _registerServiceProviders(serviceProviders) {
-        serviceProviders.forEach(serviceProvider => {
-            serviceProvider.register()
-        })
+        serviceProviders.forEach((serviceProvider) => {
+            serviceProvider.register();
+        });
     }
 
     /**
-     * @param commands
+     * @param {Command[]}commands
      * @private
      */
     _registerCommands(commands) {
-
-        commands.forEach(commandInstance => {
-            commandInstance.register(this.commandHandles)
-            commandInstance.boot()
-        })
+        commands.forEach((commandInstance) => {
+            commandInstance.register(this.commandHandles);
+            commandInstance.boot();
+        });
     }
 
     /**
      *
-     * @param serviceProviders {ServiceProvider[]}
+     * @param {ServiceProvider[]} serviceProviders
      * @private
      */
     _bootServiceProviders(serviceProviders) {
-        serviceProviders.forEach(serviceProvider => {
-            serviceProvider.boot()
-        })
-
+        serviceProviders.forEach((serviceProvider) => {
+            serviceProvider.boot();
+        });
     }
 
     /**
      * @private
      */
     _setRootPath() {
-        this.rootPath = process.cwd()
+        this.rootPath = process.cwd();
     }
 
     /**
@@ -167,13 +161,13 @@ class Application {
 
     /**
      * use case
-     * @param fun {Function}
+     * @param {Function} fun
      * @return {Application}
      * @public
      */
     use(fun) {
         fun.apply(this);
-        return this
+        return this;
     }
 
     /**
@@ -182,35 +176,34 @@ class Application {
      * @private
      */
     _getBaseServiceProviders() {
-
-        return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)]
+        return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)];
     }
 
     /**
      *
      * @type {Map<string,any>}
      */
-    singletonItems = new Map()
+    singletonItems = new Map();
 
     /**
      *
-     * @param Class
-     * @param alisa
-     * @return {Class|Controller|*}
+     * @param {*} Source
+     * @param {string} [alisa='']
+     * @return {Source|Controller|*}
      * @function
      */
-    Singleton(Class, alisa = "") {
-        if (!/^class\s/.test(Object.valueOf.toString.call(Class))) {
-            throw new Error("Is not a construction class")
+    singleton(Source, alisa = '') {
+        if (!/^class\s/.test(Object.valueOf.toString.call(Source))) {
+            throw new Error('is not a construction class');
         }
         if (!alisa) {
-            alisa = Class.name
+            alisa = Source.name;
         }
         if (!this.singletonItems.has(alisa)) {
-            this.singletonItems.set(alisa, new Class())
+            this.singletonItems.set(alisa, new Source());
         }
 
-        return this.singletonItems.get(alisa)
+        return this.singletonItems.get(alisa);
     }
 }
 

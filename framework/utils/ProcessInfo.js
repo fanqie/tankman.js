@@ -1,101 +1,99 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = class ProcessInfo {
     /**
      *
      * @type {string[]}
      */
-    Args = [];
+    args = [];
     /**
      *
      * @type {{}}
      */
-    Versions = {};
+    versions = {};
     /**
      *
      * @type {{}}
      */
-    OsEnv = {}
+    osEnv = {};
     /**
      *
      * @type {Map}
      */
-    Flags = new Map();
+    flags = new Map();
 
     /**
      *
      * @type {{}}
      */
-    Features = {};
+    features = {};
     /**
      *
      * @type {string}
      */
-    Arch = "x64";
+    arch = 'x64';
     /**
      *
      * @type {string}
      */
-    NodeVersion = "";
+    nodeVersion = '';
     /**
      *
      * @type {number}
      */
-    Pid = 0;
+    pid = 0;
     /**
      *
      * @type {number}
      */
-    Ppid = 0;
+    ppid = 0;
     /**
      *
      * @type {string}
      */
-    ExecPath = '';
+    execPath = '';
     /**
      *
      * @type {number}
      */
-    DebugPort = 0;
+    debugPort = 0;
     /**
      *
      * @type {string}
      */
-    Argv0 = '';
+    argv0 = '';
 
     /**
      *
      */
     constructor() {
         this.parse(process.argv);
-        this.Versions = {...process.versions};
-        this.OsEnv = {...process.env};
-        this.Features = {...process.features};
-        this.Arch = process.arch;
+        this.versions = {...process.versions};
+        this.osEnv = {...process.env};
+        this.features = {...process.features};
+        this.arch = process.arch;
         this.Platform = process.platform;
-        this.NodeVersion = process.version;
-        this.Pid = process.pid;
-        this.Ppid = process.ppid;
-        this.ExecPath = process.execPath;
-        this.DebugPort = process.debugPort;
-        this.Argv0 = process.argv0;
+        this.nodeVersion = process.version;
+        this.pid = process.pid;
+        this.ppid = process.ppid;
+        this.execPath = process.execPath;
+        this.debugPort = process.debugPort;
+        this.argv0 = process.argv0;
     }
 
     /**
      *
-     * @param args {string[]}
+     * @param {string[]} args
      */
     parse(args) {
-        args.forEach(arg => {
-            if (arg.indexOf("=") > 0) {
-                const values = arg.split("=");
+        args.forEach((arg) => {
+            if (arg.indexOf('=') > 0) {
+                const values = arg.split('=');
 
-                this.Flags.set(values[0], values[1] || "")
-
+                this.flags.set(values[0], values[1] || '');
             } else if (!path.isAbsolute(arg)) {
-                this.Args.push(arg)
+                this.args.push(arg);
             }
-
-        })
+        });
     }
 };

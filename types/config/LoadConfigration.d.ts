@@ -2,9 +2,9 @@ export = LoadConfiguration;
 declare class LoadConfiguration {
     /**
      *
-     * @param filePath
+     * @param {string} filePath
      * @return {{}}
      * @public
      */
-    public static Load(filePath: any): {};
+    public static load(filePath: string): {};
 }

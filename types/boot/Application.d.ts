@@ -7,7 +7,7 @@ declare class Application {
      *
      * @type FacadesClass
      */
-    Facades: FacadesClass;
+    facades: FacadesClass;
     /**
      *
      * @type {Map<string,Command>}
@@ -56,17 +56,17 @@ declare class Application {
      */
     private _getConfiguredCommands;
     /**
-     * @param serviceProviders
+     * @param {ServiceProvider[]} serviceProviders
      */
-    _registerServiceProviders(serviceProviders: any): void;
+    _registerServiceProviders(serviceProviders: ServiceProvider[]): void;
     /**
-     * @param commands
+     * @param {Command[]}commands
      * @private
      */
     private _registerCommands;
     /**
      *
-     * @param serviceProviders {ServiceProvider[]}
+     * @param {ServiceProvider[]} serviceProviders
      * @private
      */
     private _bootServiceProviders;
@@ -81,7 +81,7 @@ declare class Application {
     getRootPath(): string;
     /**
      * use case
-     * @param fun {Function}
+     * @param {Function} fun
      * @return {Application}
      * @public
      */
@@ -99,13 +99,14 @@ declare class Application {
     singletonItems: Map<string, any>;
     /**
      *
-     * @param Class
-     * @param alisa
-     * @return {Class|Controller|*}
+     * @param {*} Source
+     * @param {string} [alisa='']
+     * @return {Source|Controller|*}
      * @function
      */
-    Singleton(Class: any, alisa?: string): any | Controller | any;
+    singleton(Source: any, alisa?: string): any | Controller | any;
 }
 import FacadesClass = require("../facades/FacadesClass");
 import Command = require("../command/Command");
+import ServiceProvider = require("../provider/ServiceProvider");
 import Controller = require("../http/controller/Controller");

@@ -1,9 +1,8 @@
 // @ts-nocheck
-const HttpResponseWrite = require("./HttpResponseWrite");
-const KoaResponse = require("koa2/lib/response");
-const mineTypes=require("mime-types")
-module.exports = class HttpResponse extends HttpResponseWrite{
-
+const HttpResponseWrite = require('./HttpResponseWrite');
+const KoaResponse = require('koa2/lib/response');
+const mineTypes = require('mime-types');
+module.exports = class HttpResponse extends HttpResponseWrite {
     /**
      * @type KoaResponse()
      * @private
@@ -12,48 +11,49 @@ module.exports = class HttpResponse extends HttpResponseWrite{
 
     constructor(httpCtx) {
         super(httpCtx);
-        this._response=httpCtx._ctx.response;
-
-    }
-    /**
-     * @param bytes
-     * @override
-     */
-    WriteBytes(bytes) {
-        this._response.body = bytes
+        this._response = httpCtx._ctx.response;
     }
 
     /**
-     * @param text
+     * @param {*} bytes
      * @override
      */
-    WriteText(text) {
-        this._response.body = text
+    writeBytes(bytes) {
+        this._response.body = bytes;
     }
 
     /**
-     *
-     * @param buffers
+     * @param {string} text
      * @override
      */
-    WriteBuffer(buffers) {
-        this._response.body = buffers
+    writeText(text) {
+        this._response.body = text;
     }
 
     /**
      *
-     * @param stream
+     * @param {*} buffers
      * @override
      */
-    WriteStream(stream) {
-        this._response.body = stream
+    writeBuffer(buffers) {
+        this._response.body = buffers;
     }
+
     /**
-     * Set Content-Type response header with type through mime.lookup() when it does not contain a charset.
-     * @param type
+     *
+     * @param {*} stream
+     * @override
+     */
+    writeStream(stream) {
+        this._response.body = stream;
+    }
+
+    /**
+     * set Content-Type response header with type through mime.lookup() when it does not contain a charset.
+     * @param {string} type
      * @public
      */
-    SetContentType(type) {
+    setContentType(type) {
         this._response.type = type;
     }
 
@@ -62,7 +62,7 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * @return {String|string|*}
      * @public
      */
-    GetContentType() {
+    getContentType() {
         return this._response.type;
     }
 
@@ -71,21 +71,21 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * The string “back” is special-cased to provide Referrer support, when Referrer is not present alt or “/” is used.
      * Examples:
      * this.redirect('back'); this.redirect('back', '/index.html'); this.redirect('/login'); this.redirect('http://google.com');
-     * @param url
-     * @param alt
+     * @param {string} url
+     * @param {string} alt
      * @public
      */
-    Redirect(url, alt) {
-        this._response.redirect(url, alt)
+    redirect(url, alt) {
+        this._response.redirect(url, alt);
     }
 
     /**
-     * @param name
+     * @param {string} name
      * @return {*|null}
      * @public
      */
-    GetHeader(name) {
-        return name ? this._response.get(name) : null
+    getHeader(name) {
+        return name ? this._response.get(name) : null;
     }
 
     /**
@@ -93,61 +93,61 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * @return {*}
      * @constructor
      */
-    GetHeaderAll() {
+    getHeaderAll() {
         return this._response.headers;
     }
 
     /**
-     * Set header `field` to `val` or pass
+     * set header `field` to `val` or pass
      * an object of header fields.
      *
      * Examples:
      *
-     *    ctx.Response.SetHeader('Foo', ['bar', 'baz']);
-     *    ctx.Response.SetHeader('Accept', 'application/json');
-     *    ctx.Response.SetHeader({ Accept: 'text/plain', 'X-API-Key': 'tobi' });
+     *    ctx.Response.setHeader('Foo', ['bar', 'baz']);
+     *    ctx.Response.setHeader('Accept', 'application/json');
+     *    ctx.Response.setHeader({ Accept: 'text/plain', 'X-API-Key': 'tobi' });
      * @param {String|Object|Array} field
-     * @param value {any?}
+     * @param {any} [value=""]
      * @public
      */
-    SetHeader(field, value) {
-        typeof field == "string" ? this._response.set(field, value) : this._response.set(field);
+    setHeader(field, value) {
+        typeof field == 'string' ? this._response.set(field, value) : this._response.set(field);
     }
 
     /**
      * Append additional header field with value val.
      * Examples:
-     * ctx.Response.AppendHeader('Link', ['<http://localhost/>', '<http://localhost:3000/>']);
-     * ctx.Response.AppendHeader('Set-Cookie', 'foo=bar; Path=/; HttpOnly');
-     * ctx.Response.AppendHeader('Warning', '199 Miscellaneous warning');
-     * @param field
-     * @param value
+     * ctx.Response.appendHeader('Link', ['<http://localhost/>', '<http://localhost:3000/>']);
+     * ctx.Response.appendHeader('set-Cookie', 'foo=bar; Path=/; HttpOnly');
+     * ctx.Response.appendHeader('Warning', '199 Miscellaneous warning');
+     * @param {string} field
+     * @param {string} value
      * @public
      */
-    AppendHeader(field, value) {
-        this.SetHeader(field, value)
+    appendHeader(field, value) {
+        this.setHeader(field, value);
     }
 
     /**
-     * Set response status code.
-     * @param code
+     * set response status code.
+     * @param {number} code
      * @public
      */
-    SetStatus(code = 200) {
-        this._response.status = code
+    setStatus(code = 200) {
+        this._response.status = code;
     }
 
     /**
-     * Remove header field.
-     * @param field
+     * remove header field.
+     * @param {string} field
      * @public
      */
-    RemoveHeader(field) {
-        this._response.remove(field)
+    removeHeader(field) {
+        this._response.remove(field);
     }
 
     /**
-     * Get response status code.
+     * get response status code.
      * @description
      * 100 "continue"
      * 101 "switching protocols"
@@ -207,29 +207,30 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * 508 "loop detected"
      * 510 "not extended"
      * 511 "network authentication required"
+     * @return {*}
      * @public
      */
-    GetStatus() {
-        return this._response.status
+    getStatus() {
+        return this._response.status;
     }
 
     /**
-     * Set response status message
-     * @param message
+     * set response status message
+     * @param {string} message
      * @public
      */
-    SetStatusMessage(message) {
-        this._response.message = message
+    setStatusMessage(message) {
+        this._response.message = message;
     }
 
     /**
-     * Get response status message
-     * @param message
+     * get response status message
+     * @param  {string} message
      * @return {String}
      * @public
      */
-    GetStatusMessage(message) {
-        return this._response.message
+    getStatusMessage(message) {
+        return this._response.message;
     }
 
     /**
@@ -237,21 +238,21 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * @return {Number|number|*}
      * @public
      */
-    GetContentLength() {
+    getContentLength() {
         return this._response.length;
     }
 
     /**
-     * Set Content-Length field to n.
-     * @param contentLength
+     * set Content-Length field to n.
+     * @param {number} contentLength
      * @public
      */
-    SetContentLength(contentLength) {
+    setContentLength(contentLength) {
         this._response.length = contentLength;
     }
 
     /**
-     * Set response body.
+     * set response body.
      * @param {String|Buffer|Object} val
      * string written
      * Buffer written
@@ -260,38 +261,38 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * null no content response
      * @public
      */
-    SetBody(val) {
-        this._response.body = val
+    setBody(val) {
+        this._response.body = val;
     }
 
     /**
-     * Get response body.
+     * get response body.
      * @return {null|*}
      * @public
      */
-    GetBody() {
-        return this._response.body
+    getBody() {
+        return this._response.body;
     }
 
     /**
      * Check whether the response is one of the listed types.
-     * Pretty much the same as `ctx.request.Is()`.
-     * @param type
-     * @param types
+     * Pretty much the same as `ctx.request.is()`.
+     * @param {string} type
+     * @param {[]} types
      * @return {String|false}
      * @public
      */
-    Is(type, ...types) {
-        return this._response.is(type, ...types)
+    is(type, ...types) {
+        return this._response.is(type, ...types);
     }
 
     /**
-     * Set Content-Disposition header to "attachment" with optional `filename`.
-     * @param filename
-     * @param options
+     * set Content-Disposition header to "attachment" with optional `filename`.
+     * @param {string} filename
+     * @param {Object} options
      */
-    SetAttachment(filename, options) {
-        this._response.attachment(filename, options)
+    setAttachment(filename, options) {
+        this._response.attachment(filename, options);
     }
 
     /**
@@ -299,8 +300,8 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * @return {Boolean}
      * @public
      */
-    CheckHeaderSent() {
-        return this._response.headerSent
+    checkHeaderSent() {
+        return this._response.headerSent;
     }
 
     /**
@@ -308,8 +309,8 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      * @return {Date}
      * @public
      */
-    GetLastModified() {
-        return this._response.lastModified
+    getLastModified() {
+        return this._response.lastModified;
     }
 
     /**
@@ -317,32 +318,32 @@ module.exports = class HttpResponse extends HttpResponseWrite{
      *
      *     this.lastModified(new Date());
      *     this.lastModified('2013-09-13');
-     * @param date {Date}
+     * @param {Date} date
      * @public
      */
-    SetLastModified(date) {
-        this._response.lastModified = date
+    setLastModified(date) {
+        this._response.lastModified = date;
     }
 
     /**
-     * Set the ETag of a response.
+     * set the ETag of a response.
      * This will normalize the quotes if necessary.
      * @example
-     *     this.SetETag('md5hashsum');
-     *     this.SetETag('"md5hashsum"');
-     *     this.SetETag('W/"123456789"');
+     *     this.setETag('md5hashsum');
+     *     this.setETag('"md5hashsum"');
+     *     this.setETag('W/"123456789"');
      *
      * @param {String} val
      */
-    SetETag(val) {
-        this._response.etag = val
+    setETag(val) {
+        this._response.etag = val;
     }
 
     /**
-     * Flush any set headers and begin the body
+     * flush any set headers and begin the body
      * @public
      */
-    FlushHeaders() {
-        this._response.flushHeaders()
+    flushHeaders() {
+        this._response.flushHeaders();
     }
-}
+};

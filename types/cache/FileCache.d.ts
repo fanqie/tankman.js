@@ -1,12 +1,27 @@
 export = FileCache;
 declare class FileCache extends Cache {
-    constructor(savePath: any);
-    cache: any;
-    Forever(key: any, val: any): any;
     /**
-     * clear Cache
+     *
+     * @param {string} savePath
+     */
+    constructor(savePath: string);
+    cache: any;
+    /**
+     *
+     * @param {string} key
+     * @return {boolean}
+     */
+    has(key: string): boolean;
+    /**
+     *
+     * @param {string} key
+     * @param {*} val
+     */
+    forever(key: string, val: any): void;
+    /**
+     * clear cache
      * @Function
      */
-    Flush(): any;
+    flush(): any;
 }
 import Cache = require("./Cache");

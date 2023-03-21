@@ -1,6 +1,10 @@
+const TankHttpClient = require("tank-http-client.js/src/httpClient");
 
-class HttpClient {
-
+class HttpClient extends TankHttpClient.constructor
+{
+    constructor() {
+        super();
+    }
 }
 
-module.exports = HttpClient
+module.exports = HttpClient;

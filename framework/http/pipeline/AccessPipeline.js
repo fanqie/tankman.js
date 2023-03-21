@@ -1,50 +1,48 @@
-//@ts-nocheck
-const Middleware = require("../middleware/Middleware");
+// @ts-nocheck
+const Middleware = require('../middleware/Middleware');
 
-const CtxPipeline = require("./CtxPipeline");
+const CtxPipeline = require('./CtxPipeline');
 
 module.exports = class AccessPipeline {
     /**
      *
-     * @type Object:string:Middleware
+     * @type Object:string:middleware
      */
     middlewareMaps = {};
-    app
+    app;
     constructor(app) {
-        this.app=app
-        const configMaps = this.app.Facades.Config.Get('app', {})['middleware'];
-        Object.keys(configMaps).forEach(key => {
-            this.middlewareMaps[key] = new configMaps[key]()
-        })
+        this.app=app;
+        const configMaps = this.app.facades.config.get('app', {})['middleware'];
+        Object.keys(configMaps).forEach((key) => {
+            this.middlewareMaps[key] = new configMaps[key]();
+        });
     }
 
     /**
-     * Handle Next
-     * @param httpCtx {HttpContext}
-     * @param route {Router|RouterHandle}
+     * handle next
+     * @param {HttpContext} httpCtx
+     * @param {Router|RouterHandle} route
      * @public
      */
-   async HandleNext(httpCtx, route) {
+    async handleNext(httpCtx, route) {
         const ctxPipeline= new CtxPipeline(httpCtx);
 
 
         const middlewareQueue = route.options.middleware;
         if (route.options.middleware.length > 0) {
-
             for (let i = 0; i < middlewareQueue.length; i++) {
                 if (this.middlewareMaps.hasOwnProperty(middlewareQueue[i])) {
                     /**
                      * @type Middleware
                      */
                     const middleware=this.middlewareMaps[middlewareQueue[i]];
-                    const handle=middleware.Handle;
+                    const handle=middleware.handle;
                     // @ts-ignore
-                    ctxPipeline.Pip(handle)
+                    ctxPipeline.pip(handle);
                 }
             }
         }
-        ctxPipeline.Pip(route.GetInstanceAction());
-        await  ctxPipeline.Next()
+        ctxPipeline.pip(route.getInstanceAction());
+        await ctxPipeline.next();
     }
-
-}
+};

@@ -1,4 +1,4 @@
-const HttpContext = require("../context/HttpContext");
+const HttpContext = require('../context/HttpContext');
 
 /**
  * @abstract
@@ -6,17 +6,16 @@ const HttpContext = require("../context/HttpContext");
 class Middleware {
     /**
      *
-     * @param httpCtx {HttpContext}
-     * @param next
-     * @returns {Promise<void>}
+     * @param {HttpContext} httpCtx
+     * @param {function} next
+     * @return {Promise<void>}
      * @public
      * @abstract
      */
-    async Handle(httpCtx, next) {
-        //before something
+    async handle(httpCtx, next) {
+    // before something
         await next();
-        //after something
-
+    // after something
     }
 };
-module.exports = Middleware
+module.exports = Middleware;

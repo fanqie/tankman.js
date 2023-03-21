@@ -1,44 +1,44 @@
-//@ts-nocheck
+// @ts-nocheck
 module.exports = class CtxPipeline {
     handles = [];
     _httpCtx = null;
 
     /**
-     * @param httpCtx {HttpContext}
+     * @param {HttpContext} httpCtx
      */
     constructor(httpCtx) {
-        this._httpCtx = httpCtx
+        this._httpCtx = httpCtx;
     }
 
     /**
      *
-     * @param handle {Promise<CtxPipeline>}
-     * @returns {CtxPipeline}
-     * @constructor
+     * @param {Promise<CtxPipeline>} handle
+     * @return {CtxPipeline}
+     * @function
      */
-    Pip(handle) {
+    pip(handle) {
         this.handles.push(handle);
-        return this
+        return this;
     }
 
     /**
      *
-     * @returns {Promise<CtxPipeline|boolean>}
-     * @constructor
+     * @return {Promise<CtxPipeline|boolean>}
+     * @function
      */
-    async Next() {
+    async next() {
         const next = this.handles.shift();
         if (next) {
             if (this.handles.length > 0) {
                 await next(this._httpCtx, () => {
-                    this.Next.apply(this)
+                    this.next.apply(this);
                 });
             } else {
                 await next(this._httpCtx);
             }
 
-            return false
+            return false;
         }
-        return this
+        return this;
     }
 };

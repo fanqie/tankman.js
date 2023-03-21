@@ -1,36 +1,35 @@
-const KoaRequest = require("koa2/lib/request");
-const KoaContext = require("koa2/lib/context");
-const HttpContext = require("./HttpContext");
-const RouterHandle = require("../../route/RouterHandle");
-const Router = require("../../route/Router");
+const KoaRequest = require('koa2/lib/request');
+const KoaContext = require('koa2/lib/context');
+const HttpContext = require('./HttpContext');
+const RouterHandle = require('../../route/RouterHandle');
+const Router = require('../../route/Router');
 module.exports = class HttpRequest {
     /**
      * @type KoaRequest()
      * @private
      */
-    _request
+    _request;
     /**
      * @type KoaContext()
      * @private
      */
-    _ctx
+    _ctx;
     /**
      * @type {string}
      * @private
      */
-    _originalUrl
+    _originalUrl;
     /**
      * @type {HttpContext}
      */
-    httpCtx
+    httpCtx;
 
-    _postParams
+    _postParams;
 
     /**
-     * @param httpCtx {HttpContext}
+     * @param  {HttpContext} httpCtx
      */
     constructor(httpCtx) {
-
         this.httpCtx = httpCtx;
         this._ctx = httpCtx._ctx;
         this._request = httpCtx._ctx.request;
@@ -39,34 +38,47 @@ module.exports = class HttpRequest {
     }
 
     /**
-     * Get Current Request Router
-     * @return {Router|RouterHandle|function}
-     * @constructor
+     * get Current Request Router
+     * @return {Router|RouterHandle}
+     * @function
      */
-    GetRouter() {
-        return this.httpCtx.GetRouter()
+    getRouter() {
+        return this.httpCtx.getRouter();
     }
 
-    Post(name) {
-        return this.httpCtx.App().Facades.Xss.Filter(this._postParams[name]) || null
+    /**
+     *
+     * @param {string} name
+     * @return {*|null}
+     */
+    post(name) {
+        return this.httpCtx.app().facades.Xss.filter(this._postParams[name]) || null;
     }
-
-    Get(name) {
-        return this.httpCtx.App().Facades.Xss.Filter(this._request.query[name]) || null
+    /**
+     *
+     * @param {string} name
+     * @return {*|null}
+     */
+    get(name) {
+        return this.httpCtx.app().facades.Xss.filter(this._request.query[name]) || null;
     }
 
     /**
      * get file field value
-     * @param name
+     * @param  {string} name
      * @return {*|null}
      * @function
      */
-    File(name) {
-        return this._request.files[name] || null
+    file(name) {
+        return this._request.files[name] || null;
     }
 
-    GetPostAll() {
-        return this._request._postParams
+    /**
+     *
+     * @return {any}
+     */
+    getPostAll() {
+        return this._request._postParams;
     }
 
     /**
@@ -76,11 +88,12 @@ module.exports = class HttpRequest {
      * this.getHeader('Content-Type'); // => “text/plain”
      * this.getHeader('content-type'); // => “text/plain”
      * this.getHeader('Something'); // => ''
+     * @param {string} name
      * @return {String|null}
      *
      */
-    GetHeader(name) {
-        return name ? this._request.get(name) : null
+    getHeader(name) {
+        return name ? this._request.get(name) : null;
     }
 
     /**
@@ -88,24 +101,24 @@ module.exports = class HttpRequest {
      * @return {*}
      * @public
      */
-    GetHeaderAll() {
+    getHeaderAll() {
         return this._request.headers;
     }
 
     /**
-     * @param name  {string}
-     * @param value  {any}
+     * @param {string} name
+     * @param {any} value
      * @public
      */
-    SetHeader(name, value) {
+    setHeader(name, value) {
         this._request.headers[name] = value;
     }
 
     /**
-     * @param method
+     * @param {string} method
      * @public
      */
-    SetMethod(method) {
+    setMethod(method) {
         if (method) {
             this._request.method = method;
         }
@@ -115,7 +128,7 @@ module.exports = class HttpRequest {
      * @return {String}
      * @public
      */
-    GetMethod() {
+    getMethod() {
         return this._request.method;
     }
 
@@ -124,139 +137,139 @@ module.exports = class HttpRequest {
      * @return {Number}
      * @public
      */
-    GetContentLength() {
+    getContentLength() {
         return this._request.length;
     }
 
     /**
-     * @param url {string}
+     * @param {string} url
      * @public
      */
-    SetUrl(url) {
+    setUrl(url) {
         if (url) {
             this._request.url = url;
         }
     }
 
     /**
-     * @return  url {String}
+     * @return  {String} url
      * @public
      */
-    GetUrl() {
+    getUrl() {
         return this._request.url;
     }
 
     /**
-     * Get full request URL.
+     * get full request URL.
      * @return {String|string|*}
      * @public
      */
-    GetOriginalUrl() {
+    getOriginalUrl() {
         return this._originalUrl;
     }
 
     /**
-     * Get origin of URL.
+     * get origin of URL.
      * @return {String}
      * @public
      */
-    GetOrigin() {
+    getOrigin() {
         return this._request.origin;
     }
 
     /**
-     * Get full request URL.
+     * get full request URL.
      * @return {String}
      * @public
      */
-    GetHref() {
+    getHref() {
         return this._request.href;
     }
 
     /**
-     * Set pathname, retaining the query string when present.
-     * @param path {String}
+     * set pathname, retaining the query string when present.
+     * @param  {String} path
      * @public
      */
-    SetPath(path) {
+    setPath(path) {
         if (path) {
-            this._request.path = path
+            this._request.path = path;
         }
     }
 
     /**
-     * Get request pathname.
+     * get request pathname.
      * @return {String}
      * @public
      */
-    GetPathName() {
-        return this._request.path
+    getPathName() {
+        return this._request.path;
     }
 
     /**
-     * Set query string.
-     * @param querystring {String}
+     * set query string.
+     * @param  {String} querystring
      * @public
      */
-    SetQuerystring(querystring) {
+    setQuerystring(querystring) {
         if (querystring) {
-            this._request.querystring = querystring
+            this._request.querystring = querystring;
         }
     }
 
     /**
-     * Get parsed query string.
+     * get parsed query string.
      * @return {String}
      * @public
      */
-    GetQuerystring() {
-        return this.httpCtx.App().Facades.Xss.Filter(this._request.querystring)
+    getQuerystring() {
+        return this.httpCtx.app().facades.Xss.filter(this._request.querystring);
     }
 
     /**
-     * Set the search string. Same as request.querystring= but included for ubiquity.
-     * @param search {String}
+     * set the search string. Same as request.querystring= but included for ubiquity.
+     * @param {String} search
      * @public
      */
-    SetSearch(search) {
+    setSearch(search) {
         if (search) {
-            this._request.search = search
+            this._request.search = search;
         }
     }
 
     /**
-     * Get the search string. Same as the query string except it includes the leading ?.
+     * get the search string. Same as the query string except it includes the leading ?.
      * @return {String}
      * @public
      */
-    GetSearch() {
-        return this._request.search
+    getSearch() {
+        return this._request.search;
     }
 
     /**
-     * Parse the “Host” header field host and support X-Forwarded-Host when a proxy is enabled.
+     * parse the “Host” header field host and support X-Forwarded-Host when a proxy is enabled.
      * @return {String}
      * @public
      */
-    GetHost() {
-        return this._request.host
+    getHost() {
+        return this._request.host;
     }
 
     /**
-     * Parse the “Host” header field hostname and support X-Forwarded-Host when a proxy is enabled.
+     * parse the “Host” header field hostname and support X-Forwarded-Host when a proxy is enabled.
      * @return {String}
      * @public
      */
-    GetHostname() {
-        return this._request.hostname
+    getHostname() {
+        return this._request.hostname;
     }
 
     /**
-     * Get WHATWG parsed URL. Lazily memoized.
+     * get WHATWG parsed URL. Lazily memoized.
      * @public
      */
-    GetWHATWG_URL() {
-        this._request.URL
+    getWHATWG_URL() {
+        this._request.URL;
     }
 
     /**
@@ -266,8 +279,8 @@ module.exports = class HttpRequest {
      * @return {Boolean}
      * @public
      */
-    IsFresh() {
-        return this._request.fresh
+    isFresh() {
+        return this._request.fresh;
     }
 
     /**
@@ -275,17 +288,17 @@ module.exports = class HttpRequest {
      * @return {Boolean}
      * @public
      */
-    IsIdempotent() {
-        return this._request.idempotent
+    isIdempotent() {
+        return this._request.idempotent;
     }
 
     /**
      * Return the request socket.
-     * @return Connection
+     * @return {import('mysql2').Connection}
      * @public
      */
-    GetSocket() {
-        return this._request.socket
+    getSocket() {
+        return this._request.socket;
     }
 
     /**
@@ -293,8 +306,8 @@ module.exports = class HttpRequest {
      * @return {String}
      * @public
      */
-    GetCharset() {
-        return this._request.charset
+    getCharset() {
+        return this._request.charset;
     }
 
 
@@ -302,52 +315,54 @@ module.exports = class HttpRequest {
      * Return accepted charsets or best fit based on charsets.
      * Given Accept-Charset: utf-8, iso-8859-1;q=0.2, utf-7;q=0.5 an array sorted by quality is returned:
      * ['utf-8', 'utf-7', 'iso-8859-1']
-     * @param charsets
+     * @param {string[]}  charsets
      * @return {String|Array}
      * @public
      */
-    AcceptsCharsets(charsets) {
-        return this._request.acceptsCharsets(charsets)
+    acceptsCharsets(charsets) {
+        return this._request.acceptsCharsets(charsets);
     }
 
     /**
      * Return accepted languages or best fit based on languages.
      * Given Accept-Language: en;q=0.8, es, pt an array sorted by quality is returned:
      * ['es', 'pt', 'en']
-     * @param languages
+     * @param {string[]} languages
      * @return {Array|String}
      * @public
      */
-    AcceptsLanguages(languages) {
-        return this._request.acceptsLanguages(languages)
+    acceptsLanguages(languages) {
+        return this._request.acceptsLanguages(languages);
     }
 
     /**
      * Return accepted encodings or best fit based on encodings.
      * Given Accept-Encoding: gzip, deflate an array sorted by quality is returned:
      * ['gzip', 'deflate']
-     * @param encodings
+     * @param {string[]} encodings
      * @return {String|Array}
      * @public
      */
-    AcceptsEncodings(encodings) {
-        return this._request.acceptsEncodings(encodings)
+    acceptsEncodings(encodings) {
+        return this._request.acceptsEncodings(encodings);
     }
 
     /**
      * Check if the given type(s) is acceptable, returning the best match when true, otherwise false, in which case you should respond with 406 “Not Acceptable”.
-     * The type value may be a single mime type string such as “application/json”, the extension name such as “json” or an array ["json", "html", "text/plain"]. When a list or array is given the best match, if any is returned.
+     * The type value may be a single mime type string such as “application/json”, the extension name such as “json” or an array ["json", "html", "text/plain"].
+     * When a list or array is given the best match, if any is returned.
      * Examples:
      * // Accept: text/html this.accepts('html'); // => “html”
-     * // Accept: text/*, application/json this.accepts('html'); // => “html” this.accepts('text/html'); // => “text/html” this.accepts('json', 'text'); // => “json” this.accepts('application/json'); // => “application/json”
+     * // Accept: text/*, application/json this.accepts('html'); // => “html” this.accepts('text/html');
+     * // => “text/html” this.accepts('json', 'text'); // => “json” this.accepts('application/json'); // => “application/json”
      * // Accept: text/*, application/json this.accepts('image/png'); this.accepts('png'); // => false
      * // Accept: text/*;q=.5, application/json this.accepts(['html', 'json']); this.accepts('html', 'json'); // => “json”
-     * @param args
+     * @param {...string} args
      * @return {String|Array|false}
      * @public
      */
-    Accepts(...args) {
-        return this._request.accepts(...args)
+    accepts(...args) {
+        return this._request.accepts(...args);
     }
 
     /**
@@ -370,13 +385,13 @@ module.exports = class HttpRequest {
      *     this.is('html', 'application/*'); // => 'application/json'
      *
      *     this.is('html'); // => false
-     * @param type
-     * @param types
+     * @param {string} type
+     * @param {string[]} types
      * @return {String|false|null}
      * @public
      */
-    Is(type, ...types) {
-        return this._request.is(type, ...types)
+    is(type, ...types) {
+        return this._request.is(type, ...types);
     }
 
     /**
@@ -393,17 +408,18 @@ module.exports = class HttpRequest {
      * @return {Array}
      * @public
      */
-    GetSubdomains() {
-        return this._request.subdomains
+    getSubdomains() {
+        return this._request.subdomains;
     }
 
     /**
-     * When app.proxy is true, parse the “X-Forwarded-For” ip address list. For example if the value was “client, proxy1, proxy2” you would receive the array ["client", "proxy1", "proxy2"] where “proxy2” is the furthest down-stream.
+     * When app.proxy is true, parse the “X-Forwarded-For” ip address list. For example if the value was
+     * “client, proxy1, proxy2” you would receive the array ["client", "proxy1", "proxy2"] where “proxy2” is the furthest down-stream.
      * @return {Array}
      * @public
      */
-    GetIps() {
-        return this._request.ips
+    getIps() {
+        return this._request.ips;
     }
 
     /**
@@ -411,8 +427,8 @@ module.exports = class HttpRequest {
      * @return {String}
      * @public
      */
-    GetIp() {
-        return this._request.ip
+    getIp() {
+        return this._request.ip;
     }
 
     /**
@@ -420,17 +436,18 @@ module.exports = class HttpRequest {
      * @return {Boolean}
      * @public
      */
-    IsSecure() {
-        return this.GetProtocol() == 'https'
+    isSecure() {
+        return this.getProtocol() == 'https';
     }
 
     /**
-     * Return the protocol string “http” or “https” when requested with TLS. When the proxy setting is enabled the “X-Forwarded-Proto” header field will be trusted. If you're running behind a reverse proxy that supplies https for you this may be enabled.
+     * Return the protocol string “http” or “https” when requested with TLS. When the proxy setting is enabled the “X-Forwarded-Proto”
+     * header field will be trusted. If you're running behind a reverse proxy that supplies https for you this may be enabled.
      * @return {String}
      * @public
      */
-    GetProtocol() {
-        return this._request.protocol
+    getProtocol() {
+        return this._request.protocol;
     }
 
     /**
@@ -438,18 +455,16 @@ module.exports = class HttpRequest {
      * @return {String}
      * @public
      */
-    GetType() {
-        return this._request.type
+    getType() {
+        return this._request.type;
     }
 
     /**
-     * Get content-type value
+     * get content-type value
      * @return {String}
      * @public
      */
-    GetContentType() {
-        return this.Get('content-type')
+    getContentType() {
+        return this.get('content-type');
     }
-
-
-}
+};

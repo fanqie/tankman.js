@@ -3,12 +3,12 @@ declare class Web {
     constructor(options: any);
     uploadPath: string;
     staticFolder: any;
-    Static(folder?: string): void;
+    static(folder?: string): void;
     /**
-     * @param httpCtx {HttpContext}
+     * @param  {HttpContext} httpCtx
      * @return {boolean}
      */
-    RenderStatic(httpCtx: HttpContext): boolean;
-    Run(port: any, func: any, config: any): void;
+    renderStatic(httpCtx: HttpContext): boolean;
+    run(port: any, func: any, config: any): void;
     setBody(): void;
 }

@@ -1,105 +1,102 @@
 class Cache {
-
     /**
      * @public
      */
-    TIME_ONE_SECOND = 1
+    TIME_ONE_SECOND = 1;
     /**
      * @public
      */
-    TIME_ONE_MINUTE = 60 * this.TIME_ONE_SECOND
+    TIME_ONE_MINUTE = 60 * this.TIME_ONE_SECOND;
     /**
      * @public
      */
-    TIME_ONE_HOUR = 60 * this.TIME_ONE_MINUTE
+    TIME_ONE_HOUR = 60 * this.TIME_ONE_MINUTE;
     /**
      * @public
      */
-    TIME_ONE_DAY = 24 * this.TIME_ONE_HOUR
+    TIME_ONE_DAY = 24 * this.TIME_ONE_HOUR;
     /**
      * @public
      */
-    TIME_ONE_YEAR = 365 * this.TIME_ONE_DAY
+    TIME_ONE_YEAR = 365 * this.TIME_ONE_DAY;
 
     constructor() {
     }
 
-    Has(key) {
-        return null
+    has(key) {
+        return null;
     }
 
     /**
-     * Get Retrieve an item from the cache by key.
-     * @param key
-     * @param defaultVal?
+     * get Retrieve an item from the cache by key.
+     * @param {string} key
+     * @param {*} [defaultVal=null]
      * @return {string|null}
      * @public
      * @function
      */
-    Get(key, defaultVal = null) {
+    get(key, defaultVal = null) {
         return null;
     }
 
-    Forever(key, val) {
-        this.Store(key, val, 0)
+    forever(key, val) {
+        this.store(key, val, 0);
     }
 
     /**
-     * Forget Remove an item from the cache.
-     * @param key
+     * forget remove an item from the cache.
+     * @param {string} key
      * @return {null|*}
      * @function
      */
-    Forget(key) {
+    forget(key) {
         return null;
     }
 
     /**
-     * Pull Retrieve an item from the cache and delete it.
-     * @param key
-     * @function
+     * pull Retrieve an item from the cache and delete it.
+     * @param  {string} key
+     * @return {null|*}
      */
-    Pull(key) {
+    pull(key) {
         return null;
     }
 
-    _Now() {
-        return (new Date()).getTime()
+    _now() {
+        return (new Date()).getTime();
     }
 
     /**
-     * Set Store an item in the cache for a given number of seconds.
-     * @param key
-     * @param val
-     * @param ttl Second
-     * @return {*}
+     * set store an item in the cache for a given number of seconds.
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @function
      */
-    Store(key, val = null, ttl = 0) {
+    store(key, val = null, ttl = 0) {
     }
 
     /**
-     * Set Store an item in the cache for a given number of seconds. as same Store function
-     * @param key
-     * @param val
-     * @param ttl Second
-     * @return {*}
+     * set store an item in the cache for a given number of seconds. as same store function
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @function
      */
-    Set(key, val = null, ttl = 0) {
+    set(key, val = null, ttl = 0) {
     }
 
     /**
-     * The Add method will only store data that does not exist in the cache. If the storage is successful, it will return true, otherwise it will return false:
-     * @param key
-     * @param val
-     * @param ttl
+     * The add method will only store data that does not exist in the cache. If the storage is successful, it will return true, otherwise it will return false:
+     * @param {string} key
+     * @param {*} val
+     * @param {number} ttl Second
      * @return {boolean}
      * @function
      */
-    Add(key, val = null, ttl = 0) {
-        return false
+    add(key, val = null, ttl = 0) {
+        return false;
     }
 }
 
-module.exports = Cache
+module.exports = Cache;

@@ -1,10 +1,10 @@
 // @ts-nocheck
-const KoaContext = require("koa2/lib/context");
-const HttpRequest = require("./HttpRequest");
-const HttpCookie = require("./HttpCookie");
-const HttpSession = require("./HttpSession");
-const HttpResponse = require("./HttpResponse");
-const Cookies = require('cookies')
+const KoaContext = require('koa2/lib/context');
+const HttpRequest = require('./HttpRequest');
+const HttpCookie = require('./HttpCookie');
+const HttpSession = require('./HttpSession');
+const HttpResponse = require('./HttpResponse');
+const Cookies = require('cookies');
 module.exports = class HttpContext {
     /**
      * @type  KoaContext()
@@ -26,7 +26,7 @@ module.exports = class HttpContext {
      */
     _app;
     /**
-     * @type {Router|RouterHandle|Redirect}
+     * @type {Router|RouterHandle|redirect}
      */
     _router;
     /**
@@ -34,13 +34,13 @@ module.exports = class HttpContext {
      */
     cookie;
 
-    params = {}
+    params = {};
 
     /**
      *
-     * @param app
-     * @param ctx
-
+     * @param  {Application}  app
+     * @param {KoaContext} ctx
+     * @constructor
      */
     constructor(app, ctx) {
         this._ctx = ctx;
@@ -53,36 +53,35 @@ module.exports = class HttpContext {
 
     /**
      *
-     * @return {Router|RouterHandle|Redirect}
+     * @return {Router|RouterHandle|redirect}
      * @function
      */
-    GetRouter() {
+    getRouter() {
         return this._router;
     }
 
     /**
      *
-     * @param router {Router|RouterHandle|Redirect}
-     * @return {Router|RouterHandle|Redirect}
+     * @param  {Router|RouterHandle|redirect} router
      * @function
      */
-    SetRouter(router) {
+    setRouter(router) {
         this._router = router;
-        this.params = router.params
+        this.params = router.params;
     }
 
-    App() {
+    app() {
         return this._app;
     }
 
     /**
      * set cookies
-     *  httpContext.SetCookies('userInfo', 'tankMan', {
+     *  httpContext.setCookies('userInfo', 'tankMan', {
      *      maxAge:60*1000*60
      *    });
-     * @param name {string}
-     * @param value
-     * @param options
+     * @param {string} name
+     * @param {string} value
+     * @param {Object} options
      * @description
      * This sets the given cookie in the response and returns the current context to allow chaining.
      * If the value is omitted, an outbound header with an expired date is used to delete the cookie.
@@ -96,62 +95,62 @@ module.exports = class HttpContext {
      * priority: a string indicating the cookie priority. This can be set to 'low', 'medium', or 'high'.
      * sameSite: a boolean or string indicating whether the cookie is a "same site" cookie (false by default). This can be set to 'strict', 'lax', 'none', or true (which maps to 'strict').
      * signed: a boolean indicating whether the cookie is to be signed (false by default). If this is true, another cookie of the same name with the .sig suffix appended will also be sent, with a 27-byte url-safe base64 SHA1 value representing the hash of cookie-name=cookie-value against the first Keygrip key. This signature key is used to detect tampering the next time a cookie is received.
-     * overwrite: a boolean indicating whether to overwrite previously set cookies of the same name (false by default). If this is true, all cookies set during the same request with the same name (regardless of path or domain) are filtered out of the Set-Cookie header when setting this cookie.
+     * overwrite: a boolean indicating whether to overwrite previously set cookies of the same name (false by default). If this is true, all cookies set during the same request with the same name (regardless of path or domain) are filtered out of the set-Cookie header when setting this cookie.
      * @public
      */
-    SetCookies(name, value, options) {
-        this._ctx.cookies.set(name, value, options)
+    setCookies(name, value, options) {
+        this._ctx.cookies.set(name, value, options);
     }
 
     /**
      * get cookies
-     *  httpContext.SetCookies('userInfo', 'tankMan', {
+     *  httpContext.setCookies('userInfo', 'tankMan', {
      *      maxAge:60*1000*60
      *    });
-     * @param name {string}
-     * @param options?
+     * @param  {string} name
+     * @param  {any} [options={}]
      * @function
      */
-    GetCookies(name, options) {
-        this._ctx.cookies.get(name, options)
+    getCookies(name, options) {
+        this._ctx.cookies.get(name, options);
     }
 
     /**
      * get origin node request object
-     * @returns {Http2ServerRequest | Request}
+     * @return {Http2ServerRequest | Request}
      * @public
      */
-    GetNodeRequest() {
-        return this._ctx.req
+    getNodeRequest() {
+        return this._ctx.req;
     }
 
     /**
      *  get origin node response object
-     * @returns {Http2ServerRequest | Request}
+     * @return {Http2ServerRequest | Request}
      * @public
      */
-    GetNodeResponse() {
-        return this._ctx.req
+    getNodeResponse() {
+        return this._ctx.req;
     }
 
     /**
      * throw http error
-     * @param status
-     * @param msg?
-     * @param properties?
+     * @param {number} status
+     * @param {string} [msg='']
+     * @param {any} [properties=null]
      * @function
      */
-    ThrowHttpError(status = 503, msg = 'server error', properties) {
-        this._ctx.throw(status, msg, properties)
+    throwHttpError(status = 503, msg = 'server error', properties) {
+        this._ctx.throw(status, msg, properties);
     }
 
     /**
      *
-     * @param url
-     * @param alt?
+     * @param {string} url
+     * @param {string} [alt='']
      * @public
      */
-    Redirect(url, alt = "") {
-        this.response.Redirect(url, alt)
+    redirect(url, alt = '') {
+        this.response.redirect(url, alt);
     }
 };

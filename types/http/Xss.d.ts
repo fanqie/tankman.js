@@ -16,11 +16,12 @@ declare class Xss {
     _xss: _xss.FilterXSS;
     /**
      *
-     * @param httpRequest
-     * @param value
+     * @param {HttpRequest} httpRequest
+     * @param {string|*} value
      * @return {string}
      * @constructor
      */
-    Filter(httpRequest: any, value: any): string;
+    filter(httpRequest: HttpRequest, value: string | any): string;
 }
 import _xss = require("xss");
+import HttpRequest = require("./context/HttpRequest");

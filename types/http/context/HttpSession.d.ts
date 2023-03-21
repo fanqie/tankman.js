@@ -2,7 +2,7 @@ export = HttpSession;
 declare class HttpSession {
     /**
      *
-     * @param httpCtx {HttpContext}
+     * @param {HttpContext} httpCtx
      */
     constructor(httpCtx: HttpContext);
     _ctx: KoaContext;
@@ -19,28 +19,27 @@ declare class HttpSession {
     _defaultTtl: number;
     /**
      * get httpSession
-     * @param name {string}
-     * @param defaultValue {*}
-     * @return  string | null
+     * @param {string} name
+     * @param {*} defaultValue
+     * @return  {string | null}
      * @function
      */
-    Get(name: string, defaultValue?: any): any;
+    get(name: string, defaultValue?: any): string | null;
     /**
      * set httpSession
-     * @param key
-     * @param value
-     * @return {*}
+     * @param {string} name
+     * @param {string|number|null} value
      * @function
      */
-    Set(key: any, value?: any): any;
+    set(name: string, value?: string | number | null): void;
     /**
-     * Forget or remove httpSession
-     * @param name
+     * forget or remove httpSession
+     * @param {string} name
      * @function
      */
-    Remove(name: any): void;
+    remove(name: string): void;
     /**
-     * @param name
+     * @param {string} name
      * @return {string}
      * @private
      */

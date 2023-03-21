@@ -1,6 +1,7 @@
-export = MakeClass;
+export = makeClass;
 /**
  *  make single instance by class
- * @param ClassPath {string}
+ * @param {string} ClassPath
+ * @return {*}
  */
-declare function MakeClass(ClassPath: string): any;
+declare function makeClass(ClassPath: string): any;
