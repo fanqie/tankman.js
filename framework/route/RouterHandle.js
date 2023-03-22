@@ -8,19 +8,22 @@ const Facades = require('../facades/Facades');
  */
 class RouterHandle extends Router {
     /**
-     * @param {{middleware: *[], prefix: string}} options
+     * @param {{middlewares: *[], prefix: string}} options
      * @param {string|string[]} methods
      * @param {string} vPath
      * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {string} name
+     * @constructor
      */
     constructor(options = {
         middleware: [],
         prefix: '',
-    }, methods, vPath, controllerOrActionFunc) {
+    }, methods, vPath, controllerOrActionFunc, name) {
         super(options, methods, vPath, controllerOrActionFunc);
         super.methods = Array.isArray(methods) ? methods : [methods];
         super.vPath = vPath;
         super.path = super.makePath();
+        super.name = name || vPath;
         if (Array.isArray(controllerOrActionFunc)) {
             if (this._isClass(controllerOrActionFunc[0]) && controllerOrActionFunc.length === 2) {
                 super.controllerClass = Facades.app.singleton(controllerOrActionFunc[0]);
@@ -80,11 +83,11 @@ class RouterHandle extends Router {
      * @return {function}
      */
     getInstanceAction() {
-    // @ts-ignore
+        // @ts-ignore
         const instance = this.controllerClass;
         return (httpContext) => {
             return instance ? instance.__proto__[this.action]
-                .call(instance, httpContext, Object.values(httpContext.params)) :
+                    .call(instance, httpContext, Object.values(httpContext.params)) :
                 this.actionFunc(httpContext, Object.values(httpContext.params));
         };
     }

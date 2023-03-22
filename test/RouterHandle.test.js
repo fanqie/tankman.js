@@ -1,6 +1,4 @@
-const describe = require('mocha').describe;
 const RouterHandle = require("../framework/route/RouterHandle")
-
 const assert = require("assert");
 
 const Route = require("../framework/route/Route");
@@ -35,7 +33,7 @@ test("routeAdd", () => {
     handle = route.match(["post"], "/foo4/:id", (ctx) => {
     }).middleware("XXX").middleware(["XXX2"])
     assert.equal(handle.methods.includes("post"), true)
-    assert.equal(handle.options.middlewares.length === 2, true)
+    assert.equal(handle.options.middleware.length === 2, true)
 
     handle = route.delete("/foo4/:id", (ctx) => {
     }).routeName("TEST")
@@ -46,5 +44,5 @@ test("routeAdd", () => {
     }, ["GroupX"])
     assert.equal(route.all().length, 6)
     route.loadSet();
-    console.log(route.getRoute("foo5"))
+    // console.log(route.getRoute("foo5"))
 })

@@ -27,6 +27,10 @@ declare class FacadesClass {
     log: Log;
     fileSystem: any;
     grpc: any;
+    /**
+     * @type HttpClient
+     */
+    httpClient: HttpClient;
     queue: any;
     schedule: any;
     /**

@@ -22,12 +22,13 @@ class Log {
         this.log4js.configure({...facades.config.get('log'), ...options});
     }
 
+    // eslint-disable-next-line valid-jsdoc
     /**
      * @param {String} [category=""]
      * @return {import('log4js').Logger}
      * @public
      */
-    getLogger(category) {
+    getLogger(category='') {
         try {
             return this.log4js.getLogger(category || 'default');
         } catch (e) {

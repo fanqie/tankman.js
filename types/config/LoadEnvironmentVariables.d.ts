@@ -16,8 +16,8 @@ declare class LoadEnvironmentVariables {
     public static load(filePath?: string): any;
     /**
      *
-   * @param {string} filePath
-     * @return string
+    * @param {string} filePath
+     * @return {string}
      * @private
      */
     private static _getContent;

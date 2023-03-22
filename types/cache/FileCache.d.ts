@@ -22,6 +22,6 @@ declare class FileCache extends Cache {
      * clear cache
      * @Function
      */
-    flush(): any;
+    flush(): void;
 }
 import Cache = require("./Cache");

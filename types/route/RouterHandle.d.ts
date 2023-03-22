@@ -8,6 +8,7 @@ declare class RouterHandle extends Router {
      * @param {string|string[]} methods
      * @param {string} vPath
      * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @constructor
      */
     constructor(options: {
         middleware: any[];

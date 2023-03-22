@@ -2,7 +2,7 @@ export = GenerateCommand;
 declare class GenerateCommand extends Command {
     /**
      *
-     * @param commands {Map<string,Command>}
+     * @param {Map<string,Command>} commands
      * @function
      * @public
      */

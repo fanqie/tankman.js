@@ -18,11 +18,11 @@ const Knex = require('knex');
 
 /**
  * @property {DbManager} instance
- * @return {knex.Client|knex.TableBuilder|knex.ColumnBuilder|knex.QueryBuilder|knex.KnexTimeoutError|knex.ViewBuilder|knex.SchemaBuilder|knex.KnexTimeoutError}
+ * @return {knex.Client|knex.TableBuilder|knex.ColumnBuilder|knex.QueryBuilder|knex.KnexTimeoutError|knex.ViewBuilder|knex.SchemaBuilder|knex.KnexTimeoutError|Orm}
  * @function
  */
 function Orm() {
-
+    return this;
 }
 
 /**

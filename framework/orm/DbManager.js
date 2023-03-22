@@ -56,11 +56,11 @@ class DbManager {
      * @private
      */
     _connectionDefaultDb() {
-        const configs = facades.config.get('database', null);
-        if (configs.default && configs.hasOwnProperty(configs.default)) {
+        const configs = facades.config?.get('database', null);
+        if (configs&&configs.default && configs.hasOwnProperty(configs.default)) {
             return this._connection(configs[configs.default], configs.default);
         } else {
-            console.warn('Configuration default database not found');
+            facades.log?.warn('Configuration default database not found');
         }
     }
 
@@ -106,7 +106,7 @@ class DbManager {
      * @public
      */
     get(client) {
-        const configs = facades.config.get('database', null);
+        const configs = facades.config?.get('database', null);
         if (configs.hasOwnProperty(client)) {
             return this.connMap.get(client) || this._connection(configs[client], client);
         } else {

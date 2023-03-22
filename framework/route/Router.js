@@ -87,7 +87,7 @@ class Router {
     makePath() {
         return path.join(this.options.prefix, this.vPath).replace(/\\/g, '/');
     }
-
+    // eslint-disable-next-line valid-jsdoc
     /**
      * @typedef {import('path-to-regexp').MatchFunction<object>} MatchFunction
      * @return {MatchFunction}

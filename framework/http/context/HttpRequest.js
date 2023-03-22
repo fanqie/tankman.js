@@ -54,6 +54,7 @@ module.exports = class HttpRequest {
     post(name) {
         return this.httpCtx.app().facades.Xss.filter(this._postParams[name]) || null;
     }
+
     /**
      *
      * @param {string} name
@@ -294,7 +295,7 @@ module.exports = class HttpRequest {
 
     /**
      * Return the request socket.
-     * @return {import('mysql2').Connection}
+     * @return {*}
      * @public
      */
     getSocket() {

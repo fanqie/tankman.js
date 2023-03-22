@@ -1,7 +1,7 @@
 const Db = require("../framework/orm/DbManager")
-const {FC} = require("../framework");
-test("test_Connection", () => {
-    Db.Connection({
+// const facades = require("../framework/facades/Facades");
+test("dbtest", () => {
+    new Db()._connection({
         client: 'mysql',
         connection: {
             port: 3306,

@@ -58,10 +58,10 @@ declare class Command {
     /**
      * @param {string} name
      * @function
-     * @return string|number|boolean
+     * @return {string|number|boolean|*}
      * @protected
      */
-    protected getFlag(name: string): string | number | boolean;
+    protected getFlag(name: string): string | number | boolean | any;
     help(): string;
 }
 import Application = require("../boot/Application");

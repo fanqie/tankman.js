@@ -30,8 +30,8 @@ class LoadEnvironmentVariables {
 
     /**
      *
-   * @param {string} filePath
-     * @return string
+    * @param {string} filePath
+     * @return {string}
      * @private
      */
     static _getContent(filePath) {

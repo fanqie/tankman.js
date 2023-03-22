@@ -24,7 +24,7 @@ module.exports = class FileCache extends Cache {
      * @return {boolean}
      */
     has(key) {
-        return this.cache.Has(key);
+        return this.cache.has(key);
     }
 
     /**
@@ -35,7 +35,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     get(key, defaultVal = null) {
-        return this.cache.Get(key, defaultVal);
+        return this.cache.get(key, defaultVal);
     }
 
     /**
@@ -44,7 +44,7 @@ module.exports = class FileCache extends Cache {
      * @param {*} val
      */
     forever(key, val) {
-        this.cache.Forever(key, val);
+        this.cache.forever(key, val);
     }
 
     /**
@@ -54,7 +54,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     forget(key) {
-        return this.cache.Forget(key);
+        return this.cache.forget(key);
     }
 
     /**
@@ -64,7 +64,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     pull(key) {
-        return this.cache.Pull(key);
+        return this.cache.pull(key);
     }
 
 
@@ -76,7 +76,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     store(key, val = null, ttl = 0) {
-        this.cache.Store(key, val, ttl);
+        this.cache.store(key, val, ttl);
     }
 
     /**
@@ -87,7 +87,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     set(key, val = null, ttl = 0) {
-        this.cache.Store(key, val, ttl);
+        this.cache.store(key, val, ttl);
     }
 
     /**
@@ -100,7 +100,7 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     add(key, val = null, ttl = 0) {
-        return this.cache.Add(key, val, ttl);
+        return this.cache.add(key, val, ttl);
     }
 
     /**
@@ -108,6 +108,6 @@ module.exports = class FileCache extends Cache {
      * @Function
      */
     flush() {
-        return this.cache.Flush();
+        this.cache.flush();
     }
 };

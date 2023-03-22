@@ -89,7 +89,7 @@ class Command {
     /**
      * @param {string} name
      * @function
-     * @return string|number|boolean
+     * @return {string|number|boolean|*}
      * @protected
      */
     getFlag(name) {

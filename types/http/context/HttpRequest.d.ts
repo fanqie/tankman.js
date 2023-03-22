@@ -191,10 +191,10 @@ declare class HttpRequest {
     public isIdempotent(): boolean;
     /**
      * Return the request socket.
-     * @return {import('mysql2').Connection}
+     * @return {*}
      * @public
      */
-    public getSocket(): import('mysql2').Connection;
+    public getSocket(): any;
     /**
      *
      * @return {String}

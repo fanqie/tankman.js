@@ -28,12 +28,13 @@ class HttpCookie {
     get(name, opts = undefined) {
         return this._ctx.cookies.get(name, opts || {}) || null;
     }
-
+    // eslint-disable-next-line valid-jsdoc
     /**
      * set cookie
      * @param {string} name
      * @param {string} value
      * @param {{domain?:String,signed?:Boolean,maxAge?: Number, path?:String, httpOnly?: Boolean,secure?:Boolean,overwrite?:Boolean,sameSite?: 'strict'|'lax'|'none'}|undefined} opts
+     * @returns {void}
      * @function
      */
     set(name, value, opts = undefined) {

@@ -26,6 +26,7 @@ declare class HttpCookie {
      * @param {string} name
      * @param {string} value
      * @param {{domain?:String,signed?:Boolean,maxAge?: Number, path?:String, httpOnly?: Boolean,secure?:Boolean,overwrite?:Boolean,sameSite?: 'strict'|'lax'|'none'}|undefined} opts
+     * @returns {void}
      * @function
      */
     set(name: string, value: string, opts?: {
