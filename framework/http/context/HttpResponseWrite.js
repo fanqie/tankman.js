@@ -44,18 +44,18 @@ class HttpResponseWrite {
         for (const filed in tpl) {
             if (tpl.hasOwnProperty(filed)) {
                 switch (tpl[filed]) {
-                case '#err_no':
-                    tpl[filed] = errNo;
-                    break;
-                case '#data':
-                    tpl[filed] = data;
-                    break;
-                case '#err_msg':
-                    tpl[filed] = errMsg;
-                    break;
-                case '#time':
-                    tpl[filed] = new Date().getTime();
-                    break;
+                    case '#err_no':
+                        tpl[filed] = errNo;
+                        break;
+                    case '#data':
+                        tpl[filed] = data;
+                        break;
+                    case '#err_msg':
+                        tpl[filed] = errMsg;
+                        break;
+                    case '#time':
+                        tpl[filed] = new Date().getTime();
+                        break;
                 }
             }
         }
@@ -107,6 +107,7 @@ class HttpResponseWrite {
      * @abstract
      */
     writeBytes(bytes) {
+        throw new Error('Abstract method has no implementation');
     }
 
     /**
@@ -115,6 +116,7 @@ class HttpResponseWrite {
      * @abstract
      */
     writeText(string) {
+        throw new Error('Abstract method has no implementation');
     }
 
     /**
@@ -123,6 +125,7 @@ class HttpResponseWrite {
      * @abstract
      */
     writeBuffer(buffers) {
+        throw new Error('Abstract method has no implementation');
     }
 
     /**
@@ -131,6 +134,7 @@ class HttpResponseWrite {
      * @abstract
      */
     writeStream(stream) {
+        throw new Error('Abstract method has no implementation');
     }
 
     setResponseType(type) {

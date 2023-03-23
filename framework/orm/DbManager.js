@@ -9,7 +9,7 @@ class DbManager {
      */
     defaultConn;
     /**
-     * @type {Map<string, OrmClassType>}
+     * @type {Map<string, OrmClassType|Knex|*>}
      */
     connMap = new Map();
 
@@ -57,7 +57,7 @@ class DbManager {
      */
     _connectionDefaultDb() {
         const configs = facades.config?.get('database', null);
-        if (configs&&configs.default && configs.hasOwnProperty(configs.default)) {
+        if (configs && configs.default && configs.hasOwnProperty(configs.default)) {
             return this._connection(configs[configs.default], configs.default);
         } else {
             facades.log?.warn('Configuration default database not found');
@@ -66,7 +66,7 @@ class DbManager {
 
     /**
      *
-     * @param {{log:{}}|null} config
+     * @param {{log:{},client:string,connection:{},wrapIdentifier:function,pool:{min: number, max: number},acquireConnectionTimeout:number,debug: boolean,prefix:string}|null} config
      * @param {string} client
      * @return {OrmClassType|Knex}
      * @private
@@ -90,7 +90,31 @@ class DbManager {
         if (this.connMap.has(client)) {
             return this.connMap.get(client);
         }
-        this.connMap.set(client, orm(config));
+        config.wrapIdentifier=(
+            value,
+            origImpl,
+            queryContext
+        ) => origImpl(
+            ((value,
+              origImpl,
+              queryContext)=>{
+                console.log( value,
+                    origImpl,
+                    queryContext)
+                return value
+            })(value,
+                origImpl,
+                queryContext)
+        )
+        let ormInstance = orm(config)
+
+        // ormInstance.on("query",(builder)=>{
+        //     console.log(builder)
+        //     builder.table(config.prefix+builder.tableName)
+        //     return builder
+        // })
+        this.connMap.set(client, ormInstance);
+
         /**
          * @type {DbManager}
          */
