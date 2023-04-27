@@ -94,17 +94,12 @@ declare class Application {
     private _getBaseServiceProviders;
     /**
      *
-     * @type {Map<string,any>}
-     */
-    singletonItems: Map<string, any>;
-    /**
-     *
-     * @param {*} Source
-     * @param {string} [alisa='']
-     * @return {Source|Controller|*}
+     * @param {*} cls
+     * @param {string} [alisa=''] not recommended
+     * @return {cls|Controller|*}
      * @function
      */
-    singleton(Source: any, alisa?: string): any | Controller | any;
+    singleton(cls: any, alisa?: string): any | Controller | any;
 }
 import FacadesClass = require("../facades/FacadesClass");
 import Command = require("../command/Command");

@@ -6,6 +6,7 @@ const Command = require('../command/Command');
 const ServiceProvider = require('../provider/ServiceProvider');
 const FacadesClass = require('../facades/FacadesClass');
 const Controller = require('../http/controller/Controller');
+const SingletonFactory = require('../factor/SingletonFactory')
 
 /**
  *
@@ -57,7 +58,7 @@ class Application {
      * @private
      */
     _registerBaseServiceProviders() {
-    // init env config
+        // init env config
         this._registerServiceProviders(this._getBaseServiceProviders());
     }
 
@@ -72,7 +73,7 @@ class Application {
      * @private
      */
     _registerConfiguredServiceProviders() {
-    // get all provider and register
+        // get all provider and register
         this._registerServiceProviders(this._getConfiguredServiceProviders());
     }
 
@@ -179,31 +180,19 @@ class Application {
         return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)];
     }
 
-    /**
-     *
-     * @type {Map<string,any>}
-     */
-    singletonItems = new Map();
 
     /**
      *
-     * @param {*} Source
-     * @param {string} [alisa='']
-     * @return {Source|Controller|*}
+     * @param {*} cls
+     * @param {string} [alisa=''] not recommended
+     * @return {cls|Controller|*}
      * @function
      */
-    singleton(Source, alisa = '') {
-        if (!/^class\s/.test(Object.valueOf.toString.call(Source))) {
+    singleton(cls, alisa = '') {
+        if (!/^class\s/.test(Object.valueOf.toString.call(cls))) {
             throw new Error('is not a construction class');
         }
-        if (!alisa) {
-            alisa = Source.name;
-        }
-        if (!this.singletonItems.has(alisa)) {
-            this.singletonItems.set(alisa, new Source());
-        }
-
-        return this.singletonItems.get(alisa);
+        return SingletonFactory.make(cls,alisa)
     }
 }
 

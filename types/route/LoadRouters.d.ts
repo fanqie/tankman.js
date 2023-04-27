@@ -7,4 +7,5 @@ declare class LoadRouters {
      * @public
      */
     public static load(filePath: string): void;
+    static scanAnnotate: () => void;
 }

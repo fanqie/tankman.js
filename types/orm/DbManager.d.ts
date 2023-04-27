@@ -5,9 +5,9 @@ declare class DbManager {
      */
     defaultConn: any | typeof Knex;
     /**
-     * @type {Map<string, OrmClassType>}
+     * @type {Map<string, OrmClassType|Knex|*>}
      */
-    connMap: Map<string, OrmClassType>;
+    connMap: Map<string, OrmClassType | typeof Knex | any>;
     /**
      * @return {OrmClassType|Knex}
      * @public
@@ -39,7 +39,7 @@ declare class DbManager {
     private _connectionDefaultDb;
     /**
      *
-     * @param {{log:{}}|null} config
+     * @param {{log:{},client:string,connection:{},wrapIdentifier:function,pool:{min: number, max: number},acquireConnectionTimeout:number,debug: boolean,prefix:string}|null} config
      * @param {string} client
      * @return {OrmClassType|Knex}
      * @private

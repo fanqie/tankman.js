@@ -5,8 +5,12 @@ const Router = require('./Router');
 const Controller = require('../http/controller/Controller');
 
 /**
- *
+ * Options object for configuring something.
+ * @typedef {Object} options
+ * @property {string} prefix - The prefix to use.
+ * @property {string[]} middleware - An array of middleware to use.
  */
+
 class Route {
     /**
      * @type  string
@@ -15,8 +19,10 @@ class Route {
     _prefix = '';
     _group_middleware = [];
     /**
-     *
-     * @type {{prefix: string, middleware: string[]}}
+     * Options object for configuring something.
+     * @typedef {Object} Options
+     * @property {string} prefix - The prefix to use.
+     * @property {string[]} middleware - An array of middleware to use.
      */
     options = {
         prefix: '',
@@ -24,8 +30,8 @@ class Route {
     };
 
     /**
-     *
-     * @param {{prefix: string, middleware: string[]}|undefined} [options=undefined]
+     * Constructs an instance of Route.
+     * @param {Options} [options] - The options object.
      */
     constructor(options) {
         this.options = options || this.options;
@@ -74,17 +80,18 @@ class Route {
 
 
     /**
-     * @param {string[]|string} method
-     * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
-     * @return {Router}
+     * Creates a RouterHandle object and adds it to the list of routers.
+     * @param {string[]|string} method - The HTTP method(s) to use.
+     * @param {string} path - The path to use.
+     * @param {[Controller,string]|Function|*} actionInfo - The action information for the router.
+     * @returns {RouterHandle} - The newly created router handle.
      * @private
      */
-    _createRouterHandle(method, path, controllerOrActionFunc) {
+    _createRouterHandle(method, path, actionInfo) {
         const handle = new RouterHandle({
             prefix: this._prefix,
             middleware: [...this._group_middleware],
-        }, method, path, controllerOrActionFunc);
+        }, method, path, actionInfo);
 
         this._routers.push(handle);
         return handle;
@@ -92,72 +99,72 @@ class Route {
 
     /**
      * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @return {Router|RouterHandle}
      */
-    post(path, controllerOrActionFunc) {
-        return this._createRouterHandle(REQUEST_METHOD.POST, path, controllerOrActionFunc);
+    post(path, actionInfo) {
+        return this._createRouterHandle(REQUEST_METHOD.POST, path, actionInfo);
     }
 
     /**
      * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @return {Router|RouterHandle}
      */
-    get(path, controllerOrActionFunc) {
-        return this._createRouterHandle(REQUEST_METHOD.GET, path, controllerOrActionFunc);
+    get(path, actionInfo) {
+        return this._createRouterHandle(REQUEST_METHOD.GET, path, actionInfo);
     }
 
 
     /**
      * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @return {Router|RouterHandle}
      */
-    patch(path, controllerOrActionFunc) {
-        return this._createRouterHandle(REQUEST_METHOD.PATCH, path, controllerOrActionFunc);
+    patch(path, actionInfo) {
+        return this._createRouterHandle(REQUEST_METHOD.PATCH, path, actionInfo);
     }
 
     /**
      * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @return {Router|RouterHandle}
      */
-    put(path, controllerOrActionFunc) {
-        return this._createRouterHandle(REQUEST_METHOD.PUT, path, controllerOrActionFunc);
+    put(path, actionInfo) {
+        return this._createRouterHandle(REQUEST_METHOD.PUT, path, actionInfo);
     }
 
     /**
      * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @return {Router|RouterHandle}
      */
-    any(path, controllerOrActionFunc) {
-        return this._createRouterHandle(Object.values(REQUEST_METHOD), path, controllerOrActionFunc);
+    any(path, actionInfo) {
+        return this._createRouterHandle(Object.values(REQUEST_METHOD), path, actionInfo);
     }
 
     /**
      * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @return {Router|RouterHandle}
      */
-    delete(path, controllerOrActionFunc) {
-        return this._createRouterHandle(REQUEST_METHOD.DELETE, path, controllerOrActionFunc);
+    delete(path, actionInfo) {
+        return this._createRouterHandle(REQUEST_METHOD.DELETE, path, actionInfo);
     }
 
     /**
      * @param {string[]} methodsArray
      * @param {string} path
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @return {Router|RouterHandle}
      */
-    match(methodsArray, path, controllerOrActionFunc) {
+    match(methodsArray, path, actionInfo) {
         if (!Array.isArray(methodsArray)) {
             throw new Error('methodsArray must array');
         }
         const methods = methodsArray.filter((method) => Object.values(REQUEST_METHOD).includes(method));
         if (methods.length > 0) {
-            return this._createRouterHandle(methods, path, controllerOrActionFunc);
+            return this._createRouterHandle(methods, path, actionInfo);
         }
         throw new Error('methodsArray must values [post|put|get|delete|put]');
     }

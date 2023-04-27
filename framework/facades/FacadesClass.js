@@ -49,4 +49,9 @@ module.exports = class FacadesClass {
      * @type Xss
      */
     xss;
+
+    /**
+     * @type TemplateEngineAbstract
+     */
+    template;
 };

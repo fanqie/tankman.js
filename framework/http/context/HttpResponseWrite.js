@@ -1,7 +1,9 @@
 const lodash = require('lodash');
 const facades = require('../../facades/Facades');
+const SingletonFactory = require('../../factor/SingletonFactory');
 const mineTypes = require('mime-types');
 const fs = require('fs');
+const path = require('path');
 
 /**
  * @abstract
@@ -89,6 +91,21 @@ class HttpResponseWrite {
     text(string, type = 'text/plain; charset=utf-8') {
         this.setResponseType(type);
         this.writeText(string);
+    }
+
+    render(filename, data = {}) {
+        const html = facades.template.renderFile(filename, data)
+        this.html(html)
+    }
+
+    renderPug(filename, data = {}) {
+        const html = SingletonFactory.make(path.resolve(__dirname, "../../template/PugTemplate.js")).renderFile(filename, data)
+        this.html(html)
+    }
+
+    renderArt(filename, data = {}) {
+        const html = SingletonFactory.make(path.resolve(__dirname, "../../template/ArtTemplate.js")).renderFile(filename, data)
+        this.html(html)
     }
 
     html(string, type = 'text/html;charset=utf-8') {

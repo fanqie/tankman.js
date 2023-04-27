@@ -24,6 +24,7 @@ class LoadRouters {
             routeLoadFunc(facades.route);
         });
     }
+
 }
 
 module.exports = LoadRouters;

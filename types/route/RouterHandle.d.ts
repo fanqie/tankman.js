@@ -4,16 +4,29 @@ export = RouterHandle;
  */
 declare class RouterHandle extends Router {
     /**
-     * @param {{middleware: *[], prefix: string}} options
+     * Options object for configuring something.
+     * @typedef {Object} Options
+     * @property {string} prefix - The prefix to use.
+     * @property {string[]} middleware - An array of middleware to use.
+     */
+    /**
+     * @param {Options} options
      * @param {string|string[]} methods
      * @param {string} vPath
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
+     * @param {string} name
      * @constructor
      */
     constructor(options: {
-        middleware: any[];
+        /**
+         * - The prefix to use.
+         */
         prefix: string;
-    }, methods: string | string[], vPath: string, controllerOrActionFunc: [Controller, string] | Function);
+        /**
+         * - An array of middleware to use.
+         */
+        middleware: string[];
+    }, methods: string | string[], vPath: string, actionInfo: [Controller, string] | Function, name?: string);
     /**
      * check class
      * @param {mixin} val

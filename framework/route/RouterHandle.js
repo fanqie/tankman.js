@@ -2,37 +2,40 @@
 const Router = require('./Router');
 const Controller = require('../http/controller/Controller');
 const Facades = require('../facades/Facades');
+const ControllerSingletonFactory = require("../factor/ControllerSingletonFactory");
 
 /**
  * RouterHandle
  */
 class RouterHandle extends Router {
     /**
-     * @param {{middlewares: *[], prefix: string}} options
+     * Options object for configuring something.
+     * @typedef {Object} Options
+     * @property {string} prefix - The prefix to use.
+     * @property {string[]} middleware - An array of middleware to use.
+     */
+    /**
+     * @param {Options} options
      * @param {string|string[]} methods
      * @param {string} vPath
-     * @param {[Controller,string]|Function} controllerOrActionFunc
+     * @param {[Controller,string]|Function} actionInfo
      * @param {string} name
      * @constructor
      */
     constructor(options = {
         middleware: [],
         prefix: '',
-    }, methods, vPath, controllerOrActionFunc, name) {
-        super(options, methods, vPath, controllerOrActionFunc);
+    }, methods, vPath, actionInfo, name = "") {
+        super(options, methods, vPath, actionInfo);
         super.methods = Array.isArray(methods) ? methods : [methods];
         super.vPath = vPath;
         super.path = super.makePath();
         super.name = name || vPath;
-        if (Array.isArray(controllerOrActionFunc)) {
-            if (this._isClass(controllerOrActionFunc[0]) && controllerOrActionFunc.length === 2) {
-                super.controllerClass = Facades.app.singleton(controllerOrActionFunc[0]);
-                super.action = controllerOrActionFunc[1];
-            } else {
-                throw new Error('Parameter error must be:[Controller,Function]|Function');
-            }
+        if (Array.isArray(actionInfo)) {
+            super.controllerClass = ControllerSingletonFactory.make(actionInfo[0]);
+            super.action = actionInfo[1];
         } else {
-            super.actionFunc = controllerOrActionFunc;
+            super.actionFunc = actionInfo;
         }
 
         // @ts-ignore

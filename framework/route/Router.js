@@ -43,7 +43,7 @@ class Router {
     path = '';
     /**
      *
-     * @type {ClassDecorator|Function}
+     * @type {Controller}
      * @public
      */
     controllerClass = null;

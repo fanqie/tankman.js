@@ -24,6 +24,7 @@ module.exports = class HttpResponse extends HttpResponseWrite {
 
     /**
      * @param {string} text
+     * @return {*}
      * @override
      */
     writeText(text) {
@@ -33,6 +34,7 @@ module.exports = class HttpResponse extends HttpResponseWrite {
     /**
      *
      * @param {*} buffers
+     * @return {*}
      * @override
      */
     writeBuffer(buffers) {
@@ -42,6 +44,7 @@ module.exports = class HttpResponse extends HttpResponseWrite {
     /**
      *
      * @param {*} stream
+     * @return {*}
      * @override
      */
     writeStream(stream) {
