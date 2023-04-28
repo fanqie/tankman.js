@@ -4,7 +4,7 @@ const HttpRequest = require('./HttpRequest');
 const HttpCookie = require('./HttpCookie');
 const HttpSession = require('./HttpSession');
 const HttpResponse = require('./HttpResponse');
-const Cookies = require('cookies');
+
 module.exports = class HttpContext {
     /**
      * @type  KoaContext()
@@ -21,6 +21,11 @@ module.exports = class HttpContext {
      * @type {HttpResponse}
      */
     response;
+    /**
+     *
+     * @type {HttpSession}
+     */
+    session;
     /**
      * @type {Application}
      */

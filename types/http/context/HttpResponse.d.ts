@@ -1,6 +1,25 @@
 export = HttpResponse;
 declare class HttpResponse extends HttpResponseWrite {
-    constructor(httpCtx: any);
+    /**
+     * @param {string} text
+     * @return {*}
+     * @override
+     */
+    override writeText(text: string): any;
+    /**
+     *
+     * @param {*} buffers
+     * @return {*}
+     * @override
+     */
+    override writeBuffer(buffers: any): any;
+    /**
+     *
+     * @param {*} stream
+     * @return {*}
+     * @override
+     */
+    override writeStream(stream: any): any;
     /**
      * set Content-Type response header with type through mime.lookup() when it does not contain a charset.
      * @param {string} type

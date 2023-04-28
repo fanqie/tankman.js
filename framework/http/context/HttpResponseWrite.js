@@ -4,12 +4,15 @@ const SingletonFactory = require('../../factor/SingletonFactory');
 const mineTypes = require('mime-types');
 const fs = require('fs');
 const path = require('path');
+const HttpContext = require('./HttpContext');
+const PugTemplate = SingletonFactory.make(path.resolve(__dirname, "../../template/PugTemplate.js"))
+const ArtTemplate = SingletonFactory.make(path.resolve(__dirname, "../../template/ArtTemplate.js"))
 
 /**
  * @abstract
  */
 class HttpResponseWrite {
-    _response;
+
     _config = {
         json: {
             template: {
@@ -25,8 +28,16 @@ class HttpResponseWrite {
         },
 
     };
+    _response;
 
-    constructor() {
+    /**
+     * @type HttpContext
+     * @private
+     */
+    _httpCtx
+
+    constructor(httpCtx) {
+        this.httpCtx = httpCtx
         if (new.target === HttpResponseWrite) {
             throw new Error('HttpResponseWrite class Instantiation is not allowed');
         }
@@ -93,18 +104,40 @@ class HttpResponseWrite {
         this.writeText(string);
     }
 
-    render(filename, data = {}) {
-        const html = facades.template.renderFile(filename, data)
+    view(filename, data = {}) {
+        const html = facades.template.renderFile(filename, {
+            ...data, ctx: {
+                request: this.httpCtx.request,
+                response: this.httpCtx.response,
+                session: this.httpCtx.session,
+                route: facades.route
+            }
+        })
         this.html(html)
     }
 
-    renderPug(filename, data = {}) {
-        const html = SingletonFactory.make(path.resolve(__dirname, "../../template/PugTemplate.js")).renderFile(filename, data)
+    pugView(filename, data = {}) {
+
+        const html = PugTemplate.renderFile(filename, {
+            ...data, ctx: {
+                request: this.httpCtx.request,
+                response: this.httpCtx.response,
+                session: this.httpCtx.session,
+                route: facades.route
+            }
+        })
         this.html(html)
     }
 
-    renderArt(filename, data = {}) {
-        const html = SingletonFactory.make(path.resolve(__dirname, "../../template/ArtTemplate.js")).renderFile(filename, data)
+    artView(filename, data = {}) {
+        const html = ArtTemplate.renderFile(filename, {
+            ...data, ctx: {
+                request: this.httpCtx.request,
+                response: this.httpCtx.response,
+                session: this.httpCtx.session,
+                route: facades.route
+            }
+        })
         this.html(html)
     }
 

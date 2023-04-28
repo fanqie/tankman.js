@@ -1,33 +1,19 @@
-const path = require('path');
-
+export = TemplateEngineAbstract;
 /**
  * TemplateEngineAbstract abstract class.
  * @class
  */
-class TemplateEngineAbstract {
+declare class TemplateEngineAbstract {
     /**
      * The file suffix used by this template engine.
      * @type {string}
      */
-    suffix = '.tpl';
-
+    suffix: string;
     /**
      * The directory where templates are stored.
      * @type {string}
      */
-    templateDir = 'views';
-
-    /**
-     * Create a new instance of the TemplateEngineAbstract class.
-     * @constructor
-     * @throws {TypeError} - Cannot construct abstract instances directly.
-     */
-    constructor() {
-        if (new.target === TemplateEngineAbstract) {
-            throw new TypeError('Cannot construct abstract instances directly');
-        }
-    }
-
+    templateDir: string;
     /**
      * Render a template string.
      * @function
@@ -38,10 +24,7 @@ class TemplateEngineAbstract {
      * @return {string} - The rendered string.
      * @throws {Error} - Method 'render' must be implemented.
      */
-    render(source, data, options) {
-        throw new Error('Method \'render\' must be implemented.');
-    }
-
+    render(source: string, data: any, options?: any): string;
     /**
      * Compile a template string.
      * @function
@@ -51,10 +34,7 @@ class TemplateEngineAbstract {
      * @return {Function} - The compiled template function.
      * @throws {Error} - Method 'compile' must be implemented.
      */
-    compile(source, options) {
-        throw new Error('Method \'compile\' must be implemented.');
-    }
-
+    compile(source: string, options?: any): Function;
     /**
      * Render a template file.
      * @function
@@ -63,59 +43,39 @@ class TemplateEngineAbstract {
      * @param {Object} data - The data object to use for rendering the template.
      * @throws {Error} - Method 'template' must be implemented.
      */
-    renderFile(filename, data) {
-        throw new Error('Method \'template\' must be implemented.');
-    }
-
+    renderFile(filename: string, data: any): void;
     /**
      * Get the template engine module itself, for calling other methods.
      * @function
      * @abstract
      * @throws {Error} - Method 'getOrigin' must be implemented.
      */
-    getOrigin() {
-        throw new Error('Method \'getOrigin\' must be implemented.');
-    }
-
+    getOrigin(): void;
     /**
      * Get the directory where templates are stored.
      * If a relative path is given, it will be resolved relative to the current working directory.
      * @function
      * @return {string} - The absolute path to the template directory.
      */
-    getTemplateDir() {
-        return path.isAbsolute(this.templateDir) ?
-            this.templateDir :
-            path.resolve(process.cwd(), this.templateDir);
-    }
-
+    getTemplateDir(): string;
     /**
      * Set the directory where templates are stored.
      * @function
      * @param {string} dir - The path to the template directory. If not specified, the default value is used.
      */
-    setTemplateDir(dir) {
-        this.templateDir = dir || this.templateDir;
-    }
-
+    setTemplateDir(dir: string): void;
     /**
      * Get the file suffix used by this template engine.
      * @function
      * @return {string} - The file suffix.
      */
-    getSuffix() {
-        return this.suffix;
-    }
-
+    getSuffix(): string;
     /**
      * Set the file suffix used by this template engine.
      * @function
      * @param {string} suffix - The file suffix. If not specified, the default value is used.
      */
-    setSuffix(suffix) {
-        this.suffix = suffix || this.suffix;
-    }
-
+    setSuffix(suffix: string): void;
     /**
      * Convert a template file path to a module path.
      * @function
@@ -123,10 +83,5 @@ class TemplateEngineAbstract {
      * @param {string} filepath - The template file path to convert.
      * @return {string} - The module path.
      */
-    convertFilePath(filepath) {
-        return path.join(this.getTemplateDir(), filepath.replace(/\./g, '/'))+this.getSuffix();
-    }
+    protected convertFilePath(filepath: string): string;
 }
-
-// Export the TemplateEngine class.
-module.exports = TemplateEngineAbstract;

@@ -46,4 +46,8 @@ declare class FacadesClass {
      * @type Xss
      */
     xss: Xss;
+    /**
+     * @type TemplateEngineAbstract
+     */
+    template: TemplateEngineAbstract;
 }

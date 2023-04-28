@@ -45,10 +45,10 @@ declare class Router {
     public path: string;
     /**
      *
-     * @type {ClassDecorator|Function}
+     * @type {Controller}
      * @public
      */
-    public controllerClass: ClassDecorator | Function;
+    public controllerClass: Controller;
     /**
      *
      * @type {Function}
@@ -115,6 +115,6 @@ declare class Router {
      */
     public routeName(name: string): Router | undefined;
 }
+import Controller = require("../http/controller/Controller");
 import pathToRegexp = require("path-to-regexp");
 import path = require("path");
-import Controller = require("../http/controller/Controller");

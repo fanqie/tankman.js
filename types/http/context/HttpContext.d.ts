@@ -22,6 +22,11 @@ declare class HttpContext {
      */
     response: HttpResponse;
     /**
+     *
+     * @type {HttpSession}
+     */
+    session: HttpSession;
+    /**
      * @type {Application}
      */
     _app: Application;
@@ -34,7 +39,6 @@ declare class HttpContext {
      */
     cookie: HttpCookie;
     params: {};
-    session: HttpSession;
     /**
      *
      * @return {Router|RouterHandle|redirect}
@@ -112,5 +116,5 @@ declare class HttpContext {
     public redirect(url: string, alt?: string): void;
 }
 import HttpRequest = require("./HttpRequest");
-import HttpCookie = require("./HttpCookie");
 import HttpSession = require("./HttpSession");
+import HttpCookie = require("./HttpCookie");

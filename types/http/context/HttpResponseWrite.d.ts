@@ -3,7 +3,7 @@ export = HttpResponseWrite;
  * @abstract
  */
 declare class HttpResponseWrite {
-    _response: any;
+    constructor(httpCtx: any);
     _config: {
         json: {
             template: {
@@ -18,6 +18,13 @@ declare class HttpResponseWrite {
             };
         };
     };
+    _response: any;
+    /**
+     * @type HttpContext
+     * @private
+     */
+    private _httpCtx;
+    httpCtx: any;
     renderTemplate(path: any, data: any): void;
     jsonFree(json: any): void;
     json(data: any, errMsg: any, errNo: any): void;
@@ -27,6 +34,9 @@ declare class HttpResponseWrite {
     writeStatic(filePath: any): void;
     downloadIo(bytes: any, fileName: any, headers?: {}, type?: string): void;
     text(string: any, type?: string): void;
+    view(filename: any, data?: {}): void;
+    pugView(filename: any, data?: {}): void;
+    artView(filename: any, data?: {}): void;
     html(string: any, type?: string): void;
     xml(string: any, type?: string): void;
     /**
