@@ -1,4 +1,5 @@
 const path = require('path');
+const TemplateFileCache = require('./TemplateFileCache');
 
 /**
  * TemplateEngineAbstract abstract class.
@@ -9,13 +10,17 @@ class TemplateEngineAbstract {
      * The file suffix used by this template engine.
      * @type {string}
      */
-    suffix = '.tpl';
+    suffix = '.art';
 
     /**
      * The directory where templates are stored.
      * @type {string}
      */
     templateDir = 'views';
+    /**
+     * @type {boolean}
+     */
+    enableFileCache = false;
 
     /**
      * Create a new instance of the TemplateEngineAbstract class.
@@ -26,6 +31,22 @@ class TemplateEngineAbstract {
         if (new.target === TemplateEngineAbstract) {
             throw new TypeError('Cannot construct abstract instances directly');
         }
+    }
+
+    setEnableFileCache(enable = false) {
+        this.enableFileCache = enable;
+    }
+
+    setMaxLife(maxLife) {
+        TemplateFileCache.setMaxLife(maxLife)
+    }
+
+    disableFileCache() {
+        this.templateFileCache = null;
+    }
+
+    init() {
+        TemplateFileCache.clearCache()
     }
 
     /**
@@ -136,6 +157,22 @@ class TemplateEngineAbstract {
      */
     share(key, value) {
         this._shareData[key] = value;
+    }
+
+    /**
+     * Renders a template file by using a cache to store compiled templates.
+     * @param {string} url - The URL of the template.
+     * @param {string} tplPath - The path to the template file.
+     * @param {Object} data - The data object to be passed to the template.
+     * @return {string|*} The rendered template.
+     */
+    renderFileByCache(url, tplPath, data) {
+        if (this.enableFileCache) {
+            return TemplateFileCache.getTemplate(url, () => {
+                return this.renderFile(tplPath, data)
+            })
+        }
+        return this.renderFile(tplPath, data)
     }
 
     /**

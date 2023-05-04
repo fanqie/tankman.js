@@ -5,7 +5,14 @@ const mineTypes = require('mime-types');
 const fs = require('fs');
 const path = require('path');
 const HttpContext = require('./HttpContext');
+const TemplateEngineAbstract = require('../../template/TemplateEngineAbstract');
+/**
+ * @type {TemplateEngineAbstract}
+ */
 const PugTemplate = SingletonFactory.make(path.resolve(__dirname, "../../template/PugTemplate.js"))
+/**
+ * @type {TemplateEngineAbstract}
+ */
 const ArtTemplate = SingletonFactory.make(path.resolve(__dirname, "../../template/ArtTemplate.js"))
 
 /**
@@ -104,7 +111,7 @@ class HttpResponseWrite {
 
 
     view(filename, data = {}) {
-        const html = facades.view.renderFile(filename, {
+        const html = facades.view.renderFileByCache(this.httpCtx.request.getHref()+JSON.stringify(data),filename, {
             ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
@@ -117,7 +124,7 @@ class HttpResponseWrite {
     }
 
     pugView(filename, data = {}) {
-        const html = PugTemplate.renderFile(filename, {
+        const html = PugTemplate.renderFileByCache(this._httpCtx.request.getHref()+JSON.stringify(data),filename, {
             ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
@@ -130,7 +137,7 @@ class HttpResponseWrite {
     }
 
     artView(filename, data = {}) {
-        const html = ArtTemplate.renderFile(filename, {
+        const html = ArtTemplate.renderFileByCache(this._httpCtx.request.getHref()+JSON.stringify(data),filename, {
             ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,

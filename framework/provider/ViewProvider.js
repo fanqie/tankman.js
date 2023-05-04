@@ -5,6 +5,7 @@ const ArtTemplate = require('../template/ArtTemplate');
 const PugTemplate = require('../template/PugTemplate');
 
 class ViewProvider extends ServiceProvider {
+
     /**
      *
      */
@@ -25,14 +26,15 @@ class ViewProvider extends ServiceProvider {
             }
         }
         Facades.view?.setTemplateDir(config?.dir)
-        Facades.view?.setSuffix(config?.suffix)
-
+        Facades.view?.setEnableFileCache(config?.cache?.enable || false)
+        Facades.view?.setMaxLife(config?.cache?.maxLife||'1h')
     }
 
     /**
      *
      */
     boot() {
+        Facades.view.init()
     }
 }
 

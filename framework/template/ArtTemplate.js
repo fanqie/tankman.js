@@ -7,6 +7,7 @@ const artTemplate = require('art-template');
  * @extends TemplateEngineAbstract
  */
 class ArtTemplate extends TemplateEngineAbstract {
+    suffix = '.art';
     /**
      * Render a template
      * @param {string} source - The template string

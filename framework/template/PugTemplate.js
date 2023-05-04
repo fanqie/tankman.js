@@ -6,6 +6,7 @@ const pugTemplate = require('pug');
  * @extends TemplateEngineAbstract
  */
 class PugTemplate extends TemplateEngineAbstract {
+    suffix = '.pug';
     /**
      * Render a template string.
      * @function
@@ -36,7 +37,7 @@ class PugTemplate extends TemplateEngineAbstract {
      * @param {string} filename - The path to the template file to render.
      * @param {Object} data - The data object to use for rendering the template.
      * @param {Object} [options] - The options object to use when rendering the template.
-     * @return {string} - The rendered string.
+     * @return {string|*} - The rendered string.
      */
     renderFile(filename, data, options) {
         const func = this.getOrigin().compileFile(this.convertFilePath(filename), options);
