@@ -47,15 +47,16 @@ class Web extends Koa {
              */
             const cpuNums = os.cpus().length;
             const max = clusterConfig.process_max_count > cpuNums ? cpuNums : clusterConfig.process_max_count;
+
             for (let i = 0; i < max; i++) {
                 cluster.fork();
             }
             cluster.on('exit', (worker) => {
                 Facades.log.warnHttp(`worker ${worker.process.pid} died`);
             });
-            Facades.log.infoHttp(`server run in port=${port}`);
-            Facades.log.infoHttp(`web url=http://127.0.0.1:${port}`);
-            Facades.log.infoHttp(`start worker count${max}`);
+            if(clusterConfig.enabled){
+                this.printSuccess(port,max)
+            }
             if (!fs.existsSync(this.uploadPath)) {
                 fs.mkdirSync(this.uploadPath);
             }
@@ -68,6 +69,18 @@ class Web extends Koa {
                 console.error(err);
             });
             func(process.pid);
+            if(!clusterConfig.enabled){
+                this.printSuccess(port)
+            }
+
+        }
+    }
+
+    printSuccess(port, max = 1) {
+        Facades.log.infoHttp(`server run in port=${port}`);
+        Facades.log.infoHttp(`web url=http://127.0.0.1:${port}`);
+        if(max>1){
+            Facades.log.infoHttp(`start worker count${max}`);
         }
     }
 

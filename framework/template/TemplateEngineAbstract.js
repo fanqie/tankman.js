@@ -124,7 +124,26 @@ class TemplateEngineAbstract {
      * @return {string} - The module path.
      */
     convertFilePath(filepath) {
-        return path.join(this.getTemplateDir(), filepath.replace(/\./g, '/'))+this.getSuffix();
+        return path.join(this.getTemplateDir(), filepath.replace(/\./g, '/')) + this.getSuffix();
+    }
+
+    _shareData = {}
+
+    /**
+     * append share data to view engine
+     * @param key
+     * @param value
+     */
+    share(key, value) {
+        this._shareData[key] = value;
+    }
+
+    /**
+     * get share data
+     * @return {{}}
+     */
+    getShare() {
+        return this._shareData;
     }
 }
 

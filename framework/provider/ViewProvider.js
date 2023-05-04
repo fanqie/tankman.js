@@ -1,31 +1,31 @@
 const Facades = require('../facades/Facades');
 const ServiceProvider = require('./ServiceProvider');
-const TemplateEngineAbstract = require('../template/TemplateEngineAbstract');
+// const TemplateEngineAbstract = require('../template/TemplateEngineAbstract');
 const ArtTemplate = require('../template/ArtTemplate');
 const PugTemplate = require('../template/PugTemplate');
 
-class TemplateProvider extends ServiceProvider {
+class ViewProvider extends ServiceProvider {
     /**
      *
      */
     register() {
-        const config = Facades.config.get("templateEngine")
+        const config = Facades.config.get("view")
         switch (config?.default) {
             case 'art': {
-                Facades.template = new ArtTemplate();
+                Facades.view = new ArtTemplate();
                 break;
             }
             case 'pug': {
-                Facades.template = new PugTemplate();
+                Facades.view = new PugTemplate();
                 break;
             }
             default: {
-                Facades.template = new ArtTemplate();
+                Facades.view = new ArtTemplate();
                 break;
             }
         }
-        Facades.template?.setTemplateDir(config?.dir)
-        Facades.template?.setSuffix(config?.suffix)
+        Facades.view?.setTemplateDir(config?.dir)
+        Facades.view?.setSuffix(config?.suffix)
 
     }
 
@@ -36,4 +36,4 @@ class TemplateProvider extends ServiceProvider {
     }
 }
 
-module.exports = TemplateProvider;
+module.exports = ViewProvider;

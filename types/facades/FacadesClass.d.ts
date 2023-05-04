@@ -49,5 +49,5 @@ declare class FacadesClass {
     /**
      * @type TemplateEngineAbstract
      */
-    template: TemplateEngineAbstract;
+    view: TemplateEngineAbstract;
 }

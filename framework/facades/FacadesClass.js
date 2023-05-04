@@ -53,5 +53,5 @@ module.exports = class FacadesClass {
     /**
      * @type TemplateEngineAbstract
      */
-    template;
+    view;
 };

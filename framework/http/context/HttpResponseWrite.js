@@ -44,8 +44,6 @@ class HttpResponseWrite {
         this._config.json.template = facades.config.get('response')?.json?.template || this._config.json.template;
     }
 
-    renderTemplate(path, data) {
-    }
 
     jsonFree(json) {
         this.setResponseType('application/json; charset=utf-8');
@@ -87,7 +85,7 @@ class HttpResponseWrite {
         this.downloadIo(filePath, fileName, headers);
     }
 
-    writeStatic(filePath) {
+    fs(filePath) {
         const fileType = mineTypes.lookup(filePath);
         const fileBuffer = fs.createReadStream(filePath);
         this.setResponseType(`${fileType}; charset=utf-8`);
@@ -104,8 +102,10 @@ class HttpResponseWrite {
         this.writeText(string);
     }
 
+
     view(filename, data = {}) {
-        const html = facades.template.renderFile(filename, {
+        const html = facades.view.renderFile(filename, {
+            ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
                 response: this.httpCtx.response,
@@ -117,8 +117,8 @@ class HttpResponseWrite {
     }
 
     pugView(filename, data = {}) {
-
         const html = PugTemplate.renderFile(filename, {
+            ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
                 response: this.httpCtx.response,
@@ -131,6 +131,7 @@ class HttpResponseWrite {
 
     artView(filename, data = {}) {
         const html = ArtTemplate.renderFile(filename, {
+            ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
                 response: this.httpCtx.response,

@@ -84,4 +84,16 @@ declare class TemplateEngineAbstract {
      * @return {string} - The module path.
      */
     protected convertFilePath(filepath: string): string;
+    _shareData: {};
+    /**
+     * append share data to view engine
+     * @param key
+     * @param value
+     */
+    share(key: any, value: any): void;
+    /**
+     * get share data
+     * @return {{}}
+     */
+    getShare(): {};
 }

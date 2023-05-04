@@ -24,6 +24,12 @@ declare class HttpRequest {
      */
     httpCtx: HttpContext;
     _postParams: any;
+    isAjax(): boolean;
+    isPost(): boolean;
+    isGet(): boolean;
+    isPut(): boolean;
+    isDelete(): boolean;
+    isPatch(): boolean;
     /**
      * get Current Request Router
      * @return {Router|RouterHandle}

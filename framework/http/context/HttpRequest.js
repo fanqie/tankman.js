@@ -37,6 +37,30 @@ module.exports = class HttpRequest {
         this._postParams = httpCtx._ctx.request.body;
     }
 
+    isAjax() {
+        return this.getHeader('x-requested-with') === 'XMLHttpRequest'
+    }
+
+    isPost() {
+        return this.getMethod().toLowerCase() === 'post'
+    }
+
+    isGet() {
+        return this.getMethod().toLowerCase() === 'get'
+    }
+
+    isPut() {
+        return this.getMethod().toLowerCase() === 'put'
+    }
+
+    isDelete() {
+        return this.getMethod().toLowerCase() === 'delete'
+    }
+
+    isPatch() {
+        return this.getMethod().toLowerCase() === 'patch'
+    }
+
     /**
      * get Current Request Router
      * @return {Router|RouterHandle}

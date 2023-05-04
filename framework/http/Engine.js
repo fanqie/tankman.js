@@ -75,9 +75,10 @@ module.exports = class Engine {
                 }
             }
         } else {
-            const route = this.app.facades.route.getRoute('404');
-            // eslint-disable-next-line new-cap
-            route ? httpCtx.redirect(route.path) : next(createError.NotFound());
+            next(createError.NotFound());
+            // const route = this.app.facades.route.getRoute('404');
+            // // eslint-disable-next-line new-cap
+            // route ? httpCtx.redirect(route.path) : next(createError.NotFound());
         }
     }
 };
