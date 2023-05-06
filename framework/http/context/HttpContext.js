@@ -54,6 +54,7 @@ module.exports = class HttpContext {
         this.response = new HttpResponse(this);
         this.cookie = new HttpCookie(this);
         this.session = new HttpSession(this);
+
     }
 
     /**

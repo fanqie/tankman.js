@@ -1,33 +1,19 @@
 const Facades = require('../facades/Facades');
 const ServiceProvider = require('./ServiceProvider');
-// const TemplateEngineAbstract = require('../template/TemplateEngineAbstract');
 const ArtTemplate = require('../template/ArtTemplate');
-const PugTemplate = require('../template/PugTemplate');
 
 class ViewProvider extends ServiceProvider {
 
-    /**
-     *
-     */
     register() {
         const config = Facades.config.get("view")
-        switch (config?.default) {
-            case 'art': {
-                Facades.view = new ArtTemplate();
-                break;
-            }
-            case 'pug': {
-                Facades.view = new PugTemplate();
-                break;
-            }
-            default: {
-                Facades.view = new ArtTemplate();
-                break;
-            }
+        if (config?.handler) {
+            Facades.view = new config.handler();   //auto throw exception when instance fail
+        } else {
+            Facades.view = new ArtTemplate();
         }
         Facades.view?.setTemplateDir(config?.dir)
         Facades.view?.setEnableFileCache(config?.cache?.enable || false)
-        Facades.view?.setMaxLife(config?.cache?.maxLife||'1h')
+        Facades.view?.setMaxLife(config?.cache?.maxLife || '1h')
     }
 
     /**

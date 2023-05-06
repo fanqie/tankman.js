@@ -1,8 +1,9 @@
 const HttpContext = require('./HttpContext');
 const {randomUUID} = require('crypto');
-const sessionId = 'TANK_MAN_JS_SESSION_ID';
-const Facades = require('../../facades/Facades');
+const sessionKey = 'NODEJS_SESSION_ID';
+const facades = require('../../facades/Facades');
 const Cache = require('../../cache/Cache');
+const ms = require("ms");
 
 class HttpSession {
     _ctx;
@@ -16,7 +17,14 @@ class HttpSession {
      * @private
      */
     _driver;
-    _defaultTtl = 60;
+    /**
+     *
+     * @type {number|string}
+     * @private
+     */
+    _defaultTtl = "1m";
+    _renewSubTtl = "15m";
+    _sessionKey = [facades.env.get("APP_NAME", "DC"), sessionKey].join("@");
 
     /**
      *
@@ -25,10 +33,17 @@ class HttpSession {
     constructor(httpCtx) {
         this.httpCtx = httpCtx;
         this._ctx = httpCtx._ctx;
-        if (!this.httpCtx.cookie.get(sessionId, {signed: true})) {
-            this.httpCtx.cookie.set(sessionId, randomUUID(), {signed: true, sameSite: 'lax'});
+        if (!this.httpCtx.cookie.get(this._sessionKey, {signed: true})) {
+
+            this.httpCtx.cookie.set(this._sessionKey, [randomUUID(), Date.now() + ms(this._defaultTtl)].join("#"), {
+                signed: true,
+                sameSite: 'lax',
+                maxAge: ms(this._defaultTtl)
+            });
+        } else {
+            this.renewLifeLife()
         }
-        this._driver = Facades.cache;
+        this._driver = facades.cache;
     }
 
     /**
@@ -42,6 +57,10 @@ class HttpSession {
         return this._driver.get(this._prefixName(name), defaultValue) || defaultValue;
     }
 
+    renewLifeLife() {
+        this.httpCtx.cookie.renewLife(this._sessionKey, ms(this._renewSubTtl))
+    }
+
     /**
      * set httpSession
      * @param {string} name
@@ -49,7 +68,7 @@ class HttpSession {
      * @function
      */
     set(name, value = null) {
-        this._driver.set(this._prefixName(name), value, 0);
+        this._driver.set(this._prefixName(name), value, ms("1d"));
     }
 
     /**
@@ -67,7 +86,7 @@ class HttpSession {
      * @private
      */
     _prefixName(name) {
-        return [sessionId, name].join('_');
+        return [sessionKey, name].join('_');
     }
 }
 
