@@ -21,10 +21,10 @@ module.exports = class Engine {
         this.app = app;
         this.appKey = (this.app.facades.env.get('APP_KEY') || '').trim();
         if (!this.appKey) {
-            this.app.facades.env.error(' \n please use the command to generate：$tankMan generate:key');
+            this.app.facades.log.error('please use the command to generate：`node ./bin/ generate:key`');
             throw new Error('The APP_KEY is missing');
         }
-        this.port = this.app.facades.env.get('APP_PORT') || 8002;
+        this.port = this.app.facades.env.get('APPW_PORT') || 8002;
         this.accessPipeline = new AccessPipeline(this.app);
     }
 
