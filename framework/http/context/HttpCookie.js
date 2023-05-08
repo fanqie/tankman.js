@@ -1,6 +1,8 @@
 const HttpContext = require('./HttpContext');
 const facades = require('../../facades/Facades');
 const crypto = require('crypto');
+
+
 class HttpCookie {
     _ctx;
     /**
@@ -28,7 +30,7 @@ class HttpCookie {
      */
     get(name, opts = undefined) {
         const value = this._ctx.cookies.get(name, {...opts, signed: true} || {signed: true}) || null;
-        return value?this.decrypt(value):value;
+        return value ? this.decrypt(value) : value;
     }
 
     // eslint-disable-next-line valid-jsdoc

@@ -2,9 +2,10 @@ const HttpContext = require('./HttpContext');
 const {randomUUID} = require('crypto');
 const sessionKey = 'NODEJS_SESSION_ID';
 const facades = require('../../facades/Facades');
-const Cache = require('../../cache/Cache');
 const ms = require("ms");
 const FileSessionAdapter = require("../httpSessionAdapater/FileSessionAdapter");
+const {value} = require("lodash/seq");
+let gcTime = Date.now()
 
 class HttpSession {
     _ctx;
@@ -13,20 +14,8 @@ class HttpSession {
      * @private
      */
     httpCtx;
-    /**
-     * @type Cache
-     * @private
-     */
-    _driver;
-    /**
-     *
-     * @type {number|string}
-     * @private
-     */
-    _defaultTtl = "1m";
-    _renewSubTtl = "15m";
     _cookieKey = [facades.env.get("APP_NAME", "DC"), sessionKey].join("@");
-
+    _sessionKey = "";
     config = {
         /**
          * No matter which one you choose, the default driver will be used directly,
@@ -40,7 +29,7 @@ class HttpSession {
             renewTime: '15m',
         },
         cookieIdPrefix: "",
-        gcIntervalTime: '1s'//The interval between expired session recycling
+        gcIntervalTime: '10s'//The interval between expired session recycling
     }
 
     /**
@@ -50,29 +39,57 @@ class HttpSession {
     constructor(httpCtx) {
         this.httpCtx = httpCtx;
         this._ctx = httpCtx._ctx;
+
+        this._loadConfig()
+        this._gc();
+
         if (!this.httpCtx.cookie.get(this._cookieKey)) {
             this._setSessionKey()
         } else {
-            this.renewTime()
+            if (this.config.life.autoRenew) {
+                this.renewTime()
+            }
         }
-        this.loadConfig()
+        this._sessionKey = this._sessionKey || this.httpCtx.cookie.get(this._cookieKey)?.split("#")[0];
+
     }
 
-    _getSessionKey() {
-        return this.httpCtx.cookie.get(this._cookieKey)?.split("#")[0]||null;
+    /**
+     * @private
+     */
+    _gc() {
+        if (Date.now() - gcTime > ms(this.config.gcIntervalTime)) {
+            this.execGc()
+            gcTime = Date.now()
+        }
     }
 
+    execGc() {
+        this._handler().gc();
+    }
+
+    /**
+     * @private
+     */
     _setSessionKey() {
-        this.httpCtx.cookie.set(this._cookieKey, [randomUUID(), Date.now() + ms(this._defaultTtl)].join("#"), {
+        this._sessionKey = randomUUID();
+        this.httpCtx.cookie.set(this._cookieKey, [this._sessionKey, Date.now() + ms(this.config.life.maxAge)].join("#"), {
             sameSite: 'lax',
-            maxAge: ms(this._defaultTtl)
+            maxAge: ms(this.config.life.maxAge)
         });
     }
 
-    loadConfig() {
-        this.config = facades.config?.httpSession ? {...facades.config?.httpSession, ...this.config} : this.config
+    /**
+     * @private
+     */
+    _loadConfig() {
+        this.config = {...this.config, ...facades.config?.get("httpSession", {})};
     }
 
+    /**
+     * @return {FileSessionAdapter}
+     * @private
+     */
     _handler() {
         return this.config.handler;
     }
@@ -87,13 +104,31 @@ class HttpSession {
     get(name, defaultValue = '') {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
         if (expireTime < Date.now()) {
+            this._gc();
             return null;
         }
-        return this._deWarp(this._handler().get(this._getSessionKey(),name) || defaultValue, name);
+        return this._deWarp(this._handler().get(this._sessionKey, name) || defaultValue, name);
+    }
+
+    all() {
+        const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
+        if (expireTime < Date.now()) {
+            this._gc();
+            return null;
+        }
+        const values = this._handler().getBySessionId(this._sessionKey)
+        if (!values) {
+            return {};
+        }
+        const result = {}
+        Object.keys(values).forEach(key => {
+            result[key] = this._deWarp(values[key], key)
+        })
+        return result;
     }
 
     renewTime() {
-        this._handler().renewTimeBySessionId(this._getSessionKey(), this.httpCtx.cookie.renewLife(this._cookieKey, ms(this._renewSubTtl)))
+        this._handler().renewTimeBySessionId(this._sessionKey, this.httpCtx.cookie.renewLife(this._cookieKey, ms(this.config.life.renewTime)))
     }
 
     /**
@@ -104,31 +139,49 @@ class HttpSession {
      */
     set(name, value = null) {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
-        if (expireTime < Date.now()) {
-            return;
-        }
-        this._handler().set(this._getSessionKey(), name, this._warp(value), expireTime);
+
+        this._handler().set(this._sessionKey, name, this._warp(value), expireTime === -1 ? Date.now() + ms(this.config.life.maxAge) : expireTime);
     }
 
+    /**
+     * @param name
+     * @param value
+     */
     flash(name, value = null) {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
         if (expireTime < Date.now()) {
             return;
         }
-        this._handler().set(this._getSessionKey(), name, this._flashWarp(value), expireTime);
+        this._handler().set(this._sessionKey, name, this._flashWarp(value), expireTime);
     }
 
+    /**
+     * @param value
+     * @return {{c: number, v}}
+     * @private
+     */
     _warp(value) {
         return {v: value, c: 0}
     }
 
+    /**
+     * @param value
+     * @return {{c: number, v}}
+     * @private
+     */
     _flashWarp(value) {
         return {v: value, c: 1}
     }
 
+    /***
+     * @param sessionData
+     * @param name
+     * @return {number|*|null}
+     * @private
+     */
     _deWarp(sessionData, name) {
         if (sessionData && sessionData.c === 1) {
-            this._handler().remove(this._getSessionKey(), name)
+            this._handler().remove(this._sessionKey, name)
         }
         return sessionData?.v || null;
     }
@@ -139,7 +192,7 @@ class HttpSession {
      * @function
      */
     remove(name) {
-        this._handler().remove(this._getSessionKey(), name);
+        this._handler().remove(this._sessionKey, name);
     }
 
 }
