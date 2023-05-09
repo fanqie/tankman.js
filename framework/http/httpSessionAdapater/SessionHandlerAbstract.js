@@ -1,15 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const facades = require('../../facades/Facades');
-const FileSessionAdapter = require("./FileSessionAdapter");
-
 /**
  * Abstract class representing a session adapter.
  * @abstract
  */
-class SessionAdapterAbstract {
+class SessionHandlerAbstract {
     constructor() {
-        if (new.target === SessionAdapterAbstract) {
+        if (new.target === SessionHandlerAbstract) {
             throw new TypeError('Cannot construct abstract instances directly');
         }
     }
@@ -102,4 +97,4 @@ class SessionAdapterAbstract {
 }
 
 // Export the abstract class
-module.exports = SessionAdapterAbstract;
+module.exports = SessionHandlerAbstract;

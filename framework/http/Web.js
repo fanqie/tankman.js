@@ -80,7 +80,7 @@ class Web extends Koa {
         Facades.log.infoHttp(`server run in port=${port}`);
         Facades.log.infoHttp(`web url=http://127.0.0.1:${port}`);
         if(max>1){
-            Facades.log.infoHttp(`start worker count${max}`);
+            Facades.log.infoHttp(`start worker count：${max}`);
         }
     }
 

@@ -4,7 +4,8 @@ const sessionKey = 'NODEJS_SESSION_ID';
 const facades = require('../../facades/Facades');
 const ms = require("ms");
 const FileSessionAdapter = require("../httpSessionAdapater/FileSessionAdapter");
-const {value} = require("lodash/seq");
+const SessionHandlerAbstract = require('../httpSessionAdapater/SessionHandlerAbstract');
+
 let gcTime = Date.now()
 
 class HttpSession {
@@ -22,7 +23,7 @@ class HttpSession {
          * so it is not recommended to choose the file type when the type is cache,
          * If you choose a file type, it will default to creating a session file, which is not suitable for distributed systems
          */
-        handler: new FileSessionAdapter(),//file,cache,database default path is: path.join(process.cwd(),"storage", ".temp", "session")
+        handler: new FileSessionAdapter(),//file,cache,database default path is: path.join(process.cwd(), " ".runtime"", "session")
         life: {
             maxAge: '30m',
             autoRenew: true,//default：true
@@ -54,45 +55,11 @@ class HttpSession {
 
     }
 
-    /**
-     * @private
-     */
-    _gc() {
-        if (Date.now() - gcTime > ms(this.config.gcIntervalTime)) {
-            this.execGc()
-            gcTime = Date.now()
-        }
-    }
 
     execGc() {
         this._handler().gc();
     }
 
-    /**
-     * @private
-     */
-    _setSessionKey() {
-        this._sessionKey = randomUUID();
-        this.httpCtx.cookie.set(this._cookieKey, [this._sessionKey, Date.now() + ms(this.config.life.maxAge)].join("#"), {
-            sameSite: 'lax',
-            maxAge: ms(this.config.life.maxAge)
-        });
-    }
-
-    /**
-     * @private
-     */
-    _loadConfig() {
-        this.config = {...this.config, ...facades.config?.get("httpSession", {})};
-    }
-
-    /**
-     * @return {FileSessionAdapter}
-     * @private
-     */
-    _handler() {
-        return this.config.handler;
-    }
 
     /**
      * get httpSession
@@ -132,7 +99,7 @@ class HttpSession {
     }
 
     /**
-     * set httpSession
+     * set httpSession key:value
      * @param {string} name
      * @param {string|number|null} value
      * @function
@@ -144,8 +111,17 @@ class HttpSession {
     }
 
     /**
+     * set httpSession key:value
+     * @param {string} name
+     * @param {string|number|null} value
+     */
+    store(name, value = null) {
+        this.set(name, value);
+    }
+
+    /**
      * @param name
-     * @param value
+     * @param {string|number|null} value
      */
     flash(name, value = null) {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
@@ -153,6 +129,23 @@ class HttpSession {
             return;
         }
         this._handler().set(this._sessionKey, name, this._flashWarp(value), expireTime);
+    }
+
+    /**
+     * forget or remove httpSession
+     * @param {string} name
+     * @function
+     */
+    remove(name) {
+        this._handler().remove(this._sessionKey, name);
+    }
+
+    /**
+     * forget or remove httpSession
+     * @param {string} name
+     */
+    forget(name) {
+        this.remove(name);
     }
 
     /**
@@ -187,14 +180,40 @@ class HttpSession {
     }
 
     /**
-     * forget or remove httpSession
-     * @param {string} name
-     * @function
+     * @private
      */
-    remove(name) {
-        this._handler().remove(this._sessionKey, name);
+    _setSessionKey() {
+        this._sessionKey = randomUUID();
+        this.httpCtx.cookie.set(this._cookieKey, [this._sessionKey, Date.now() + ms(this.config.life.maxAge)].join("#"), {
+            sameSite: 'lax',
+            maxAge: ms(this.config.life.maxAge)
+        });
     }
 
+    /**
+     * @private
+     */
+    _loadConfig() {
+        this.config = {...this.config, ...facades.config?.get("httpSession", {})};
+    }
+
+    /**
+     * @return {SessionHandlerAbstract}
+     * @private
+     */
+    _handler() {
+        return this.config.handler;
+    }
+
+    /**
+     * @private
+     */
+    _gc() {
+        if (Date.now() - gcTime > ms(this.config.gcIntervalTime)) {
+            this.execGc()
+            gcTime = Date.now()
+        }
+    }
 }
 
 module.exports = HttpSession;

@@ -1,19 +1,13 @@
-const Facades = require('../facades/Facades');
-const path = require('path');
-const fs = require('fs');
-const Cache = require('./Cache');
-const DS = require('ds').DS;
+const CacheAbstract = require('./CacheAbstract');
 const TankCache = require('tank-cache');
-module.exports = class FileCache extends Cache {
-    // config = {
-    //     saveFile: ".runtime/cache.json"
-    // }
+const path = require("path");
+
+class FileCacheAdapter extends CacheAbstract {
 
     /**
-     *
      * @param {string} savePath
      */
-    constructor(savePath) {
+    constructor(savePath = path.join(process.cwd(), ".runtime", "cache")) {
         super();
         this.cache = new TankCache(savePath);
     }
@@ -73,6 +67,7 @@ module.exports = class FileCache extends Cache {
      * @param {string} key
      * @param {*} val
      * @param {number} ttl Second
+     * @return {void}
      * @Function
      */
     store(key, val = null, ttl = 0) {
@@ -84,6 +79,7 @@ module.exports = class FileCache extends Cache {
      * @param {string} key
      * @param {*} val
      * @param {number} ttl Second
+     * @return {void}
      * @Function
      */
     set(key, val = null, ttl = 0) {
@@ -96,11 +92,11 @@ module.exports = class FileCache extends Cache {
      * @param {string} key
      * @param {*} val
      * @param {number} ttl Second
-     * @return {boolean}
+     * @return {void}
      * @Function
      */
     add(key, val = null, ttl = 0) {
-        return this.cache.add(key, val, ttl);
+        this.cache.add(key, val, ttl);
     }
 
     /**
@@ -110,4 +106,13 @@ module.exports = class FileCache extends Cache {
     flush() {
         this.cache.flush();
     }
-};
+
+    /**
+     * @return {TankCache}
+     */
+    getOrigin() {
+        return this.cache;
+    }
+}
+
+module.exports = FileCacheAdapter

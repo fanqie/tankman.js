@@ -1,10 +1,10 @@
-const SessionAdapterAbstract = require("./SessionAdapterAbstract");
+const SessionHandlerAbstract = require("./SessionHandlerAbstract");
 const path = require("path");
 const fs = require("fs");
 
-class FileSessionAdapter extends SessionAdapterAbstract {
+class FileSessionAdapter extends SessionHandlerAbstract {
 
-    constructor(storeDir = path.join(process.cwd(), "storage", ".temp", "session")) {
+    constructor(storeDir = path.join(process.cwd(), ".runtime", "session")) {
         super();
         this.storeDir = storeDir
     }

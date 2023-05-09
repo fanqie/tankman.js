@@ -1,26 +1,16 @@
-export = Cache;
-declare class Cache {
-    /**
-     * @public
-     */
-    public TIME_ONE_SECOND: number;
-    /**
-     * @public
-     */
-    public TIME_ONE_MINUTE: number;
-    /**
-     * @public
-     */
-    public TIME_ONE_HOUR: number;
-    /**
-     * @public
-     */
-    public TIME_ONE_DAY: number;
-    /**
-     * @public
-     */
-    public TIME_ONE_YEAR: number;
-    has(key: any): any;
+class CacheAbstract {
+
+
+    constructor() {
+        if (new.target === CacheAbstract) {
+            throw new TypeError('Cannot construct abstract instances directly');
+        }
+    }
+
+    has(key) {
+        throw new Error('Method not implemented')
+    }
+
     /**
      * get Retrieve an item from the cache by key.
      * @param {string} key
@@ -29,45 +19,76 @@ declare class Cache {
      * @public
      * @function
      */
-    public get(key: string, defaultVal?: any): string | null;
-    forever(key: any, val: any): void;
+    get(key, defaultVal = null) {
+        throw new Error('Method not implemented')
+    }
+
+    forever(key, val) {
+        this.store(key, val, 0);
+    }
+
     /**
      * forget remove an item from the cache.
      * @param {string} key
      * @return {null|*}
      * @function
      */
-    forget(key: string): null | any;
+    forget(key) {
+        throw new Error('Method not implemented')
+    }
+
     /**
      * pull Retrieve an item from the cache and delete it.
      * @param  {string} key
      * @return {null|*}
      */
-    pull(key: string): null | any;
-    _now(): number;
+    pull(key) {
+        throw new Error('Method not implemented')
+    }
+
+    _now() {
+        return (new Date()).getTime();
+    }
+
     /**
      * set store an item in the cache for a given number of seconds.
      * @param {string} key
      * @param {*} val
      * @param {number} ttl Second
+     * @return {void}
      * @function
      */
-    store(key: string, val?: any, ttl?: number): void;
+    store(key, val = null, ttl = 0) {
+        throw new Error('Method not implemented')
+    }
+
     /**
      * set store an item in the cache for a given number of seconds. as same store function
      * @param {string} key
      * @param {*} val
      * @param {number} ttl Second
+     * @return {void}
      * @function
      */
-    set(key: string, val?: any, ttl?: number): void;
+    set(key, val = null, ttl = 0) {
+        throw new Error('Method not implemented')
+    }
+
     /**
      * The add method will only store data that does not exist in the cache. If the storage is successful, it will return true, otherwise it will return false:
      * @param {string} key
      * @param {*} val
      * @param {number} ttl Second
-     * @return {boolean}
+     * @return {void}
      * @function
      */
-    add(key: string, val?: any, ttl?: number): boolean;
+    add(key, val = null, ttl = 0) {
+        throw new Error('Method not implemented')
+    }
+
+    getOrigin(){
+        throw new Error('Method not implemented')
+    }
 }
+
+module.exports = CacheAbstract;

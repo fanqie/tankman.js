@@ -56,7 +56,7 @@ class TemplateFileCache {
         return path.join(this._dir, `${this._getCacheName(url)}.cache`);
     }
 
-    static _dir = path.join(process.cwd(), "storage", ".temp", "cache", "view")
+    static _dir = path.join(process.cwd(),   ".runtime", "cache", "view")
 
 
     /**
