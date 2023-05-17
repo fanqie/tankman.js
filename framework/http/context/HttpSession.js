@@ -85,7 +85,8 @@ class HttpSession {
             await this._gc();
             return null;
         }
-        return this._deWarp(this._handler().get(this._sessionKey, name) || defaultValue, name);
+        const val=await this._handler().get(this._sessionKey, name)
+        return this._deWarp( val|| defaultValue, name);
     }
 
     /**
@@ -104,7 +105,7 @@ class HttpSession {
         }
         const result = {}
         Object.keys(values).forEach(key => {
-            result[key] = this._deWarp(values[key], key)
+            result[key] = this._deWarp(values[key], key.slice(this._sessionKey.length + 1))
         })
         return result;
     }
@@ -189,7 +190,7 @@ class HttpSession {
      */
     _deWarp(sessionData, name) {
         if (sessionData && sessionData.c === 1) {
-            this._handler().remove(this._sessionKey, name)
+            this._handler().remove(this._sessionKey, name).then(res => {})
         }
         return sessionData?.v || null;
     }

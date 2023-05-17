@@ -42,7 +42,32 @@ class RedisAdapter extends CacheAbstract {
      * @Function
      */
     async get(key, defaultVal = null) {
-        return await this.handle.get(key) || defaultVal
+        if (/\*$/.test(key)) {
+            const keys = await this.handle.keys(key)
+            if (keys.length === 0) {
+                return {};
+            }
+            const val = await this.handle.mget(keys);
+            const result = {}
+            val.map((value, index) => {
+                try {
+                    result[keys[index]] = JSON.parse(value);
+                } catch (err) {
+                    result[keys[index]] = null;
+                }
+
+            })
+            return result;
+        } else {
+            const val = await this.handle.get(key);
+            try {
+                return JSON.parse(val) || defaultVal
+            } catch (err) {
+                return defaultVal;
+            }
+
+        }
+
     }
 
     /**
@@ -62,7 +87,7 @@ class RedisAdapter extends CacheAbstract {
      * @Function
      */
     async forget(key) {
-        return await this.handle.del(key);
+        await this.handle.del(key);
     }
 
     /**
@@ -87,8 +112,7 @@ class RedisAdapter extends CacheAbstract {
      * @Function
      */
     async store(key, val = null, ttl = 0) {
-        await this.handle.set(key, val);
-        await this.handle.expire(key, val);
+        await this.handle.set(key, JSON.stringify(val), 'EX', Math.ceil(ttl));
     }
 
     /**

@@ -70,8 +70,9 @@ module.exports = class Engine {
                     httpCtx.request.setHeader('X-Response-Time', `${ms}ms`);
                     this.app.facades.log.infoHttp(`【PID:${process.pid}】${httpCtx.request.getMethod()} ${httpCtx.request.getUrl()} time:${ms}ns`);
                 } catch (err) {
+
                     this.app.facades.log.errorHttp(err.message);
-                    console.error(err);
+                    throw err;
                 }
             }
         } else {
