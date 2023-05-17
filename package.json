@@ -25,8 +25,8 @@
     "parse-comments": "^1.0.0",
     "path-to-regexp": "^6.2.1",
     "pug": "^3.0.2",
-    "tank-cache": "^1.1.12",
-    "tank-http-client.js": "^1.0.04",
+    "tank-cache": "^1.1.14",
+    "tank-http-client.js": "^1.0.0",
     "tedious": "^15.1.2",
     "xss": "^1.0.14"
   },

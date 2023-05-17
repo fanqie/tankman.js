@@ -3,12 +3,6 @@ declare class FileSessionAdapter extends SessionHandlerAbstract {
     constructor(storeDir?: string);
     storeDir: string;
     /**
-     * @param sessionId
-     * @return {{}|null}
-     *
-     */
-    getBySessionId(sessionId: any): {} | null;
-    /**
      * Gets the new absolute path of a session file with a new expiration time.
      * @param {string} fileAbsPath - The absolute path of the session file.
      * @param {number} expireTime - The new expiration time in milliseconds.

@@ -13,30 +13,36 @@ class FileSessionAdapter extends SessionHandlerAbstract {
      * Renew the expiration time for the given session ID.
      * @param {string} sessionId - The ID of the session to renew.
      * @param {number} [expireTime=0] - The new expiration time in milliseconds. Defaults to 0.
-     * @return {void}
+     * @return {Promise<void>}
      */
     renewTimeBySessionId(sessionId, expireTime = 0) {
-        if (expireTime) {
-            const fileAbsPath = this._getSessionFile(sessionId)
-            const newPath = this._getNewFileAbsPath(fileAbsPath, expireTime);
-            if (fs.existsSync(fileAbsPath) && newPath !== fileAbsPath) {
-                fs.renameSync(fileAbsPath, newPath)
+        return new Promise((resolve, reject) => {
+            if (expireTime && sessionId) {
+                const fileAbsPath = this._getSessionFile(sessionId)
+                const newPath = this._getNewFileAbsPath(fileAbsPath, expireTime);
+                if (fs.existsSync(fileAbsPath) && newPath !== fileAbsPath) {
+                    fs.renameSync(fileAbsPath, newPath)
+                }
             }
-        }
+        });
     }
 
 
     /**
+     * getBySessionId get session data by session id
      * @param sessionId
-     * @return {{}|null}
-     *
+     * @return {Promise<*>}
      */
     getBySessionId(sessionId) {
-        const fileAbsPath = this._getSessionFile(sessionId)
-        if (fs.existsSync(fileAbsPath)) {
-            return JSON.parse(fs.readFileSync(fileAbsPath,{encoding:'utf-8'}));
-        }
-        return {};
+
+        return new Promise((resolve, reject) => {
+            const fileAbsPath = this._getSessionFile(sessionId)
+            if (fs.existsSync(fileAbsPath)) {
+                return resolve(JSON.parse(fs.readFileSync(fileAbsPath, {encoding: 'utf-8'})));
+            }
+            return resolve({});
+        });
+
 
     }
 
@@ -46,37 +52,42 @@ class FileSessionAdapter extends SessionHandlerAbstract {
      * @param {string} name - The key of the value to set.
      * @param {*} value - The value to set.
      * @param {number} [expireTime=0] - The expiration time in milliseconds for the value. Defaults to 0.
-     * @throws {Error} - Method not implemented.
+     * @return {Promise<void>}
      */
     set(sessionId, name, value, expireTime = 0) {
-        if (expireTime) {
-            const fileAbsPath = this._getSessionFile(sessionId)
-            let sessionData = {}
-            if (fs.existsSync(fileAbsPath)) {
-                sessionData = JSON.parse(fs.readFileSync(fileAbsPath,{encoding:'utf-8'}));
+        return new Promise((resolve, reject) => {
+            if (expireTime) {
+                const fileAbsPath = this._getSessionFile(sessionId)
+                let sessionData = {}
+                if (fs.existsSync(fileAbsPath)) {
+                    sessionData = JSON.parse(fs.readFileSync(fileAbsPath, {encoding: 'utf-8'}));
+                }
+                sessionData[name] = value;
+                const targetPath = this._getFileName(sessionId, expireTime);
+                if (targetPath !== fileAbsPath && fs.existsSync(fileAbsPath)) {
+                    fs.renameSync(fileAbsPath, targetPath)
+                }
+                this._saveFile(targetPath, sessionData)
             }
-            sessionData[name] = value;
-            const targetPath = this._getFileName(sessionId, expireTime);
-            if (targetPath !== fileAbsPath && fs.existsSync(fileAbsPath)) {
-                fs.renameSync(fileAbsPath, targetPath)
-            }
-            this._saveFile(targetPath, sessionData)
-        }
+        });
+
     }
 
     /**
      * Retrieve a value from the session data for the given session ID and key.
      * @param {string} sessionId - The ID of the session to retrieve the value from.
      * @param {string} name - The key of the value to retrieve.
-     * @return {*} - The value, or undefined if the value does not exist.
+     * @return {Promise<*>} - The value retrieved from the session data.
      */
     get(sessionId, name) {
-        const fileAbsPath = this._getSessionFile(sessionId)
-        if (fs.existsSync(fileAbsPath) && !this._checkExpired(fileAbsPath)) {
-            const sessionData = JSON.parse(fs.readFileSync(fileAbsPath, {encoding: 'utf-8'}));
-            return sessionData[name] || null;
-        }
-        return null;
+        return new Promise((resolve, reject) => {
+            const fileAbsPath = this._getSessionFile(sessionId)
+            if (fs.existsSync(fileAbsPath) && !this._checkExpired(fileAbsPath)) {
+                const sessionData = JSON.parse(fs.readFileSync(fileAbsPath, {encoding: 'utf-8'}));
+                return resolve(sessionData[name] || null);
+            }
+            return resolve(null);
+        });
     }
 
     /**
@@ -84,47 +95,58 @@ class FileSessionAdapter extends SessionHandlerAbstract {
      * @param {string} sessionId - The ID of the session to remove the value from.
      * @param {string} name - The key of the value to remove.
      * @throws {Error} - Method not implemented.
-     * @return {void}
+     * @return {Promise<void>}
      */
     remove(sessionId, name) {
-        const fileAbsPath = this._getSessionFile(sessionId)
-        if (fs.existsSync(fileAbsPath) && !this._checkExpired(fileAbsPath)) {
-            const sessionData = JSON.parse(fs.readFileSync(fileAbsPath,{encoding:'utf-8'}));
-            if (sessionData[name]) {
-                delete sessionData[name]
+        return new Promise((resolve, reject) => {
+            const fileAbsPath = this._getSessionFile(sessionId)
+            if (fs.existsSync(fileAbsPath) && !this._checkExpired(fileAbsPath)) {
+                const sessionData = JSON.parse(fs.readFileSync(fileAbsPath, {encoding: 'utf-8'}));
+                if (sessionData[name]) {
+                    delete sessionData[name]
+                }
+                this._saveFile(fileAbsPath, sessionData)
             }
-            this._saveFile(fileAbsPath, sessionData)
-        }
+        });
     }
 
     /**
      * Remove the session data for the given session ID.
      * @param {string} sessionId - The ID of the session to remove.
+     * @return {Promise<void>}
      */
     removeBySessionId(sessionId) {
-        const fileAbsPath = this._getSessionFile(sessionId)
-        if (fs.existsSync(fileAbsPath)) {
-            fs.unlinkSync(fileAbsPath)
-        }
+        return new Promise((resolve, reject) => {
+            const fileAbsPath = this._getSessionFile(sessionId)
+            if (fs.existsSync(fileAbsPath)) {
+                fs.unlinkSync(fileAbsPath)
+            }
+        })
 
     }
 
     /**
      * Clear all session data.
+     * @return {Promise<void>}
      */
     clear() {
-        fs.unlinkSync(this.storeDir)
+        return new Promise((resolve, reject) => {
+            fs.unlinkSync(this.storeDir)
+        })
     }
 
     /**
      * Garbage collect expired session data.
+     * @return {Promise<void>}
      */
     gc() {
-        this._getAllFile().forEach(filename => {
-            const filePath = path.join(this.storeDir, filename)
-            if (this._checkExpired(filePath) && fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath)
-            }
+        return new Promise((resolve, reject) => {
+            this._getAllFile().forEach(filename => {
+                const filePath = path.join(this.storeDir, filename)
+                if (this._checkExpired(filePath) && fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath)
+                }
+            })
         })
     }
 

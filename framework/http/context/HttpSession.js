@@ -42,22 +42,33 @@ class HttpSession {
         this._ctx = httpCtx._ctx;
 
         this._loadConfig()
-        this._gc();
+        this._gc().then(res => {
+
+        }).catch(err => {
+            throw new Error(err);
+        });
 
         if (!this.httpCtx.cookie.get(this._cookieKey)) {
             this._setSessionKey()
         } else {
             if (this.config.life.autoRenew) {
-                this.renewTime()
+                this.renewTime().then(res => {
+
+                }).catch(err => {
+                    throw new Error(err);
+                })
             }
         }
         this._sessionKey = this._sessionKey || this.httpCtx.cookie.get(this._cookieKey)?.split("#")[0];
 
     }
 
-
-    execGc() {
-        this._handler().gc();
+    /**
+     * execGc gc session
+     * @return {Promise<void>}
+     */
+    async execGc() {
+        await this._handler().gc();
     }
 
 
@@ -65,25 +76,29 @@ class HttpSession {
      * get httpSession
      * @param {string} name
      * @param {*} defaultValue
-     * @return  {string | null}
+     * @return {Promise<*>}
      * @function
      */
-    get(name, defaultValue = '') {
+    async get(name, defaultValue = '') {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
         if (expireTime < Date.now()) {
-            this._gc();
+            await this._gc();
             return null;
         }
         return this._deWarp(this._handler().get(this._sessionKey, name) || defaultValue, name);
     }
 
-    all() {
+    /**
+     * get all httpSession by user
+     * @return {Promise<{}|null>}
+     */
+    async all() {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
         if (expireTime < Date.now()) {
-            this._gc();
+            await this._gc();
             return null;
         }
-        const values = this._handler().getBySessionId(this._sessionKey)
+        const values = await this._handler().getBySessionId(this._sessionKey)
         if (!values) {
             return {};
         }
@@ -94,8 +109,8 @@ class HttpSession {
         return result;
     }
 
-    renewTime() {
-        this._handler().renewTimeBySessionId(this._sessionKey, this.httpCtx.cookie.renewLife(this._cookieKey, ms(this.config.life.renewTime)))
+    async renewTime() {
+        await this._handler().renewTimeBySessionId(this._sessionKey, this.httpCtx.cookie.renewLife(this._cookieKey, ms(this.config.life.renewTime)))
     }
 
     /**
@@ -104,10 +119,10 @@ class HttpSession {
      * @param {string|number|null} value
      * @function
      */
-    set(name, value = null) {
+    async set(name, value = null) {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
 
-        this._handler().set(this._sessionKey, name, this._warp(value), expireTime === -1 ? Date.now() + ms(this.config.life.maxAge) : expireTime);
+        await this._handler().set(this._sessionKey, name, this._warp(value), expireTime === -1 ? Date.now() + ms(this.config.life.maxAge) : expireTime);
     }
 
     /**
@@ -115,20 +130,20 @@ class HttpSession {
      * @param {string} name
      * @param {string|number|null} value
      */
-    store(name, value = null) {
-        this.set(name, value);
+    async store(name, value = null) {
+        await this.set(name, value);
     }
 
     /**
      * @param name
      * @param {string|number|null} value
      */
-    flash(name, value = null) {
+    async flash(name, value = null) {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
         if (expireTime < Date.now()) {
             return;
         }
-        this._handler().set(this._sessionKey, name, this._flashWarp(value), expireTime);
+        await this._handler().set(this._sessionKey, name, this._flashWarp(value), expireTime);
     }
 
     /**
@@ -136,16 +151,16 @@ class HttpSession {
      * @param {string} name
      * @function
      */
-    remove(name) {
-        this._handler().remove(this._sessionKey, name);
+    async remove(name) {
+        await this._handler().remove(this._sessionKey, name);
     }
 
     /**
      * forget or remove httpSession
      * @param {string} name
      */
-    forget(name) {
-        this.remove(name);
+    async forget(name) {
+        await this.remove(name);
     }
 
     /**
@@ -208,9 +223,9 @@ class HttpSession {
     /**
      * @private
      */
-    _gc() {
+    async _gc() {
         if (Date.now() - gcTime > ms(this.config.gcIntervalTime)) {
-            this.execGc()
+            await this.execGc()
             gcTime = Date.now()
         }
     }

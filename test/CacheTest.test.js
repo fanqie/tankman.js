@@ -1,4 +1,4 @@
-const FileCache = require("../framework/cache/FileCacheAdapter")
+const FileCache = require("../framework/cache/adapter/FileCacheAdapter")
 
 const assert = require("assert");
 

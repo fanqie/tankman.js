@@ -39,7 +39,7 @@ class LoadEnvironmentVariables {
             filePath = filePath || '.env';
         }
         if (!fs.existsSync(filePath)) {
-            throw Error(` no found file or directory->>> '${filePath}'`);
+            throw Error(` no found file or directory->>> '${filePath}',please copy .env.example to .env`);
         }
         return fs.readFileSync(filePath, 'utf-8');
     }

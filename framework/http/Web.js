@@ -58,7 +58,7 @@ class Web extends Koa {
                 this.printSuccess(port,max)
             }
             if (!fs.existsSync(this.uploadPath)) {
-                fs.mkdirSync(this.uploadPath);
+                fs.mkdirSync(this.uploadPath,{recursive:true});
             }
         } else {
             this.listen(port);

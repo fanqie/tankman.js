@@ -28,46 +28,54 @@ declare class HttpSession {
         cookieIdPrefix: string;
         gcIntervalTime: string;
     };
-    execGc(): void;
+    /**
+     * execGc gc session
+     * @return {Promise<void>}
+     */
+    execGc(): Promise<void>;
     /**
      * get httpSession
      * @param {string} name
      * @param {*} defaultValue
-     * @return  {string | null}
+     * @return {Promise<*>}
      * @function
      */
-    get(name: string, defaultValue?: any): string | null;
-    all(): {};
-    renewTime(): void;
+    get(name: string, defaultValue?: any): Promise<any>;
+    /**
+     * get all httpSession by user
+     * @return {Promise<{}|null>}
+     */
+    all(): Promise<{} | null>;
+    renewTime(): Promise<void>;
     /**
      * set httpSession key:value
      * @param {string} name
      * @param {string|number|null} value
      * @function
      */
-    set(name: string, value?: string | number | null): void;
+    set(name: string, value?: string | number | null): Promise<void>;
     /**
      * set httpSession key:value
      * @param {string} name
      * @param {string|number|null} value
      */
-    store(name: string, value?: string | number | null): void;
+    store(name: string, value?: string | number | null): Promise<void>;
     /**
      * @param name
      * @param {string|number|null} value
      */
-    flash(name: any, value?: string | number | null): void;
+    flash(name: any, value?: string | number | null): Promise<void>;
     /**
      * forget or remove httpSession
      * @param {string} name
      * @function
      */
-    remove(name: string): void;
+    remove(name: string): Promise<void>;
     /**
      * forget or remove httpSession
      * @param {string} name
      */
-    forget(name: string): void;
+    forget(name: string): Promise<void>;
     /**
      * @param value
      * @return {{c: number, v}}

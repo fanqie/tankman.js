@@ -9,16 +9,16 @@ declare class SessionHandlerAbstract {
      * @param {string} sessionId - The ID of the session to renew.
      * @param {number} [expireTime=0] - The new expiration time in milliseconds. Defaults to 0.
      * @throws {Error} - Method not implemented.
-     * @return {void}
+     * @return {Promise<void>}
      */
-    renewTimeBySessionId(sessionId: string, expireTime?: number): void;
+    renewTimeBySessionId(sessionId: string, expireTime?: number): Promise<void>;
     /**
      * Retrieve the session data for the given session ID.
      * @param {string} sessionId - The ID of the session to retrieve.
-     * @return {Object|null} - The session data, or null if the session does not exist.
+     * @return {Promise<*>} - The session data, or null if the session does not exist.
      * @throws {Error} - Method not implemented.
      */
-    getBySessionId(sessionId: string): any | null;
+    getBySessionId(sessionId: string): Promise<any>;
     /**
      * Set a value in the session data for the given session ID and key.
      * @param {string} sessionId - The ID of the session to set the value for.
@@ -26,42 +26,42 @@ declare class SessionHandlerAbstract {
      * @param {*} value - The value to set.
      * @param {number} [expireTime=0] - The expiration time in milliseconds for the value. Defaults to 0.
      * @throws {Error} - Method not implemented.
-     * @return {void}
+     * @return {Promise<void>}
      */
-    set(sessionId: string, name: string, value: any, expireTime?: number): void;
+    set(sessionId: string, name: string, value: any, expireTime?: number): Promise<void>;
     /**
      * Retrieve a value from the session data for the given session ID and key.
      * @param {string} sessionId - The ID of the session to retrieve the value from.
      * @param {string} name - The key of the value to retrieve.
-     * @return {*} - The value, or undefined if the value does not exist.
+     * @return {Promise<*>} - The value, or undefined if the value does not exist.
      * @throws {Error} - Method not implemented.
      */
-    get(sessionId: string, name: string): any;
+    get(sessionId: string, name: string): Promise<any>;
     /**
      * Remove a value from the session data for the given session ID and key.
      * @param {string} sessionId - The ID of the session to remove the value from.
      * @param {string} name - The key of the value to remove.
      * @throws {Error} - Method not implemented.
-     * @return {void}
+     * @return {Promise<void>}
      */
-    remove(sessionId: string, name: string): void;
+    remove(sessionId: string, name: string): Promise<void>;
     /**
      * Remove the session data for the given session ID.
      * @param {string} sessionId - The ID of the session to remove.
      * @throws {Error} - Method not implemented.
-     * @return {void}
+     * @return {Promise<void>}
      */
-    removeBySessionId(sessionId: string): void;
+    removeBySessionId(sessionId: string): Promise<void>;
     /**
      * Clear all session data.
      * @throws {Error} - Method not implemented.
-     * @return {void}
+     * @return {Promise<void>}
      */
-    clear(): void;
+    clear(): Promise<void>;
     /**
      * Garbage collect expired session data.
      * @throws {Error} - Method not implemented.
-     * @return {void}
+     * @return {Promise<void>}
      */
-    gc(): void;
+    gc(): Promise<void>;
 }
