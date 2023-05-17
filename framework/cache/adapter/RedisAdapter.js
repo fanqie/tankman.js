@@ -1,6 +1,5 @@
 const CacheAbstract = require('../CacheAbstract');
 const Redis = require('ioredis')
-const path = require("path");
 
 class RedisAdapter extends CacheAbstract {
     options = {
@@ -87,7 +86,16 @@ class RedisAdapter extends CacheAbstract {
      * @Function
      */
     async forget(key) {
-        await this.handle.del(key);
+        if (/\*$/.test(key)) {
+            const keys = await this.handle.keys(key)
+            if (keys.length === 0) {
+                return {};
+            }
+            await this.handle.del(keys);
+
+        } else {
+            await this.handle.del(key);
+        }
     }
 
     /**
