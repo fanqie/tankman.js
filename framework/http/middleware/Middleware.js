@@ -4,6 +4,9 @@ const HttpContext = require('../context/HttpContext');
  * @abstract
  */
 class Middleware {
+    constructor() {
+    }
+
     /**
      *
      * @param {HttpContext} httpCtx
@@ -13,9 +16,9 @@ class Middleware {
      * @abstract
      */
     async handle(httpCtx, next) {
-    // before something
+        // before something
         await next();
-    // after something
+        // after something
     }
 };
 module.exports = Middleware;

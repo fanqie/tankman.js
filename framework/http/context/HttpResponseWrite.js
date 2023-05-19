@@ -111,7 +111,7 @@ class HttpResponseWrite {
 
 
     view(filename, data = {}) {
-        const html = facades.view.renderFileByCache(this.httpCtx.request.getHref()+JSON.stringify(data),filename, {
+        const html = facades.view.renderFileByCache(this.httpCtx.request.getHref() + JSON.stringify(data), filename, {
             ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
@@ -124,7 +124,7 @@ class HttpResponseWrite {
     }
 
     pugView(filename, data = {}) {
-        const html = PugTemplate.renderFileByCache(this._httpCtx.request.getHref()+JSON.stringify(data),filename, {
+        const html = PugTemplate.renderFileByCache(this._httpCtx.request.getHref() + JSON.stringify(data), filename, {
             ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
@@ -137,7 +137,7 @@ class HttpResponseWrite {
     }
 
     artView(filename, data = {}) {
-        const html = ArtTemplate.renderFileByCache(this._httpCtx.request.getHref()+JSON.stringify(data),filename, {
+        const html = ArtTemplate.renderFileByCache(this._httpCtx.request.getHref() + JSON.stringify(data), filename, {
             ...facades.view.getShare(),
             ...data, ctx: {
                 request: this.httpCtx.request,
@@ -198,6 +198,8 @@ class HttpResponseWrite {
     setResponseType(type) {
         this._response.type = type;
     }
+
+
 }
 
 module.exports = HttpResponseWrite;

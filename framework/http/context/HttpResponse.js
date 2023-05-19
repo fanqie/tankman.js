@@ -216,7 +216,13 @@ module.exports = class HttpResponse extends HttpResponseWrite {
     getStatus() {
         return this._response.status;
     }
-
+    abortWithCode(code=500, message = 'Bad Request') {
+        this.setStatus(code);
+        if (message) {
+            this.setHeader('X-Abort-Message', message);
+        }
+        this.setBody(message)
+    }
     /**
      * set response status message
      * @param {string} message

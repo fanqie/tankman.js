@@ -98,7 +98,7 @@ class Application {
      * @private
      */
     _getConfiguredServiceProviders() {
-        return Facades.config.get('app').providers.map(((Class) => {
+        return Facades.config.get('kernel').providers.map(((Class) => {
             return new Class(this);
         }));
     }
@@ -109,7 +109,7 @@ class Application {
      * @private
      */
     _getConfiguredCommands() {
-        return Facades.config.get('app').commands.map(((Class) => {
+        return Facades.config.get('kernel').commands.map(((Class) => {
             return new Class(this);
         }));
     }

@@ -136,6 +136,7 @@ declare class HttpResponse extends HttpResponseWrite {
      * @public
      */
     public getStatus(): any;
+    abortWithCode(code?: number, message?: string): void;
     /**
      * set response status message
      * @param {string} message
