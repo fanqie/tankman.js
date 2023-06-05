@@ -92,16 +92,7 @@ declare class Application {
      * @private
      */
     private _getBaseServiceProviders;
-    /**
-     *
-     * @param {*} cls
-     * @param {string} [alisa=''] not recommended
-     * @return {cls|Controller|*}
-     * @function
-     */
-    singleton(cls: any, alisa?: string): any | Controller | any;
 }
 import FacadesClass = require("../facades/FacadesClass");
 import Command = require("../command/Command");
 import ServiceProvider = require("../provider/ServiceProvider");
-import Controller = require("../http/controller/Controller");

@@ -12,7 +12,7 @@ module.exports = class CtxPipeline {
 
     /**
      *
-     * @param {Promise<CtxPipeline>} handle
+     * @param {Function} handle
      * @return {CtxPipeline}
      * @function
      */

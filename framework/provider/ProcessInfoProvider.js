@@ -17,4 +17,8 @@ module.exports = class ProcessInfoProvider extends ServiceProvider {
          */
     boot() {
     }
+
+    constructor(app) {
+        super(app);
+    }
 };

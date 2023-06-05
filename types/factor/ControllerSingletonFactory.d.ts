@@ -11,21 +11,23 @@ declare class ControllerSingletonFactory {
     private static _controllerInstances;
     /**
      * Creates a singleton instance of the specified controller class and returns it.
-     * @param {string} controllerClasspath - The path to the controller class.
-     * @param {string} [alias=""] - An optional alias for the controller instance.
+     * @param {function(new:Controller)} ctor - The path to the controller class.
      * @returns {Controller} - The controller instance, or null if an error occurred.
      */
-    static make(controllerClasspath: string, alias?: string): Controller;
+    static make(ctor: new () => Controller): Controller;
+    static md5Key(ctor: any): string;
     /**
      * Clears the cache of controller instances.
      */
     static clearCache(): void;
     /**
      * Deletes the singleton instance of the specified controller class.
-     * @param {string} controllerClasspath - The path to the controller class.
+     * @param {function(new:Controller)} ctor - The path to the controller class. the controller class.
      * @returns {boolean} - true if the instance was deleted, false otherwise.
      */
-    static deleteInstance(controllerClasspath: string): boolean;
+    static deleteInstance(ctor: new () => Controller): boolean;
+    static instanceExists(ctor: any): boolean;
+    static has(ctor: any): boolean;
     /**
      * Returns an array of all singleton instances of controller classes.
      * @returns {Controller[]} - An array of controller instances.

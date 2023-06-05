@@ -9,11 +9,11 @@ const TemplateEngineAbstract = require('../../template/TemplateEngineAbstract');
 /**
  * @type {TemplateEngineAbstract}
  */
-const PugTemplate = SingletonFactory.make(path.resolve(__dirname, "../../template/PugTemplate.js"))
+const PugTemplate = SingletonFactory.make(require('../../template/PugTemplate.js'));
 /**
  * @type {TemplateEngineAbstract}
  */
-const ArtTemplate = SingletonFactory.make(path.resolve(__dirname, "../../template/ArtTemplate.js"))
+const ArtTemplate = SingletonFactory.make(require('../../template/ArtTemplate.js'));
 
 /**
  * @abstract
@@ -92,7 +92,7 @@ class HttpResponseWrite {
         this.downloadIo(filePath, fileName, headers);
     }
 
-    fs(filePath) {
+    static(filePath) {
         const fileType = mineTypes.lookup(filePath);
         const fileBuffer = fs.createReadStream(filePath);
         this.setResponseType(`${fileType}; charset=utf-8`);

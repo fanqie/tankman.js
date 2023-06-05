@@ -24,6 +24,7 @@ class FileSessionAdapter extends SessionHandlerAbstract {
                     fs.renameSync(fileAbsPath, newPath)
                 }
             }
+            resolve();
         });
     }
 
@@ -68,6 +69,7 @@ class FileSessionAdapter extends SessionHandlerAbstract {
                     fs.renameSync(fileAbsPath, targetPath)
                 }
                 this._saveFile(targetPath, sessionData)
+                resolve();
             }
         });
 
@@ -107,6 +109,7 @@ class FileSessionAdapter extends SessionHandlerAbstract {
                 }
                 this._saveFile(fileAbsPath, sessionData)
             }
+            resolve();
         });
     }
 
@@ -121,6 +124,7 @@ class FileSessionAdapter extends SessionHandlerAbstract {
             if (fs.existsSync(fileAbsPath)) {
                 fs.unlinkSync(fileAbsPath)
             }
+            resolve();
         })
 
     }
@@ -132,6 +136,7 @@ class FileSessionAdapter extends SessionHandlerAbstract {
     clear() {
         return new Promise((resolve, reject) => {
             fs.unlinkSync(this.storeDir)
+            resolve();
         })
     }
 
@@ -147,6 +152,7 @@ class FileSessionAdapter extends SessionHandlerAbstract {
                     fs.unlinkSync(filePath)
                 }
             })
+            resolve();
         })
     }
 

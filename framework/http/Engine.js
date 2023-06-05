@@ -3,7 +3,7 @@ const HttpContext = require('./context/HttpContext');
 const Web = require('./Web');
 const AccessPipeline = require('./pipeline/AccessPipeline');
 const createError = require('http-errors');
-const microtime = require('microtime');
+const micrometer = require('microtime');
 const Application = require('../boot/Application');
 
 module.exports = class Engine {
@@ -24,7 +24,7 @@ module.exports = class Engine {
             this.app.facades.log.error('please use the command to generate：`node ./bin/ generate:key`');
             throw new Error('The APP_KEY is missing');
         }
-        this.port = this.app.facades.env.get('APPW_PORT') || 8002;
+        this.port = this.app.facades.env.get('APP_PORT') || 8002;
         this.accessPipeline = new AccessPipeline(this.app);
     }
 
@@ -63,10 +63,10 @@ module.exports = class Engine {
                 httpCtx.redirect(route.redirectUrl);
             } else {
                 try {
-                    const start = microtime.now();
+                    const start = micrometer.now();
                     await this.accessPipeline.handleNext(httpCtx, route);
 
-                    const ms = microtime.now() - start;
+                    const ms = micrometer.now() - start;
                     httpCtx.request.setHeader('X-Response-Time', `${ms}ms`);
                     this.app.facades.log.infoHttp(`【PID:${process.pid}】${httpCtx.request.getMethod()} ${httpCtx.request.getUrl()} time:${ms}ns`);
                 } catch (err) {

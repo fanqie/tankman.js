@@ -1,5 +1,4 @@
 const Facades = require('../facades/Facades');
-const LoadConfiguration = require('./LoadConfigration');
 
 /**
  * config class
@@ -40,9 +39,13 @@ class Config {
      *
      * @public
      */
-    load() {
-        const config = LoadConfiguration.load(Facades.env.get('APP_CONFIG_DIR', './config'));
-        this._config = {...this._config, ...config};
+    load(configs) {
+        this._config = {};
+        configs.forEach((key) => {
+            Object.keys(key).forEach((k) => {
+                this._config[k] = key[k];
+            });
+        });
     }
 }
 

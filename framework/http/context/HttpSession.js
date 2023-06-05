@@ -122,7 +122,6 @@ class HttpSession {
      */
     async set(name, value = null) {
         const expireTime = this.httpCtx.cookie.getExpireTime(this._cookieKey);
-
         await this._handler().set(this._sessionKey, name, this._warp(value), expireTime === -1 ? Date.now() + ms(this.config.life.maxAge) : expireTime);
     }
 

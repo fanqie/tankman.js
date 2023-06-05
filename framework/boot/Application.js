@@ -1,12 +1,9 @@
 const Facades = require('../facades/Facades');
-const ProcessInfoProvider = require('../provider/ProcessInfoProvider');
-const ConfigProvider = require('../provider/ConfigProvider');
-const EnvProvider = require('../provider/EnvProvider');
 const Command = require('../command/Command');
 const ServiceProvider = require('../provider/ServiceProvider');
 const FacadesClass = require('../facades/FacadesClass');
 const Controller = require('../http/controller/Controller');
-const SingletonFactory = require('../factor/SingletonFactory')
+const ProviderFactory = require('../factor/ProviderFactory');
 
 /**
  *
@@ -23,21 +20,44 @@ class Application {
      */
     commandHandles = new Map();
     rootPath = './';
-
-    /**
-     *
-     */
-    constructor() {
+    _configs = {};
+    constructor(configs) {
         Facades.app = this;
+
         this._registerBaseServiceProviders();
+
         this._bootBaseServiceProviders();
+        this._registerBeforeBootServiceProviders();
     }
 
+    _beforeBoot() {
+        this._registerBeforeBootServiceProviders();
+        this._bootBeforeBootServiceProviders();
+    }
+
+    _registerBeforeBootServiceProviders() {
+        this._registerServiceProviders(this._getBeforeBootServiceProviders());
+    }
+
+    _bootBeforeBootServiceProviders() {
+        this._bootServiceProviders(this._getBeforeBootServiceProviders());
+    }
+
+    _getBeforeBootServiceProviders() {
+        return [ProviderFactory.make(require('../provider/ConfigProvider'), this)];
+    }
+
+    _getConfigs() {
+        return this._configs;
+    }
 
     /**
-     * @public
+     * boot app and register all service providers
+     * @param {{}[]} configs
      */
-    bootTank() {
+    boot(configs) {
+        this._configs = configs;
+        this._beforeBoot();
         this._registerConfiguredServiceProviders();
         this._bootConfiguredServiceProviders();
 
@@ -98,8 +118,8 @@ class Application {
      * @private
      */
     _getConfiguredServiceProviders() {
-        return Facades.config.get('kernel').providers.map(((Class) => {
-            return new Class(this);
+        return Facades.config.get('kernel').providers.map(((ctor) => {
+            return new ctor(this);
         }));
     }
 
@@ -109,8 +129,8 @@ class Application {
      * @private
      */
     _getConfiguredCommands() {
-        return Facades.config.get('kernel').commands.map(((Class) => {
-            return new Class(this);
+        return Facades.config.get('kernel').commands.map(((ctor) => {
+            return new ctor(this);
         }));
     }
 
@@ -177,23 +197,10 @@ class Application {
      * @private
      */
     _getBaseServiceProviders() {
-        return [new ProcessInfoProvider(this), new EnvProvider(this), new ConfigProvider(this)];
+        return [ProviderFactory.make(require('../provider/ProcessInfoProvider'), this), ProviderFactory.make(require('../provider/EnvProvider'), this)];
     }
 
 
-    /**
-     *
-     * @param {*} cls
-     * @param {string} [alisa=''] not recommended
-     * @return {cls|Controller|*}
-     * @function
-     */
-    singleton(cls, alisa = '') {
-        if (!/^class\s/.test(Object.valueOf.toString.call(cls))) {
-            throw new Error('is not a construction class');
-        }
-        return SingletonFactory.make(cls,alisa)
-    }
 }
 
 module.exports = Application;

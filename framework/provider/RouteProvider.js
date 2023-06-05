@@ -19,7 +19,11 @@ class RouteProvider extends ServiceProvider {
      *
      */
     boot() {
-        LoadRouters.load(facades.config.get('APP_ROUTES_DIR', 'routes'));
+        // LoadRouters.load(facades.config.get('APP_ROUTES_DIR', 'routes'));
+        // facades.route.loadSet();
+    }
+    setup() {
+        // LoadRouters.load(facades.config.get('APP_ROUTES_DIR', 'routes'));
         facades.route.loadSet();
     }
 }

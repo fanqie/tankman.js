@@ -2,7 +2,7 @@
 const Router = require('./Router');
 const Controller = require('../http/controller/Controller');
 const Facades = require('../facades/Facades');
-const ControllerSingletonFactory = require("../factor/ControllerSingletonFactory");
+const ControllerSingletonFactory = require("../factor/ControllerFactory");
 
 /**
  * RouterHandle
@@ -86,7 +86,6 @@ class RouterHandle extends Router {
      * @return {function}
      */
     getInstanceAction() {
-        // @ts-ignore
         const instance = this.controllerClass;
         return (httpContext) => {
             return instance ? instance.__proto__[this.action]

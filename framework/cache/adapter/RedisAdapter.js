@@ -8,6 +8,8 @@ class RedisAdapter extends CacheAbstract {
         username: "default", // needs Redis >= 6
         password: null,
         db: 0, // Defaults to 0
+        connectTimeout:5000,
+        timeout: 3000,
     }
     handle = null;
 

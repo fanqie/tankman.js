@@ -1,9 +1,11 @@
 const Controller = require("../http/controller/Controller");
+const crypto = require("crypto");
+const Application = require("../boot/Application");
 
 /**
  * A factory for creating and managing singleton instances of controller classes.
  */
-class ControllerSingletonFactory {
+class ControllerFactory {
     /**
      * A map of controller instances, keyed by alias or controller classpath.
      * @type {Map<string, Controller>}
@@ -13,22 +15,29 @@ class ControllerSingletonFactory {
 
     /**
      * Creates a singleton instance of the specified controller class and returns it.
-     * @param {string} controllerClasspath - The path to the controller class.
-     * @param {string} [alias=""] - An optional alias for the controller instance.
+     * @param {function(new:Controller)} ctor - The path to the controller class.
+     * @param {Application} app - The application instance.
      * @returns {Controller} - The controller instance, or null if an error occurred.
      */
-    static make(controllerClasspath, alias = "") {
-        const key = alias || require.resolve(controllerClasspath);
+    static make(ctor, app) {
+        const key = this.md5Key(ctor);
         if (this._controllerInstances.has(key)) {
             return this._controllerInstances.get(key);
         }
         try {
-            const controllerInstance = new (require(controllerClasspath))();
-            this._controllerInstances.set(key, controllerInstance);
-            return controllerInstance;
+            const instance = Reflect.construct(ctor, [app])
+
+            this._controllerInstances.set(key, instance);
+            return instance;
         } catch (err) {
-            throw new Error(`Error creating singleton for ${controllerClasspath}: ${err.message}`)
+            throw new Error(`Error creating singleton for ${ctor}: ${err.message}`);
         }
+    }
+
+    static md5Key(ctor) {
+        const hash = crypto.createHash('sha256');
+        hash.update(ctor.toString());
+        return hash.digest('hex');
     }
 
     /**
@@ -40,12 +49,22 @@ class ControllerSingletonFactory {
 
     /**
      * Deletes the singleton instance of the specified controller class.
-     * @param {string} controllerClasspath - The path to the controller class.
+     * @param {function(new:Controller)} ctor - The path to the controller class. the controller class.
      * @returns {boolean} - true if the instance was deleted, false otherwise.
      */
-    static deleteInstance(controllerClasspath) {
-        const key = require.resolve(controllerClasspath);
+    static deleteInstance(ctor) {
+        const key = this.md5Key(ctor);
         return this._controllerInstances.delete(key);
+    }
+
+    static instanceExists(ctor) {
+        const key = this.md5Key(ctor);
+        return this._controllerInstances.has(key);
+    }
+
+    static has(ctor) {
+        const key = this.md5Key(ctor);
+        return this._controllerInstances.has(key);
     }
 
     /**
@@ -57,4 +76,4 @@ class ControllerSingletonFactory {
     }
 }
 
-module.exports = ControllerSingletonFactory;
+module.exports = ControllerFactory;

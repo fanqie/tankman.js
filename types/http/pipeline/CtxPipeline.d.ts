@@ -8,11 +8,11 @@ declare class CtxPipeline {
     _httpCtx: any;
     /**
      *
-     * @param {Promise<CtxPipeline>} handle
+     * @param {Function} handle
      * @return {CtxPipeline}
      * @function
      */
-    pip(handle: Promise<CtxPipeline>): CtxPipeline;
+    pip(handle: Function): CtxPipeline;
     /**
      *
      * @return {Promise<CtxPipeline|boolean>}

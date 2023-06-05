@@ -19,11 +19,13 @@ class RedisSessionAdapter extends SessionHandlerAbstract {
      * @param {number} [expireTime=0] - The new expiration time in milliseconds. Defaults to 0.
      * @return {Promise<void>}
      */
-    async renewTimeBySessionId(sessionId, expireTime = 0) {
+    renewTimeBySessionId(sessionId, expireTime = 0) {
         if (expireTime && sessionId) {
-            await this.redisCache.setTtl(`${sessionId}_*`, this._calcTheRemainingSeconds(expireTime)).then(res => {
-            })
+            return this.redisCache.setTtl(`${sessionId}_*`, this._calcTheRemainingSeconds(expireTime))
         }
+        return new Promise((resolve, reject) => {
+            resolve();
+        });
     }
 
 
@@ -31,9 +33,9 @@ class RedisSessionAdapter extends SessionHandlerAbstract {
      * @param sessionId
      * @return {Promise<*>}
      */
-    async getBySessionId(sessionId) {
-        const values = await this.redisCache.get(`${sessionId}_*`)
-        return values;
+    getBySessionId(sessionId) {
+        return this.redisCache.get(`${sessionId}_*`)
+
     }
 
     /**
@@ -44,8 +46,8 @@ class RedisSessionAdapter extends SessionHandlerAbstract {
      * @param {number} [expireTime=0] - The expiration time in milliseconds for the value. Defaults to 0.
      * @return {Promise<void>}
      */
-    async set(sessionId, name, value, expireTime = 0) {
-        await this.redisCache.set(this._makeKey(sessionId, name), value, this._calcTheRemainingSeconds(expireTime))
+    set(sessionId, name, value, expireTime = 0) {
+        return this.redisCache.set(this._makeKey(sessionId, name), value, this._calcTheRemainingSeconds(expireTime))
     }
 
     /**
@@ -75,8 +77,8 @@ class RedisSessionAdapter extends SessionHandlerAbstract {
      * @param {string} name - The key of the value to retrieve.
      * @return {Promise<*>} - The value retrieved.
      */
-    async get(sessionId, name) {
-        return await this.redisCache.get(this._makeKey(sessionId, name))
+    get(sessionId, name) {
+        return this.redisCache.get(this._makeKey(sessionId, name))
     }
 
     /**
@@ -85,24 +87,24 @@ class RedisSessionAdapter extends SessionHandlerAbstract {
      * @param {string} name - The key of the value to remove.
      * @return {Promise<void>}
      */
-    async remove(sessionId, name) {
-        await this.redisCache.forget(this._makeKey(sessionId, name))
+    remove(sessionId, name) {
+        return this.redisCache.forget(this._makeKey(sessionId, name))
     }
 
     /**
      * removeBySessionId remove all session data by session id
      * @param  {string} sessionId
      */
-    async removeBySessionId(sessionId) {
-        await this.redisCache.forget(`${sessionId}_*`)
+    removeBySessionId(sessionId) {
+        return this.redisCache.forget(`${sessionId}_*`)
 
     }
 
     /**
      * Clear all session data.
      */
-    async clear() {
-        await this.redisCache.flush();
+    clear() {
+        return this.redisCache.flush();
     }
 
     /**

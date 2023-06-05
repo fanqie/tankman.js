@@ -20,7 +20,9 @@ class Web extends Koa {
     static(folder = './public') {
         this.staticFolder = path.isAbsolute(folder) ? folder : path.join(process.cwd(), folder || 'public');
     }
-
+    setupRoutes(routes) {
+        Facades.route.setup();
+    }
     /**
      * @param  {HttpContext} httpCtx
      * @return {boolean}
@@ -29,9 +31,9 @@ class Web extends Koa {
         if (httpCtx.request.getPathName() === '/') {
             return false;
         }
-        const requestPath = path.join(this.staticFolder, httpCtx.request.getPathName());
-        if (fs.existsSync(requestPath)) {
-            httpCtx.response.writeStatic(requestPath);
+        const filePath = path.join(this.staticFolder, httpCtx.request.getPathName());
+        if (fs.existsSync(filePath)) {
+            httpCtx.response.static(filePath);
             return true;
             // process.abort()
         }
@@ -54,11 +56,11 @@ class Web extends Koa {
             cluster.on('exit', (worker) => {
                 Facades.log.warnHttp(`worker ${worker.process.pid} died`);
             });
-            if(clusterConfig.enabled){
-                this.printSuccess(port,max)
+            if (clusterConfig.enabled) {
+                this.printSuccess(port, max)
             }
             if (!fs.existsSync(this.uploadPath)) {
-                fs.mkdirSync(this.uploadPath,{recursive:true});
+                fs.mkdirSync(this.uploadPath, {recursive: true});
             }
         } else {
             this.listen(port);
@@ -69,7 +71,7 @@ class Web extends Koa {
                 console.error(err);
             });
             func(process.pid);
-            if(!clusterConfig.enabled){
+            if (!clusterConfig.enabled) {
                 this.printSuccess(port)
             }
 
@@ -79,7 +81,7 @@ class Web extends Koa {
     printSuccess(port, max = 1) {
         Facades.log.infoHttp(`server run in port=${port}`);
         Facades.log.infoHttp(`web url=http://127.0.0.1:${port}`);
-        if(max>1){
+        if (max > 1) {
             Facades.log.infoHttp(`start worker count：${max}`);
         }
     }
@@ -88,12 +90,11 @@ class Web extends Koa {
         const toadyName = new Date().getFullYear() + '' + (new Date().getMonth() + 1) + new Date().getDate();
         const historyList = fs.readdirSync(this.uploadPath);
         let i = 0;
-        while (i < historyList.length) {
+        while (historyList.length < i) {
             if (historyList[i] < toadyName) {
                 fs.rmSync(path.join(this.uploadPath + historyList[i]), {recursive: true});
             }
             i++;
-            break;
         }
         const uploadDir = path.join(this.uploadPath + toadyName);
         if (!fs.existsSync(uploadDir)) {

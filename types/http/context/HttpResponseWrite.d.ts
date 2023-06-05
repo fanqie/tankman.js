@@ -30,7 +30,7 @@ declare class HttpResponseWrite {
     jsonSuccess(data: any, errMsg?: string): void;
     jsonError(data: any, errMsg: any, errNo?: number): void;
     download(filePath: any, fileName: any, headers: any): void;
-    fs(filePath: any): void;
+    static(filePath: any): void;
     downloadIo(bytes: any, fileName: any, headers?: {}, type?: string): void;
     text(string: any, type?: string): void;
     view(filename: any, data?: {}): void;

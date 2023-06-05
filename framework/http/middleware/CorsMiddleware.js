@@ -1,7 +1,7 @@
-const Middleware = require('./Middleware');
+const GlobalMiddlewaresBase = require('./GlobalMiddlewaresBase');
 const Facades = require("../../facades/Facades");
 const HttpContext = require('../context/HttpContext');
-module.exports = class CorsMiddleware extends Middleware {
+module.exports = class CorsMiddleware extends GlobalMiddlewaresBase {
     /**
      * @type {{regexp: RegExp, allowHeaders: string, except:(string|RegExp)[]}}
      */
@@ -24,18 +24,8 @@ module.exports = class CorsMiddleware extends Middleware {
      * @function
      */
     async handle(httpCtx, next) {
+        await super.handle(httpCtx, next);
 
-
-        const routePath = httpCtx.getRouter().path;
-        if (!this.options.regexp.test(routePath)) {
-            await next();
-            return;
-        }
-        const except = this.options.except;
-        if (except.some(pattern => pattern instanceof RegExp ? pattern.test(routePath) : pattern === routePath)) {
-            await next();
-            return;
-        }
         const origin = httpCtx.request.getHeader('origin');
         if (origin) {
             httpCtx.response.setHeader('Access-Control-Allow-Origin', origin);

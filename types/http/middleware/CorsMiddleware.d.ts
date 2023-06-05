@@ -1,13 +1,4 @@
 export = CorsMiddleware;
-declare class CorsMiddleware extends Middleware {
-    constructor(options?: {});
-    /**
-     * @type {{regexp: RegExp, allowHeaders: string, except:(string|RegExp)[]}}
-     */
-    options: {
-        regexp: RegExp;
-        allowHeaders: string;
-        except: (string | RegExp)[];
-    };
+declare class CorsMiddleware extends GlobalMiddlewaresBase {
 }
-import Middleware = require("./Middleware");
+import GlobalMiddlewaresBase = require("./GlobalMiddlewaresBase");

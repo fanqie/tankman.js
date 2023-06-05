@@ -20,5 +20,5 @@ class Middleware {
         await next();
         // after something
     }
-};
+}
 module.exports = Middleware;

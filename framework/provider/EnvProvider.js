@@ -10,6 +10,10 @@ class EnvProvider extends ServiceProvider {
     boot() {
         facades.env.load();
     }
+
+    constructor(app) {
+        super(app);
+    }
 }
 
 module.exports = EnvProvider;
